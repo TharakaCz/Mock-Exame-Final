@@ -27,6 +27,7 @@ import lk.exame.test.dto.ExameDTO;
 import lk.exame.test.dto.QuestionsDTO;
 import lk.exame.test.dto.ReqDTO;
 import lk.exame.test.dto.ResultDTO;
+import lk.exame.test.dto.SubmitQuestionDTO;
 import lk.exame.test.service.ExameService;
 
 @RestController
@@ -87,9 +88,9 @@ public class ExameController {
 	 */
 	
 
-	  @PostMapping(value="/getQuestion")
-	  private ResponseEntity<Object>getQuestion(@RequestBody ReqDTO reqDTO)throws Exception{
-		  return new ResponseEntity<Object>(service.getQuestion(reqDTO),HttpStatus.OK);
+	  @PostMapping(value="/getQuestion/{languageId}")
+	  private ResponseEntity<Object>getQuestion(@RequestBody ReqDTO reqDTO,@PathVariable Integer languageId)throws Exception{
+		  return new ResponseEntity<Object>(service.getQuestion(reqDTO,languageId),HttpStatus.OK);
 	  }
 	/*
 	 * @PostMapping(value = "/saveExame") private
@@ -106,10 +107,10 @@ public class ExameController {
 		  return new ResponseEntity<Object>(service.delete(exameId),HttpStatus.OK);
 	  }
 	  
-	  @PostMapping(value = "/saveAnswer/{exameId}")
-	  private ResponseEntity<Object>saveQuestionAndAnswers(@RequestBody List<QuestionsDTO>questionsDTOs, @PathVariable Integer exameId)throws Exception{
+	  @PostMapping(value = "/saveAnswer/{userName}/{languageId}")
+	  private ResponseEntity<Object>saveQuestionAndAnswers(@RequestBody List<SubmitQuestionDTO>submitQuestionDTOs,@PathVariable String userName , @PathVariable Integer languageId)throws Exception{
 		  
-		  return new ResponseEntity<Object>(service.submitQuestion(questionsDTOs,exameId),HttpStatus.OK);
+		  return new ResponseEntity<Object>(service.submitQuestion(submitQuestionDTOs,userName,languageId),HttpStatus.OK);
 	  }
 	  
 	
