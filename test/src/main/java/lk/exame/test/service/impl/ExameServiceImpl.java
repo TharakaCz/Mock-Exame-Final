@@ -21,7 +21,7 @@ import lk.exame.test.dto.LanguageDTO;
 import lk.exame.test.dto.QuestionsDTO;
 import lk.exame.test.dto.ReqDTO;
 import lk.exame.test.dto.ResultDTO;
-
+import lk.exame.test.dto.SubmitQuestionDTO;
 import lk.exame.test.entity.AnswerEntity;
 import lk.exame.test.entity.ExameDetailsEntity;
 import lk.exame.test.entity.ExameEntity;
@@ -244,189 +244,104 @@ public class ExameServiceImpl implements ExameService {
 	}
 
 	@Override
-	public boolean submitQuestion(List<QuestionsDTO> questionsDTOs, Integer exameId) throws Exception {
+	public boolean submitQuestion(List<SubmitQuestionDTO>submitQuestionDTOs,String userName,Integer languageId) throws Exception {
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
-		Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(dateFormat.format(date));
+		String time = formatter.format(date);
 
-		DateFormat dateTimeFormat = new SimpleDateFormat("HH:mm:ss");
-		Date dateTime = new Date();
-		String endTime = dateTimeFormat.format(date);
-
-		ExameEntity exameEntity = exameRepository.getOne(exameId);
-		
-		List<ResultEntity>resultEntities = resultRepository.findAll();
-		
-		
-		/*
-		 * Integer ResultIdInExameEntity = exameEntity.getResultEntity().getResultId();
-		 * 
-		 * resultEntity = resultRepository.getByResultId(ResultIdInExameEntity);
-		 */
-
-		String userName = exameEntity.getUserName();
-
-		System.out.println("User Name =/" + userName);
-
-		questionsDTOs.forEach(e -> {
-
-			if (e.getCorrect().contentEquals("true")) { //
-				
-				
-				System.out.println("getlOOP-1");
-				
-				if (resultEntities != null) {
-
-					System.out.println("Condition Succsess -1  !");
-					ResultEntity result = new ResultEntity();
-
-					result.setUserName(userName);
-
-					result.setStartTime(exameEntity.getRegTime());
-					result.setExameDate(date1);
-					result.setEndTime(dateFormat.format(dateTime));
-					result.setTotal(e.getMarks());
-					result.setCorrectAnswers(1);
-					resultEntity = resultRepository.save(result);
-
-					exameEntity.setResultEntity(result);
-					exameRepository.save(exameEntity);
-					
-				} else {
-					
-					Integer resId = exameEntity.getResultEntity().getResultId();
-					
-					resultEntity = resultRepository.getOne(resId);
-					
-					System.out.println("working res");
-
-					System.out.println(resultEntities.toArray().toString());
-					// resultEntity.setExameDate(date1);
-
-
-					Integer total = resultEntity.getTotal();
-					Integer fulltotal = total + e.getMarks();
-					resultEntity.setTotal(fulltotal);
-
-					Integer correct = resultEntity.getCorrectAnswers();
-					correct++;
-
-					resultEntity.setCorrectAnswers(correct);
-
-					resultRepository.save(resultEntity);
-				}
-
-			} else if (e.getCorrect().contentEquals("false")) {
-
-				if (resultEntities != null) {
-					
-					System.out.println("Work w");
-					ResultEntity result = new ResultEntity();
-
-					result.setUserName(userName);
-					result.setStartTime(exameEntity.getStartTime());
-					result.setExameDate(date1);
-					result.setWrongAnswers(1);
-
-					resultRepository.save(result);
-					
-					exameEntity.setResultEntity(result);
-					exameRepository.save(exameEntity);
-
-				} else {
-
-					System.out.println("wrong Else ok");
-					resultEntity.setEndTime(dateFormat.format(dateTime));
-
-					Integer wrong = resultEntity.getWrongAnswers();
-					wrong++;
-					resultEntity.setWrongAnswers(wrong);
-
-					resultRepository.save(resultEntity);
-				}
-
-			}
-		});
+		SimpleDateFormat formatterDate = new SimpleDateFormat();
+		Date dateDate = new SimpleDateFormat("dd/MM/yyyy").parse(formatterDate.format(date));
 
 		/*
-		 * ResultDTO resultDTO = new ResultDTO(); ResultEntity resultId =
-		 * resultRepository.getOne(resultDTO.getResultId());
+		 * DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); Date date = new
+		 * Date(); dateFormat.format(date);
 		 */
 
-		if (exameEntity != null) {
+		ExameEntity exameEntity = new ExameEntity();
+		ExameDTO exameDTO = new ExameDTO();
+		LanguageEntity languageEntity = languageRepository.getOne(languageId);
 
-			exameEntity.setExameDate(date1);
-			exameEntity.setEndTime(endTime);
+		exameEntity.setUserName(userName);
+		exameEntity.setExameDate(dateDate);
+		exameEntity.setRegDate(dateDate);
+		exameEntity.setRegTime(time);
+		exameEntity.setStartTime(time);
+		exameEntity.setLanguageEntity(languageEntity);
+		
+		
+		exameRepository.save(exameEntity);
+		
+		Integer exameIdget = exameEntity.getExameId();
+		ExameEntity exame = exameRepository.getOne(exameIdget);
+		
+		System.out.println("exame Id get =/"+exameIdget);
+		
+		submitQuestionDTOs.forEach(e->{
 			
-
-			exameRepository.save(exameEntity);
-		}
-
-		/*
-		 * ExameDTO exameDTO = new ExameDTO(); ExameEntity exameEntity =
-		 * exameRepository.getOne(exameId);
-		 * 
-		 * ExameDetailsEntity exameDetailsEntity = new ExameDetailsEntity();
-		 * ExameDetailsDTO exameDetailsDTO = new ExameDetailsDTO();
-		 * 
-		 * ResultEntity resultEntity = new ResultEntity();
-		 * 
-		 * UserAnswersQuestionsEntity userAnswersQuestionsEntity = new
-		 * UserAnswersQuestionsEntity(); UserAnswerQuestionDTO userAnswerQuestionDTO =
-		 * new UserAnswerQuestionDTO();
-		 * 
-		 * UserGetQuestionsEntity userGetQuestionsEntity = new UserGetQuestionsEntity();
-		 * UserGetQuestionsDTO userGetQuestionsDTO = new UserGetQuestionsDTO();
-		 * 
-		 * List<UserAnswersQuestionsEntity>list = userAnswerRepository.findAll();
-		 * List<Integer>userAnsDto = new ArrayList<>();
-		 * 
-		 * Integer arraySize = userAnsDto.size();
-		 * 
-		 * System.out.println("get Quesions =/"+arraySize.toString());
-		 * 
-		 * 
-		 * 
-		 * 
-		 * resultEntity.setTotalQuestions(arraySize);
-		 * resultEntity.setCorrectAnswers(resultDTO.getCorrectAnswers());
-		 * resultEntity.setWrongAnswers(resultDTO.getWrongAnswers());
-		 * resultEntity.setTotal(resultDTO.getTotal());
-		 * 
-		 * resultEntity.setStartTime(resultDTO.getStartTime());
-		 * resultEntity.setExameDate(date1);
-		 * resultEntity.setEndTime(dateFormat.format(dateTime));
-		 * 
-		 * resultRepository.save(resultEntity);
-		 * 
-		 * if (exameEntity != null) {
-		 * 
-		 * System.out.println("exame condition work . . . !");
-		 * 
-		 * exameEntity.setExameDate(date1);
-		 * exameEntity.setEndTime(dateFormat.format(dateTime));
-		 * exameEntity.setStartTime(resultDTO.getStartTime());
-		 * exameEntity.setMarks(resultDTO.getTotal());
-		 * 
-		 * exameRepository.save(exameEntity); }
-		 * 
-		 * if (userGetQuestionsEntity.getUserGetQuesId() == null) {
-		 * 
-		 * userGetQuestionsEntity.setExameId(exameId);
-		 * userGetQuestionsEntity.setLanguAge(langName);
-		 * userGetQuestionsEntity.setUserName(userName);
-		 * 
-		 * userGetQuestionsRepository.save(userGetQuestionsEntity);
-		 * 
-		 * }else if (userGetQuestionsEntity.getUserGetQuesId() !=null) {
-		 * 
-		 * userGetQuestionsEntity.setExameId(exameId);
-		 * userGetQuestionsEntity.setLanguAge(langName);
-		 * userGetQuestionsEntity.setUserName(userName);
-		 * 
-		 * userGetQuestionsRepository.save(userGetQuestionsEntity); }
-		 */
+			QuestionEntity questionEntity = questionRepository.getOne(e.getQuestionId());
+			AnswerEntity answerEntity = answerRepository.getOne(e.getUserAnswerId());
+			
+			
+			if (answerEntity.getCorrect().equals(1)) {
+				
+			
+				
+				if (resultEntity.getResultId() == null) {
+					System.out.println("Wrong else Correct (null) . . . ");
+					Integer thisTot = questionEntity.getMarks();
+					
+					resultEntity.setCorrectAnswers(1);
+					resultEntity.setTotal(thisTot);
+					resultEntity.setTotalQuestions(60);
+					resultRepository.save(resultEntity);
+					
+					
+					exame.setResultEntity(resultEntity);
+					exameRepository.save(exame);
+				
+				}else {
+					
+					System.out.println("Wrong else Working (not null) . . . ");
+					
+					ResultEntity result = resultRepository.getOne(resultEntity.getResultId());
+					Integer total = result.getTotal();
+					total++;
+					 result.setTotal(total);
+					 
+					 resultRepository.save(result);
+				}
+				
+				
+				
+			} /*
+				 * else if (answerEntity.getCorrect().equals(0)) {
+				 * 
+				 * System.out.println("Wrong else Working (null) . . . ");
+				 * 
+				 * if (resultEntity.getResultId() == null) {
+				 * 
+				 * 
+				 * resultEntity.setWrongAnswers(1);
+				 * 
+				 * resultRepository.save(resultEntity);
+				 * 
+				 * 
+				 * exame.setResultEntity(resultEntity); exameRepository.save(exame);
+				 * 
+				 * }else { System.out.println("Wrong else Working (not null) . . . ");
+				 * ResultEntity result = resultRepository.getOne(resultEntity.getResultId());
+				 * 
+				 * 
+				 * 
+				 * resultRepository.save(result); }
+				 * 
+				 * 
+				 * }
+				 */
+			
+			
+		});
 
 		return true;
 	}
@@ -575,12 +490,11 @@ public class ExameServiceImpl implements ExameService {
 	 * @see lk.exame.test.service.ExameService#getQuestion(java.lang.String)
 	 */
 	@Override
-	public QuestionsDTO getQuestion(ReqDTO reqDTO) throws Exception {
+	public QuestionsDTO getQuestion(ReqDTO reqDTO,Integer languageId) throws Exception {
 
 		  QuestionsDTO questionsDTO = new QuestionsDTO();
-		  ExameEntity exameEntity = exameRepository.getOne(reqDTO.getExameId());
+		 
 		  
-		 Integer languageId = exameEntity.getLanguageEntity().getLangId();
 		  
 		 System.out.println("Language == /"+languageId);
 		 ArrayList<Integer> quaryNum = new ArrayList<>();

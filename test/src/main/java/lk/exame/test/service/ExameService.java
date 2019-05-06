@@ -8,6 +8,7 @@ import lk.exame.test.dto.ExameDetailsDTO;
 import lk.exame.test.dto.QuestionsDTO;
 import lk.exame.test.dto.ReqDTO;
 import lk.exame.test.dto.ResultDTO;
+import lk.exame.test.dto.SubmitQuestionDTO;
 
 
 public interface ExameService {
@@ -27,11 +28,11 @@ public interface ExameService {
 	 */
 	public ResultDTO getExameResult(Integer exameId)throws Exception;
 	
-	public QuestionsDTO getQuestion(ReqDTO reqDTO)throws Exception;
+	public QuestionsDTO getQuestion(ReqDTO reqDTO,Integer languageId)throws Exception;
 	
 	public List<ExameDetailsDTO>updateQuestion()throws Exception;
 	
-	public boolean submitQuestion(List<QuestionsDTO>questionsDTOs,Integer exameId)throws Exception;
+	public boolean submitQuestion(List<SubmitQuestionDTO>submitQuestionDTOs,String userName , Integer languageId)throws Exception;
 	
 	/* public QuestionAnswerDTO backStep(Integer quesId)throws Exception; */
 	
