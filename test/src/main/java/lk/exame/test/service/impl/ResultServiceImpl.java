@@ -6,17 +6,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lk.exame.test.dao.ExameDAO;
+import lk.exame.test.dao.ResultDAO;
 import lk.exame.test.dto.ResultDTO;
+import lk.exame.test.entity.ExameEntity;
 import lk.exame.test.entity.ResultEntity;
-import lk.exame.test.repository.ResultRepository;
 import lk.exame.test.service.ResultService;
 
 @Service
 public class ResultServiceImpl implements ResultService {
 
 	@Autowired
-	private ResultRepository resultRepository;
+	private ResultDAO resultDao;
 
+	@Autowired
+	private ExameDAO exameDao;
 	/*
 	 * @Override public ResultDTO findResult(String userName) throws Exception {
 	 * 
@@ -42,15 +46,29 @@ public class ResultServiceImpl implements ResultService {
 	 */
 	@Override
 	public ResultDTO findByExameId(Integer exameId) throws Exception {
-
-		  ResultEntity resultEntity = resultRepository.getByExameId(exameId);
+		System.out.println("Exame id . . /"+exameId);
+		
+		ExameEntity entities =  exameDao.findByExameId(exameId);
+		
+		
+		
+		System.out.println(entities == null);
+		
+		ExameEntity exameEntity = exameDao.findByExameId(exameId);
+		
+		System.out.println("Exame Id =/"+exameEntity.getExameId());
+		
+		
+		  Integer resultId = exameEntity.getResultEntity().getResultId(); ResultEntity
+		  resultEntity = resultDao.findByResultId(resultId);
 		  
 		  ResultDTO resultDTO = new ResultDTO();
 		  
-		 
+		  
 		  resultDTO.setTotal(resultEntity.getTotal());
 		  resultDTO.setCorrectAnswers(resultEntity.getCorrectAnswers());
 		  resultDTO.setWrongAnswers(resultEntity.getWrongAnswers());
+		 
 		  
 		  return resultDTO;
 		 
@@ -65,7 +83,7 @@ public class ResultServiceImpl implements ResultService {
 	@Override
 	public ArrayList<ResultDTO> findByUserName(String userName) throws Exception {
 
-		List<ResultEntity> resultEntities = resultRepository.getResult(userName);
+		List<ResultEntity> resultEntities = resultDao.findByUserName(userName);
 
 		ArrayList<ResultDTO> resultDTOs = new ArrayList<ResultDTO>();
 
@@ -86,9 +104,7 @@ public class ResultServiceImpl implements ResultService {
 		  resultDTO.setTotal(resultEntity.getTotal());
 		  resultDTO.setCorrectAnswers(resultEntity.getCorrectAnswers());
 		  resultDTO.setWrongAnswers(resultEntity.getWrongAnswers());
-		  resultDTO.setStartTime(resultEntity.getStartTime());
 		  
-		  resultDTO.setEndTime(resultEntity.getEndTime());
 		  resultDTO.setExameDate(resultEntity.getExameDate());
 		
 		 

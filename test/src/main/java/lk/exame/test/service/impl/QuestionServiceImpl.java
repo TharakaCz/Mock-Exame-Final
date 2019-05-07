@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lk.exame.test.AppConstant;
+import lk.exame.test.dao.AnswerDAO;
+import lk.exame.test.dao.ExameDetailDAO;
+import lk.exame.test.dao.LanguageDAO;
+import lk.exame.test.dao.QuestionDAO;
+import lk.exame.test.dao.SubjectDAO;
 import lk.exame.test.dto.AnswersDTO;
 import lk.exame.test.dto.LanguageDTO;
 import lk.exame.test.dto.QuestionsDTO;
@@ -16,37 +21,32 @@ import lk.exame.test.entity.AnswerEntity;
 import lk.exame.test.entity.LanguageEntity;
 import lk.exame.test.entity.QuestionEntity;
 import lk.exame.test.entity.SubjectEntity;
-import lk.exame.test.repository.AnswerRepository;
-import lk.exame.test.repository.ExameDetailRepository;
-import lk.exame.test.repository.LanguageRepository;
-import lk.exame.test.repository.QuestionRepository;
-import lk.exame.test.repository.SubjectRepository;
 import lk.exame.test.service.QuestionService;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
 	@Autowired
-	private QuestionRepository questionRepository;
+	private QuestionDAO questionDao;
 
 	@Autowired
-	private AnswerRepository answerRepository;
+	private AnswerDAO answerDao;
 
 	@Autowired
-	private LanguageRepository languageRepository;
+	private LanguageDAO languageDao;
 
 	@Autowired
-	private SubjectRepository subjectRepository;
+	private SubjectDAO subjectDao;
 
 	@Autowired
-	private ExameDetailRepository exameDetailRepository;
+	private ExameDetailDAO exameDetailDao;
 
 	private QuestionEntity quesAns = null;
 
 	@Override
 	public boolean save(QuestionsDTO questionsDTO) throws Exception {
 
-		questionRepository.save(getQuestionEntity(questionsDTO));
+		questionDao.save(getQuestionEntity(questionsDTO));
 
 		return true;
 	}
@@ -63,13 +63,13 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public boolean delete(Integer quesId) throws Exception {
 
-		QuestionEntity questionEntity = questionRepository.getOne(quesId);
+		QuestionEntity questionEntity = questionDao.findById(quesId).get();
 
 		if (questionEntity != null) {
 
 			questionEntity.setStatus(AppConstant.DEACTIVE);
 
-			questionRepository.save(questionEntity);
+			questionDao.save(questionEntity);
 		}
 
 		return true;
@@ -91,8 +91,8 @@ public class QuestionServiceImpl implements QuestionService {
 	public boolean saveQuestionAnswer(QuestionsDTO questionsDTO) throws Exception {
 
 		System.out.println("Impl subject id =/"+questionsDTO.getSubjectId());
-		SubjectEntity subjectEntity = subjectRepository.getOne(questionsDTO.getSubjectId());
-		LanguageEntity languageEntity = languageRepository.getOne(questionsDTO.getLanguageId());
+		SubjectEntity subjectEntity = subjectDao.findOneBySubId(questionsDTO.getSubjectId());
+		LanguageEntity languageEntity = languageDao.findByLangId(questionsDTO.getLanguageId());
 				
 		QuestionEntity questionEntity = new QuestionEntity();
 		questionEntity.setQuestionQ(questionsDTO.getQuestion());
@@ -101,7 +101,7 @@ public class QuestionServiceImpl implements QuestionService {
 		questionEntity.setSubjectEntitiy(subjectEntity);
 		questionEntity.setLanguageEntitiey(languageEntity);
 		questionEntity.setStatus(AppConstant.ACTIVE);
-		QuestionEntity question = questionRepository.save(questionEntity);
+		QuestionEntity question = questionDao.save(questionEntity);
 
 		if (question != null) {
 			questionsDTO.getAnswerDtos().forEach(answers -> {
@@ -111,7 +111,7 @@ public class QuestionServiceImpl implements QuestionService {
 				answerEntity.setTagName(answers.getTagName());
 				answerEntity.setCorrect(answers.getCorrect());;
 				answerEntity.setQuestionEntity(question);
-				answerRepository.save(answerEntity);
+				answerDao.save(answerEntity);
 			});
 
 			
@@ -145,7 +145,7 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public ArrayList<QuestionsDTO> getAllQuestions() throws Exception {
 
-		List<QuestionEntity> questionEntities = questionRepository.getAllQuestions();
+		List<QuestionEntity> questionEntities = questionDao.getAllQuestions();
 		ArrayList<QuestionsDTO> getAllQues = new ArrayList<>();
 
 		questionEntities.forEach(e -> {
@@ -162,11 +162,11 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public boolean update(QuestionsDTO questionsDTO) throws Exception {
 
-		QuestionEntity questionEntity = questionRepository.getOne(questionsDTO.getQuesId());
+		QuestionEntity questionEntity = questionDao.findById(questionsDTO.getQuesId()).get();
 		
-		SubjectEntity subjectEntity = subjectRepository.getOne(questionsDTO.getSubjectId());
+		SubjectEntity subjectEntity = subjectDao.findOneBySubId(questionsDTO.getSubjectId());
 		
-		LanguageEntity languageEntity = languageRepository.getOne(questionsDTO.getLanguageId());
+		LanguageEntity languageEntity = languageDao.findByLangId(questionsDTO.getLanguageId());
 		
 		/*
 		 * SubjectEntity subjectEntity =
@@ -186,15 +186,15 @@ public class QuestionServiceImpl implements QuestionService {
 			
 			questionEntity.setSubjectEntitiy(subjectEntity);
 			questionEntity.setLanguageEntitiey(languageEntity);
-			questionRepository.save(questionEntity);
+			questionDao.save(questionEntity);
 
 			questionsDTO.getAnswerDtos().forEach(answer -> {
-				AnswerEntity answerEntity = answerRepository.getOne(answer.getAnswerId());
+				AnswerEntity answerEntity = answerDao.findByAnswerId(answer.getAnswerId());
 				if (answerEntity != null) {
 					answerEntity.setAnsewer(answer.getAnsewer());
 					answerEntity.setTagName(answer.getTagName());
 					answerEntity.setCorrect(answer.getCorrect());
-					answerRepository.save(answerEntity);
+					answerDao.save(answerEntity);
 				}
 			});
 
@@ -360,7 +360,7 @@ public class QuestionServiceImpl implements QuestionService {
 		AnswersDTO answersDTO = new AnswersDTO();
 		  
 		  
-		  questionEntity = questionRepository.findById(quesId).get();
+		  questionEntity = questionDao.findById(quesId).get();
 		 
 		 
 		 
@@ -379,7 +379,7 @@ public class QuestionServiceImpl implements QuestionService {
 			 * questionsDTO.setSubjectDto(); questionsDTO.setLanguageDto();
 			 */
 		  
-		  List<AnswerEntity> getAnswersEasy =  answerRepository.findAllByQuestionEntity(questionEntity);
+		  List<AnswerEntity> getAnswersEasy =  answerDao.findAllByQuestionEntity(questionEntity);
 		  List<AnswersDTO>  getAllAnsweDto = new ArrayList<>();
 		
 		  getAnswersEasy.forEach(answersPrimary -> {

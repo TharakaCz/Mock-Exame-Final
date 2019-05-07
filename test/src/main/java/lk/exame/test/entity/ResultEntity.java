@@ -26,13 +26,13 @@ public class ResultEntity {
 	private Integer total;
 	
 	@Column(name = "TOTAL_QUESTIONS",length = 60)
-	private Integer totalQuestions;
+	private Integer totalQuestions = 0;
 	
 	@Column(name = "CORRECT_ANSWERS",length = 60)
-	private Integer correctAnswers;
+	private Integer correctAnswers = 0;
 	
 	@Column(name = "WRONG_ANSWERS" ,length = 60)
-	private Integer wrongAnswers;
+	private Integer wrongAnswers = 0;
 	
 	@Column(name = "USER_NAME",length =255)
 	private String userName;
@@ -40,12 +40,7 @@ public class ResultEntity {
 	@Column(name = "EXAME_DATE",length = 50)
 	private Date exameDate;
 	
-	@Column(name = "START_TIME",length = 50)
-	private String startTime;
-	
-	@Column(name = "END_TIME",length = 50)
-	private String endTime;
-	
+
 
 	public ResultEntity() {
 		
@@ -108,21 +103,7 @@ public class ResultEntity {
 		this.exameDate = exameDate;
 	}
 
-	public String getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
-	}
-
-	public String getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
-	}
+	
 	
 	
 }

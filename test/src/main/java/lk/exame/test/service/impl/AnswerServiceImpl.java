@@ -6,32 +6,32 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lk.exame.test.dao.AnswerDAO;
+import lk.exame.test.dao.QuestionDAO;
 import lk.exame.test.dto.AnswersDTO;
 import lk.exame.test.entity.AnswerEntity;
 import lk.exame.test.entity.QuestionEntity;
-import lk.exame.test.repository.AnswerRepository;
-import lk.exame.test.repository.QuestionRepository;
 import lk.exame.test.service.AnswerService;
 
 @Service
 public class AnswerServiceImpl implements AnswerService{
 
 	@Autowired
-	private AnswerRepository repository;
+	private AnswerDAO answerDao;
 	
 	@Autowired
-	private QuestionRepository questionRepository;
+	private QuestionDAO questionDao;
 	
 	@Override
 	public boolean save(AnswersDTO answersDTO) throws Exception {
 		
-		repository.save(getAnswerEntity(answersDTO));
+		answerDao.save(getAnswerEntity(answersDTO));
 		return true;
 	}
 	
 	private AnswerEntity getAnswerEntity(AnswersDTO answersDTO)throws Exception{
 		
-		QuestionEntity questionEntity=questionRepository.getOne(answersDTO.getQuestionId());
+		QuestionEntity questionEntity=questionDao.findById(answersDTO.getQuestionId()).get();
 		
 		AnswerEntity answerEntity = new AnswerEntity();
 		answerEntity.setAnsewer(answersDTO.getAnsewer());
@@ -44,9 +44,9 @@ public class AnswerServiceImpl implements AnswerService{
 	@Override
 	public List<AnswersDTO> getAnswers(Integer questionId) throws Exception {
 	
-		QuestionEntity questionEntity=questionRepository.getOne(questionId);
+		QuestionEntity questionEntity=questionDao.findById(questionId).get();
 		
-		List<AnswerEntity>getAll=repository.findAllByQuestionEntity(questionEntity);
+		List<AnswerEntity>getAll=answerDao.findAllByQuestionEntity(questionEntity);
 		List<AnswersDTO> getAlldto=new ArrayList<AnswersDTO>();
 		
 		getAll.forEach(e->{
@@ -74,7 +74,7 @@ public class AnswerServiceImpl implements AnswerService{
 	@Override
 	public List<AnswersDTO> getQuestions(Integer quesId) throws Exception {
 	
-		List<AnswerEntity>answerList = repository.getAnswers(quesId);
+		List<AnswerEntity>answerList = answerDao.findByQuestionEntity(quesId);
 		
 		List<AnswersDTO>answer = new ArrayList<>();
 
