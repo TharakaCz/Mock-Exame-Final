@@ -6,21 +6,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lk.exame.test.dao.QuestionDAO;
+import lk.exame.test.dao.SubjectDAO;
 import lk.exame.test.dto.SubjectDTO;
 import lk.exame.test.entity.QuestionEntity;
 import lk.exame.test.entity.SubjectEntity;
-import lk.exame.test.repository.QuestionRepository;
-import lk.exame.test.repository.SubjectRepository;
 import lk.exame.test.service.SubjectService;
 
 @Service
 public class SubjectServiceImpl implements SubjectService{
 
 	@Autowired 
-	private SubjectRepository subjectRepository;
+	private SubjectDAO subjectDao;
 	
 	@Autowired
-	private QuestionRepository questionRepository;
+	private QuestionDAO questionDao;
 	
 	/*
 	 * @Override public boolean save(SubjectDTO subjectDTO) throws Exception {
@@ -48,14 +48,14 @@ public class SubjectServiceImpl implements SubjectService{
 	@Override
 	public boolean delete(Integer subId) throws Exception {
 		
-		subjectRepository.deleteById(subId);
+		subjectDao.deleteById(subId);
 		return true;
 	}
 
 	@Override
 	public SubjectDTO findSubject(Integer subId) throws Exception {
 		
-		SubjectEntity subject = subjectRepository.findById(subId).get();
+		SubjectEntity subject = subjectDao.findById(subId).get();
 		
 		SubjectDTO subjectDTO = new SubjectDTO(
 				subject.getSubId(),
@@ -67,7 +67,7 @@ public class SubjectServiceImpl implements SubjectService{
 	@Override
 	public ArrayList<SubjectDTO> getAllSubject() throws Exception {
 
-		List<SubjectEntity>subjects = subjectRepository.findAll();
+		List<SubjectEntity>subjects = (List<SubjectEntity>) subjectDao.findAll();
 		
 		ArrayList<SubjectDTO>subjectDTOs = new ArrayList<>();
 		
@@ -87,7 +87,7 @@ public class SubjectServiceImpl implements SubjectService{
 		 
 		 subjectEntity.setSubName(subjectDTO.getSubName());
 		 
-		 subjectRepository.save(subjectEntity);
+		 subjectDao.save(subjectEntity);
 		 
 		return true;
 	}

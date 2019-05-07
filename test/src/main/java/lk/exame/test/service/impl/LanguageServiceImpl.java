@@ -6,21 +6,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lk.exame.test.dao.LanguageDAO;
+import lk.exame.test.dao.QuestionDAO;
 import lk.exame.test.dto.LanguageDTO;
 import lk.exame.test.entity.LanguageEntity;
 import lk.exame.test.entity.QuestionEntity;
-import lk.exame.test.repository.LanguageRepository;
-import lk.exame.test.repository.QuestionRepository;
 import lk.exame.test.service.LanguageService;
 
 @Service
 public class LanguageServiceImpl implements LanguageService{
 
 	@Autowired
-	private LanguageRepository langRepository;
+	private LanguageDAO languageDao;
 	
 	@Autowired
-	private QuestionRepository questionRepository;
+	private QuestionDAO questionDao;
 	
 	/*
 	 * @Override public boolean save(LanguageDTO languageDTO) throws Exception {
@@ -37,7 +37,7 @@ public class LanguageServiceImpl implements LanguageService{
 
 	@Override
 	public boolean delete(Integer langId) throws Exception {
-		langRepository.deleteById(langId);
+		languageDao.deleteById(langId);
 		return true;
 	}
 
@@ -57,7 +57,7 @@ public class LanguageServiceImpl implements LanguageService{
 		
 		languageEntity.setLangName(languageDTO.getLangName());
 		
-		langRepository.save(languageEntity);
+		languageDao.save(languageEntity);
 		
 		return true;
 	}
@@ -68,7 +68,7 @@ public class LanguageServiceImpl implements LanguageService{
 	@Override
 	public ArrayList<LanguageDTO> getAllLanguage() {
 		
-		List<LanguageEntity>getLanguages = langRepository.findAll();
+		List<LanguageEntity>getLanguages = (List<LanguageEntity>) languageDao.findAll();
 		
 		ArrayList<LanguageDTO>languageDTOs = new ArrayList<>();
 		
