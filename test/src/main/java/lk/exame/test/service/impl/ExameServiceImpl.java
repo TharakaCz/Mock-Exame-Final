@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import lk.exame.test.AppConstant;
 import lk.exame.test.dao.AnswerDAO;
 import lk.exame.test.dao.ExameDAO;
 import lk.exame.test.dao.ExameDetailDAO;
 import lk.exame.test.dao.LanguageDAO;
 import lk.exame.test.dao.QuestionDAO;
 import lk.exame.test.dao.ResultDAO;
+import lk.exame.test.dao.custom.QuestionDaoCustom;
 import lk.exame.test.dto.AnswersDTO;
 import lk.exame.test.dto.ExameDTO;
 import lk.exame.test.dto.ExameDetailsDTO;
@@ -54,6 +56,11 @@ public class ExameServiceImpl implements ExameService {
 	@Autowired
 	private LanguageDAO languageDao;
 
+	@Autowired
+	private QuestionDaoCustom questionCustomDao;
+	
+	private Integer id ;
+	
 	/*
 	 * private QuestionEntity questionEntity = null;
 	 * 
@@ -510,11 +517,11 @@ public class ExameServiceImpl implements ExameService {
 		QuestionsDTO questionsDTO = new QuestionsDTO();
 
 		System.out.println("Language == /" + languageId);
-		ArrayList<Integer> quaryNum = new ArrayList<>();
+		ArrayList<Integer> quesNum = new ArrayList<>();
 
-		quaryNum.addAll(reqDTO.getQuestionIds());
+		quesNum.addAll(reqDTO.getQuestionIds());
 
-		System.out.println("Question Ids =/" + quaryNum);
+		System.out.println("Question Ids =/" + quesNum);
 
 		System.out.println("Question Ids" + reqDTO.getQuestionIds().toString());
 
@@ -528,113 +535,165 @@ public class ExameServiceImpl implements ExameService {
 
 		if (reqDTO.getQuestionIds().isEmpty()) {
 
-			String quesLeval = "Easy";
-			String status = "active";
+			
+			 LanguageEntity language = languageDao.findById(languageId).get();
 			/*
-			 * LanguageEntity language = languageRepository.findById(languageId).get();
 			 * questionEntity =
 			 * questionRepository.findOneByQuestionLevalAndStatusAndLanguageEntitiey(
 			 * quesLeval, status, language);
 			 */
+			 
 			
-			questionEntity = questionDao.getPrimatyStage(languageId);
+			  String questionLeval ="Easy";
+			  String status = AppConstant.ACTIVE;
+			  
+			  List<QuestionEntity> getQuestion =questionCustomDao.getPrimaryStage(questionLeval,status,languageId);
+			  
+			  List<QuestionsDTO>getQuestionDto = new ArrayList<QuestionsDTO>();
+			  
+			  getQuestion.forEach(each->{
+				  id = each.getQuesId();
+			  });
 			
-			System.out.println("primary");
-			List<AnswerEntity> getAnswersEasy = answerDao.findAllByQuestionEntity(questionEntity);
-			List<AnswersDTO> getAllAnsweDto = new ArrayList<AnswersDTO>();
+			  
+			System.out.println("id . . . /"+id);
+			  
+			questionEntity = questionDao.findById(id).get();
+			
+			  
+			  
+			  
+			/* questionEntity = questionDao.getPrimatyStage(languageId); */
+			
+			  System.out.println("primary");
+			  List<AnswerEntity> getAnswersEasy = answerDao.findAllByQuestionEntity(questionEntity); 
+			  List<AnswersDTO>  getAllAnsweDto = new ArrayList<AnswersDTO>();
+			  
+			  getAnswersEasy.forEach(answersPrimary -> {
+				  System.out.println("Loop - 1");
+				  getAllAnsweDto.add(getAnswerDto(answersPrimary));
+			  });
+			  
+			  questionsDTO.setQuesId(questionEntity.getQuesId());
+			  questionsDTO.setQuestion(questionEntity.getQuestion());
+			  questionsDTO.setMarks(questionEntity.getMarks());
+			  
+			  questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
+			  questionsDTO.setStatus(questionEntity.getStatus());
+			  
+			  questionsDTO.setAnswerDtos(getAllAnsweDto);
+			  
+			  return questionsDTO;
+			 
 
-			getAnswersEasy.forEach(answersPrimary -> {
-				System.out.println("Loop - 1");
-				getAllAnsweDto.add(getAnswerDto(answersPrimary));
-			});
-
-			questionsDTO.setQuesId(questionEntity.getQuesId());
-			questionsDTO.setQuestion(questionEntity.getQuestion());
-			questionsDTO.setMarks(questionEntity.getMarks());
-
-			questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
-			questionsDTO.setStatus(questionEntity.getStatus());
-
-			questionsDTO.setAnswerDtos(getAllAnsweDto);
-
-			return questionsDTO;
-
-		} else if (reqDTO.getQuestionIds().size() >= 1 && reqDTO.getQuestionIds().size() <= 20) {
-
-			System.out.println("Easy Stage");
-			questionEntity = questionDao.getEasyQuestions(quaryNum, languageId);
-
-			List<AnswerEntity> getAnswersEzy = answerDao.findAllByQuestionEntity(questionEntity);
-			List<AnswersDTO> getAllAnsweDto = new ArrayList<AnswersDTO>();
-
-			getAnswersEzy.forEach(answersEzy -> {
-				getAllAnsweDto.add(getAnswerDto(answersEzy));
-				System.out.println("Loop - 2");
-
-			});
-
-			questionsDTO.setQuesId(questionEntity.getQuesId());
-			questionsDTO.setQuestion(questionEntity.getQuestion());
-			questionsDTO.setMarks(questionEntity.getMarks());
-
-			questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
-			questionsDTO.setStatus(questionEntity.getStatus());
-
-			questionsDTO.setAnswerDtos(getAllAnsweDto);
-
-			return questionsDTO;
-		}
-
-		else if (reqDTO.getQuestionIds().size() >= 20 && reqDTO.getQuestionIds().size() <= 40) {
-
-			System.out.println("Nomal Stage");
-			questionEntity = questionDao.getNormalQuestions(quaryNum, languageId);
-
-			List<AnswerEntity> getAnswersNom = answerDao.findAllByQuestionEntity(questionEntity);
-			List<AnswersDTO> getAllAnsweDto = new ArrayList<AnswersDTO>();
-
-			getAnswersNom.forEach(answersNom -> {
-				getAllAnsweDto.add(getAnswerDto(answersNom));
-			});
-
-			questionsDTO.setQuesId(questionEntity.getQuesId());
-			questionsDTO.setQuestion(questionEntity.getQuestion());
-			questionsDTO.setMarks(questionEntity.getMarks());
-
-			questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
-			questionsDTO.setStatus(questionEntity.getStatus());
-
-			questionsDTO.setAnswerDtos(getAllAnsweDto);
-
-			return questionsDTO;
-		}
-
-		else if (reqDTO.getQuestionIds().size() >= 40 && reqDTO.getQuestionIds().size() <= 59) {
-
-			System.out.println("Hard Stage");
-			questionEntity = questionDao.getHardQuestions(quaryNum, languageId);
-
-			List<AnswerEntity> getAnswersHard = answerDao.findAllByQuestionEntity(questionEntity);
-			List<AnswersDTO> getAllAnsweDto = new ArrayList<AnswersDTO>();
-			System.out.println("gues id " + questionEntity.getQuesId());
-
-			getAnswersHard.forEach(answersHard -> {
-				getAllAnsweDto.add(getAnswerDto(answersHard));
-			});
-
-			questionsDTO.setQuesId(questionEntity.getQuesId());
-			questionsDTO.setQuestion(questionEntity.getQuestion());
-			questionsDTO.setMarks(questionEntity.getMarks());
-
-			questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
-			questionsDTO.setStatus(questionEntity.getStatus());
-
-			questionsDTO.setAnswerDtos(getAllAnsweDto);
-
-			return questionsDTO;
-
-		}
-
+		} 
+			  else if (reqDTO.getQuestionIds().size() >= 1 && reqDTO.getQuestionIds().size() <= 20) {
+			  
+			  System.out.println("Easy Stage");
+			  
+			  String questionLeval ="Easy";
+			  String status = AppConstant.ACTIVE;
+			  
+			/* questionEntity = questionDao.getEasyQuestions(quaryNum, languageId); */
+			  
+			 List<QuestionEntity> questionSecon = questionCustomDao.getSeconderyStage(questionLeval, status, languageId, quesNum);
+			 
+			 questionSecon.forEach(each->{
+				 id = each.getQuesId();
+			 });
+			 
+			 questionEntity = questionDao.findById(id).get();
+			 
+			
+			  List<AnswerEntity> getAnswersEzy =
+			  answerDao.findAllByQuestionEntity(questionEntity); 
+			  List<AnswersDTO> getAllAnsweDto = new ArrayList<AnswersDTO>();
+			 
+			  
+			
+			  getAnswersEzy.forEach(answersEzy -> {
+			  getAllAnsweDto.add(getAnswerDto(answersEzy)); 
+			  System.out.println("Loop - 2");
+			  
+			  });
+			 
+			  
+			  questionsDTO.setQuesId(questionEntity.getQuesId());
+			  questionsDTO.setQuestion(questionEntity.getQuestion());
+			  questionsDTO.setMarks(questionEntity.getMarks());
+			  
+			  questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
+			  questionsDTO.setStatus(questionEntity.getStatus());
+			  
+			  questionsDTO.setAnswerDtos(getAllAnsweDto);
+			  
+			  return questionsDTO;
+			  
+			  }else if (reqDTO.getQuestionIds().size() >= 20 && reqDTO.getQuestionIds().size() <= 40) {
+			  
+				String questionLeval ="Nomal";
+				String status = AppConstant.ACTIVE;
+				  
+			  System.out.println("Nomal Stage");
+			  
+			  List<QuestionEntity>getNomalQuestion = questionCustomDao.getSeconderyStage(questionLeval, status, languageId, quesNum);
+			 
+			  getNomalQuestion.forEach(each->{
+				  id = each.getQuesId();
+			  });
+			  
+			  questionEntity = questionDao.findById(id).get(); 
+					  
+			  List<AnswerEntity> getAnswersNom = answerDao.findAllByQuestionEntity(questionEntity);
+			  List<AnswersDTO>getAllAnsweDto = new ArrayList<AnswersDTO>();
+			  
+			  getAnswersNom.forEach(answersNom -> {
+			  getAllAnsweDto.add(getAnswerDto(answersNom)); });
+			  
+			  questionsDTO.setQuesId(questionEntity.getQuesId());
+			  questionsDTO.setQuestion(questionEntity.getQuestion());
+			  questionsDTO.setMarks(questionEntity.getMarks());
+			  
+			  questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
+			  questionsDTO.setStatus(questionEntity.getStatus());
+			  
+			  questionsDTO.setAnswerDtos(getAllAnsweDto);
+			  
+			  return questionsDTO;
+			  
+			  }else if (reqDTO.getQuestionIds().size() >= 40 && reqDTO.getQuestionIds().size() <= 59) {
+			  
+				String questionLeval ="Hard";
+				String status = AppConstant.ACTIVE;
+					
+			  System.out.println("Hard Stage");
+			  List<QuestionEntity>getHardQuestion = questionCustomDao.getSeconderyStage(questionLeval, status, languageId, quesNum);
+			  
+			  getHardQuestion.forEach(each->{
+				  id = each.getQuesId();
+			  });
+			  questionEntity = questionDao.findById(id).get();
+			  
+			  List<AnswerEntity> getAnswersHard = answerDao.findAllByQuestionEntity(questionEntity); List<AnswersDTO>
+			  getAllAnsweDto = new ArrayList<AnswersDTO>();
+			  System.out.println("gues id " +questionEntity.getQuesId());
+			  
+			  getAnswersHard.forEach(answersHard -> {
+			  getAllAnsweDto.add(getAnswerDto(answersHard)); });
+			  
+			  questionsDTO.setQuesId(questionEntity.getQuesId());
+			  questionsDTO.setQuestion(questionEntity.getQuestion());
+			  questionsDTO.setMarks(questionEntity.getMarks());
+			  
+			  questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
+			  questionsDTO.setStatus(questionEntity.getStatus());
+			  
+			  questionsDTO.setAnswerDtos(getAllAnsweDto);
+			  
+			  return questionsDTO;
+			  
+			  }
+			 
 		return null;
 	}
 
@@ -726,5 +785,27 @@ public class ExameServiceImpl implements ExameService {
 		resultDTO.setWrongAnswers(resultEntity.getWrongAnswers());
 
 		return resultDTO;
+	}
+	
+	private QuestionsDTO getQuestion(QuestionEntity questionEntity) {
+		
+		QuestionsDTO questionsDTO = new QuestionsDTO();
+		
+		List<AnswerEntity>answerEntities = answerDao.findAllByQuestionEntity(questionEntity);
+		List<AnswersDTO>answersDTOs = new ArrayList<AnswersDTO>();
+		
+		answerEntities.forEach(each ->{
+			answersDTOs.add(getAnswerDto(each));
+		});
+		
+		questionsDTO.setQuesId(questionsDTO.getQuesId());
+		questionsDTO.setMarks(questionsDTO.getMarks());
+		questionsDTO.setQuestion(questionsDTO.getQuestion());
+		questionsDTO.setStatus(questionsDTO.getStatus());
+		questionsDTO.setAnswerDtos(answersDTOs);
+		
+		return questionsDTO;
+		
+		
 	}
 }

@@ -145,7 +145,8 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public ArrayList<QuestionsDTO> getAllQuestions() throws Exception {
 
-		List<QuestionEntity> questionEntities = questionDao.getAllQuestions();
+		String status = AppConstant.ACTIVE;
+		List<QuestionEntity> questionEntities = questionDao.findAllByStatus(status);
 		ArrayList<QuestionsDTO> getAllQues = new ArrayList<>();
 
 		questionEntities.forEach(e -> {

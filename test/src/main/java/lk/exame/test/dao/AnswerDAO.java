@@ -10,7 +10,7 @@ import lk.exame.test.entity.QuestionEntity;
 
 public interface AnswerDAO extends CrudRepository<AnswerEntity, Integer>{
 	
-	List<AnswerEntity> findAllByQuestionEntity(QuestionEntity questionEntity)throws Exception;
+	List<AnswerEntity> findAllByQuestionEntity(QuestionEntity questionEntity);
 
 	AnswerEntity findByAnswerId(Integer answerId);
 	
