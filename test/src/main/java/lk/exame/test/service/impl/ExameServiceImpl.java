@@ -247,7 +247,7 @@ public class ExameServiceImpl implements ExameService {
 	}
 
 	@Override
-	public boolean submitQuestion(List<SubmitQuestionDTO> submitQuestionDTOs, String userName, Integer languageId)throws Exception {
+	public ResultDTO submitQuestion(List<SubmitQuestionDTO> submitQuestionDTOs, String userName, Integer languageId)throws Exception {
 
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
@@ -273,7 +273,7 @@ public class ExameServiceImpl implements ExameService {
 		  
 		  submitQuestionDTOs.forEach(subQues -> {
 		  
-			  System.out.println("Called submitQuestion . . . . ");
+		System.out.println("Called submitQuestion . . . . ");
 		  resultEntity.setTotalQuestions(resultEntity.getTotalQuestions() + 1);
 		  
 		  System.out.println("Total question = =/"+resultEntity.toString());
@@ -281,10 +281,19 @@ public class ExameServiceImpl implements ExameService {
 		  QuestionEntity questionEntity = questionDao.findById(subQues.getQuestionId()).get();
 		  
 		  boolean isCorrect = false;
+		  boolean isWrong = false;
 		  
 		  for (AnswerEntity answerEntity : questionEntity.getAnswerEntities()) {
+			  
 		  if(answerEntity.getAnswerId() == subQues.getUserAnswerId()) {
-			  isCorrect = true; 
+			  
+			  if (answerEntity.getCorrect().equals(1)) {
+				  isCorrect = true; 
+			  }else if (answerEntity.getCorrect().equals(0)) {
+				
+				isWrong = true;
+			  }
+			  
 			  } 
 		  }
 		  
@@ -302,7 +311,9 @@ public class ExameServiceImpl implements ExameService {
 			
 		  }
 		  
-		  }
+		  }else if (isWrong) {
+			resultEntity.setWrongAnswers(resultEntity.getWrongAnswers() + 1);
+		}
 		  });
 		  
 		  exameEntity.setResultEntity(resultDao.save(resultEntity));
@@ -378,9 +389,22 @@ public class ExameServiceImpl implements ExameService {
 		 * 
 		 * });
 		 */
+		  
+		 Integer resId = resultEntity.getResultId();
 		 
+		 ResultEntity getCurrentResult = resultDao.findById(resId).get();
+		 
+		 ResultDTO resultDTO = new ResultDTO();
+		 
+		 resultDTO.setResultId(resultEntity.getResultId());
+		 resultDTO.setCorrectAnswers(resultEntity.getCorrectAnswers());
+		 resultDTO.setWrongAnswers(resultEntity.getWrongAnswers());
+		 resultDTO.setExameDate(resultEntity.getExameDate());
+		 resultDTO.setTotal(resultEntity.getTotal());
+		 resultDTO.setTotalQuestions(resultEntity.getTotalQuestions());
+		 resultDTO.setUserName(resultEntity.getUserName());
 
-		return true;
+		return resultDTO;
 	}
 
 	/*

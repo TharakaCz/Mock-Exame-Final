@@ -32,7 +32,7 @@ public interface ExameService {
 	
 	public List<ExameDetailsDTO>updateQuestion()throws Exception;
 	
-	public boolean submitQuestion(List<SubmitQuestionDTO>submitQuestionDTOs,String userName , Integer languageId)throws Exception;
+	public ResultDTO submitQuestion(List<SubmitQuestionDTO>submitQuestionDTOs,String userName , Integer languageId)throws Exception;
 	
 	/* public QuestionAnswerDTO backStep(Integer quesId)throws Exception; */
 	
