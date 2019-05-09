@@ -25,6 +25,7 @@ public class ResultDTO {
 	
 	private String language;
 	
+	private String userName;
 
 	private List<ExameDetailsEntity>exameDetailsEntities;
 
@@ -115,6 +116,16 @@ public class ResultDTO {
 
 	public void setExameDetailsEntities(List<ExameDetailsEntity> exameDetailsEntities) {
 		this.exameDetailsEntities = exameDetailsEntities;
+	}
+
+
+	public String getUserName() {
+		return userName;
+	}
+
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 	

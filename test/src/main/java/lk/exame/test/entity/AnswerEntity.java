@@ -42,6 +42,14 @@ public class AnswerEntity {
 	  
 	  }
 	 
+	  public Integer getAnswerId() { return answerId; }
+	  
+	  public void setAnswerId(Integer answerId) { this.answerId = answerId; }
+		  
+	  public String getAnsewer() { return ansewer; }
+		  
+	  public void setAnsewer(String ansewer) { this.ansewer = ansewer; }
+		
 	public Integer getCorrect() {
 		return correct;
 	}
@@ -57,16 +65,6 @@ public class AnswerEntity {
 	public void setExameDetailsEntities(List<ExameDetailsEntity> exameDetailsEntities) {
 		this.exameDetailsEntities = exameDetailsEntities;
 	}
-
-	public Integer getAnswerId() { return answerId; }
-	  
-	public void setAnswerId(Integer answerId) { this.answerId = answerId; }
-	  
-	public String getAnsewer() { return ansewer; }
-	  
-	public void setAnsewer(String ansewer) { this.ansewer = ansewer; }
-	  
-	  
 
 	public String getTagName() {
 		return tagName;
