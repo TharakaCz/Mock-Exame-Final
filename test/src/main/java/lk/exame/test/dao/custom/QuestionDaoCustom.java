@@ -16,7 +16,20 @@ import lk.exame.test.entity.QuestionEntity;
  */
 public interface QuestionDaoCustom {
 
-	List<QuestionEntity> getPrimaryStage(String questionLeval,String status,Integer languageId);
+	/*
+	 * List<QuestionEntity> getPrimaryStage(String questionLeval,String
+	 * status,Integer languageId);
+	 * 
+	 * QuestionEntity getSeconderyStage(String questionLeval,String status,Integer
+	 * languageId,List<Integer> questionIds);
+	 */
+
+	/**
+	 * @param questionLeval
+	 * @param status
+	 * @param languageId
+	 * @param sql
+	 */
+	QuestionEntity getQuestion(String questionLeval, String status, Integer languageId, String sql);
 	
-	List<QuestionEntity> getSeconderyStage(String questionLeval,String status,Integer languageId,List<Integer> quesNum);
 }

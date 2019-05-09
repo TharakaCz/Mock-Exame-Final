@@ -6,15 +6,12 @@ import java.util.List;
 import lk.exame.test.dto.ExameDTO;
 import lk.exame.test.dto.ExameDetailsDTO;
 import lk.exame.test.dto.QuestionsDTO;
-import lk.exame.test.dto.ReqDTO;
 import lk.exame.test.dto.ResultDTO;
 import lk.exame.test.dto.SubmitQuestionDTO;
 
 
 public interface ExameService {
 
-	public Integer save(String userName,Integer languageId)throws Exception;
-	
 	public boolean delete(Integer exameId)throws Exception;
 	
 	public ExameDTO getExame(Integer exameId)throws Exception;
@@ -28,7 +25,7 @@ public interface ExameService {
 	 */
 	public ResultDTO getExameResult(Integer exameId)throws Exception;
 	
-	public QuestionsDTO getQuestion(ReqDTO reqDTO,Integer languageId)throws Exception;
+	public QuestionsDTO getQuestion(List<Integer> questionIds,Integer languageId)throws Exception;
 	
 	public List<ExameDetailsDTO>updateQuestion()throws Exception;
 	

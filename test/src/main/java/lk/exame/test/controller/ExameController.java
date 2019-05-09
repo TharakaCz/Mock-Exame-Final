@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lk.exame.test.dto.ExameDTO;
 import lk.exame.test.dto.QuestionsDTO;
-import lk.exame.test.dto.ReqDTO;
 import lk.exame.test.dto.ResultDTO;
 import lk.exame.test.dto.SubmitQuestionDTO;
 import lk.exame.test.service.ExameService;
@@ -89,8 +88,8 @@ public class ExameController {
 	
 
 	  @PostMapping(value="/getQuestion/{languageId}")
-	  private ResponseEntity<Object>getQuestion(@RequestBody ReqDTO reqDTO,@PathVariable Integer languageId)throws Exception{
-		  return new ResponseEntity<Object>(service.getQuestion(reqDTO,languageId),HttpStatus.OK);
+	  private ResponseEntity<Object>getQuestion(@RequestBody List<Integer> questionIds,@PathVariable Integer languageId)throws Exception{
+		  return new ResponseEntity<Object>(service.getQuestion(questionIds,languageId),HttpStatus.OK);
 	  }
 	/*
 	 * @PostMapping(value = "/saveExame") private
@@ -123,14 +122,7 @@ public class ExameController {
 	 * 
 	 * }
 	 */
-	  
-	  @GetMapping(value = "/enterExame/{userName}/{languageId}")
-	  private ResponseEntity<Object>save(@PathVariable String userName,@PathVariable Integer languageId)throws Exception{
-		  
-		  return new ResponseEntity<Object>(service.save(userName,languageId),HttpStatus.OK);
-		  
-		  
-	  }
+	 
 
 	  @GetMapping(value = "/getUserExames/{userName}")
 	  private ResponseEntity<Object>getUserExames(@PathVariable String userName)throws Exception{
