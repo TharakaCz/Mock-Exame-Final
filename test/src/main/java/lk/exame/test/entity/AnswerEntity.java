@@ -60,11 +60,11 @@ public class AnswerEntity {
 
 	public Integer getAnswerId() { return answerId; }
 	  
-	  public void setAnswerId(Integer answerId) { this.answerId = answerId; }
+	public void setAnswerId(Integer answerId) { this.answerId = answerId; }
 	  
-	  public String getAnsewer() { return ansewer; }
+	public String getAnsewer() { return ansewer; }
 	  
-	  public void setAnsewer(String ansewer) { this.ansewer = ansewer; }
+	public void setAnsewer(String ansewer) { this.ansewer = ansewer; }
 	  
 	  
 

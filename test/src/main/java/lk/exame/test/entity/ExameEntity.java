@@ -43,6 +43,9 @@ public class ExameEntity {
 	@Column(name = "REGISTATION_TIME")
 	private String regTime;
 
+	@Column(name = "STATUS")
+	private String status;
+	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "lANGUAGE_ID")
 	private LanguageEntity languageEntity;
@@ -143,6 +146,15 @@ public class ExameEntity {
 	public void setRegTime(String regTime) {
 		this.regTime = regTime;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	
 	
 }

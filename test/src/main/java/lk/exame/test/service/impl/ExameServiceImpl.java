@@ -104,7 +104,8 @@ public class ExameServiceImpl implements ExameService {
 
 	@Override
 	public boolean delete(Integer exameId) throws Exception {
-		exameDao.deleteById(exameId);
+		ExameEntity exameEntity = exameDao.findById(exameId).get();
+		exameEntity.setStatus(AppConstant.DEACTIVE);
 		return true;
 	}
 
@@ -258,54 +259,70 @@ public class ExameServiceImpl implements ExameService {
 		ExameEntity exameEntity = new ExameEntity();
 		LanguageEntity languageEntity = languageDao.findByLangId(languageId);
 
-		exameEntity.setUserName(userName);
-		exameEntity.setExameDate(dateDate);
-		exameEntity.setRegDate(dateDate);
-		exameEntity.setRegTime(time);
-		exameEntity.setStartTime(time);
-		exameEntity.setLanguageEntity(languageEntity);
-		
-		
-		ResultEntity resultEntity = new ResultEntity();
-		resultEntity.setExameDate(new Date());
-		resultEntity.setUserName(userName);
-		
-		submitQuestionDTOs.forEach(subQues -> {
+		  exameEntity.setUserName(userName);
+		  exameEntity.setExameDate(dateDate);
+		  exameEntity.setRegDate(dateDate);
+		  exameEntity.setRegTime(time);
+		  exameEntity.setStartTime(time);
+		  exameEntity.setLanguageEntity(languageEntity);
+		  exameEntity.setStatus(AppConstant.ACTIVE);
+		  
+		  ResultEntity resultEntity = new ResultEntity();
+		  resultEntity.setExameDate(new Date());
+		  resultEntity.setUserName(userName);
+		  
+		  submitQuestionDTOs.forEach(subQues -> {
+		  
+			  System.out.println("Called submitQuestion . . . . ");
+		  resultEntity.setTotalQuestions(resultEntity.getTotalQuestions() + 1);
+		  
+		  System.out.println("Total question = =/"+resultEntity.toString());
+		  
+		  QuestionEntity questionEntity = questionDao.findById(subQues.getQuestionId()).get();
+		  
+		  boolean isCorrect = false;
+		  
+		  for (AnswerEntity answerEntity : questionEntity.getAnswerEntities()) {
+		  if(answerEntity.getAnswerId() == subQues.getUserAnswerId()) {
+			  isCorrect = true; 
+			  } 
+		  }
+		  
+		  if(isCorrect) {
+			  System.out.println("Loop isCorrect ok . .");
+		  resultEntity.setCorrectAnswers(resultEntity.getCorrectAnswers() + 1);
+		  
+		  if (resultEntity.getTotal() == null) {
 			
-			resultEntity.setTotalQuestions(resultEntity.getTotalQuestions() + 1);
+			  resultEntity.setTotal(questionEntity.getMarks());
+			  
+		  }else {
 			
-			QuestionEntity questionEntity = questionDao.findById(subQues.getQuestionId()).get();
+			resultEntity.setTotal(resultEntity.getTotal() + questionEntity.getMarks());
 			
-			boolean isCorrect = false;
-			
-			for (AnswerEntity answerEntity : questionEntity.getAnswerEntities()) {
-				if(answerEntity.getAnswerId() == subQues.getUserAnswerId()) {
-					isCorrect = true;
-				}
-			}
-			
-			if(isCorrect) {
-				resultEntity.setCorrectAnswers(resultEntity.getCorrectAnswers() + 1);
-				resultEntity.setTotal(resultEntity.getTotal() + questionEntity.getMarks());
-			}
-		});
-		
-		exameEntity.setResultEntity(resultDao.save(resultEntity));
-
-		exameDao.save(exameEntity);
+		  }
+		  
+		  }
+		  });
+		  
+		  exameEntity.setResultEntity(resultDao.save(resultEntity));
+		  
+		  exameDao.save(exameEntity);
+		 
 
 		/*
-		 * Integer exameIdget = exameEntity.getExameId(); ExameEntity exame =
-		 * exameRepository.getOne(exameIdget);
+		 * ResultEntity resultEntity = new ResultEntity(); Integer exameIdget =
+		 * exameEntity.getExameId(); ExameEntity exame =
+		 * exameDao.findById(exameIdget).get();
 		 * 
 		 * System.out.println("exame Id get =/" + exameIdget);
-		 */
-
-		/*
+		 * 
+		 * 
+		 * 
 		 * submitQuestionDTOs.forEach(e -> {
 		 * 
 		 * System.out.println("FOR Each Ok . . ."); QuestionEntity questionEntity =
-		 * questionRepository.getOne(e.getQuestionId());
+		 * questionDao.findById(e.getQuestionId()).get();
 		 * 
 		 * 
 		 * 
@@ -323,20 +340,19 @@ public class ExameServiceImpl implements ExameService {
 		 * result.setCorrectAnswers(1); result.setUserName(userName);
 		 * result.setTotal(thisTot); result.setTotalQuestions(60);
 		 * 
-		 * resultRepository.save(result);
+		 * resultDao.save(result);
 		 * 
-		 * exameEntity.setResultEntity(result); exameRepository.save(exameEntity); }
-		 * else {
+		 * exameEntity.setResultEntity(result); exameDao.save(exameEntity); } else {
 		 * 
 		 * System.out.println("Wrong else Working (not null) . . . ");
 		 * 
 		 * resultEntity =
-		 * resultRepository.getOne(exameEntity.getResultEntity().getResultId());
+		 * resultDao.findById(exameEntity.getResultEntity().getResultId()).get();
 		 * 
 		 * System.out.println("Id Passing . . ."); Integer total =
 		 * resultEntity.getTotal(); total++; resultEntity.setTotal(total);
 		 * 
-		 * resultRepository.save(resultEntity); }
+		 * resultDao.save(resultEntity); }
 		 * 
 		 * } else if (answerEntity.getCorrect().equals(0)) {
 		 * 
@@ -346,22 +362,23 @@ public class ExameServiceImpl implements ExameService {
 		 * 
 		 * ResultEntity result = new ResultEntity(); result.setWrongAnswers(1);
 		 * 
-		 * resultRepository.save(result);
+		 * resultDao.save(result);
 		 * 
 		 * 
-		 * exame.setResultEntity(result); exameRepository.save(exame);
+		 * exame.setResultEntity(result); exameDao.save(exame);
 		 * 
 		 * }else { System.out.println("Wrong else Working (not null) . . . ");
-		 * resultEntity = resultRepository.getOne(resultEntity.getResultId());
+		 * resultEntity = resultDao.findById(resultEntity.getResultId()).get();
 		 * 
 		 * 
 		 * Integer wrong = resultEntity.getWrongAnswers(); wrong++;
-		 * resultEntity.setWrongAnswers(wrong); resultRepository.save(resultEntity); }
+		 * resultEntity.setWrongAnswers(wrong); resultDao.save(resultEntity); }
 		 * 
 		 * }
 		 * 
 		 * });
 		 */
+		 
 
 		return true;
 	}
@@ -474,7 +491,8 @@ public class ExameServiceImpl implements ExameService {
 	@Override
 	public ArrayList<ExameDTO> getExameId(String userName) throws Exception {
 
-		List<ExameEntity> exameEntities = exameDao.findByUserName(userName);
+		String status = AppConstant.ACTIVE;
+		List<ExameEntity> exameEntities = exameDao.findByUserNameAndStatus(userName,status);
 		ArrayList<ExameDTO> exameDTOs = new ArrayList<>();
 
 		exameEntities.forEach(e -> {
@@ -755,7 +773,8 @@ public class ExameServiceImpl implements ExameService {
 	@Override
 	public ArrayList<ResultDTO> getResultByExameUserName(String userName) throws Exception {
 
-		List<ExameEntity> exameEntities = exameDao.findByUserName(userName);
+		String status = AppConstant.ACTIVE;
+		List<ExameEntity> exameEntities = exameDao.findByUserNameAndStatus(userName,status);
 
 		ArrayList<Integer> exameDTOs = new ArrayList<>();
 
@@ -787,25 +806,4 @@ public class ExameServiceImpl implements ExameService {
 		return resultDTO;
 	}
 	
-	private QuestionsDTO getQuestion(QuestionEntity questionEntity) {
-		
-		QuestionsDTO questionsDTO = new QuestionsDTO();
-		
-		List<AnswerEntity>answerEntities = answerDao.findAllByQuestionEntity(questionEntity);
-		List<AnswersDTO>answersDTOs = new ArrayList<AnswersDTO>();
-		
-		answerEntities.forEach(each ->{
-			answersDTOs.add(getAnswerDto(each));
-		});
-		
-		questionsDTO.setQuesId(questionsDTO.getQuesId());
-		questionsDTO.setMarks(questionsDTO.getMarks());
-		questionsDTO.setQuestion(questionsDTO.getQuestion());
-		questionsDTO.setStatus(questionsDTO.getStatus());
-		questionsDTO.setAnswerDtos(answersDTOs);
-		
-		return questionsDTO;
-		
-		
-	}
 }
