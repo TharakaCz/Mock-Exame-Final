@@ -1,6 +1,7 @@
 package lk.exame.test.dao;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,7 @@ public interface QuestionDAO extends CrudRepository<QuestionEntity, Integer>{
 
 	  List<QuestionEntity>findAllByQuestionLeval(String questionLeval);
 	
+	  
 	/*
 	 * @Query(value
 	 * ="SELECT * FROM question where question_leval =\"Easy\" and status=\"active\" and language_id =:lang order by rand() limit 1"
@@ -35,7 +37,7 @@ public interface QuestionDAO extends CrudRepository<QuestionEntity, Integer>{
 	 * stat);
 	 */
 	  
-	  QuestionEntity getTop1ByLanguageEntitieyAndQuestionLevalAndStatus(LanguageEntity languageEntity,String questionLeval,String status);
+//	  QuestionEntity findTop1ByLanguageEntitieyAndQuestionLevalAndStatusQuesIdNotIn(LanguageEntity languageEntity,String questionLeval,String status,List<Integer>questionIds);
 	
 	/*
 	 * QuestionEntity
@@ -49,6 +51,7 @@ public interface QuestionDAO extends CrudRepository<QuestionEntity, Integer>{
 	 */
 	
 	  QuestionEntity findOneByQuestion(String question);
+	  
 	  
 	 
 	/*
@@ -83,4 +86,6 @@ public interface QuestionDAO extends CrudRepository<QuestionEntity, Integer>{
 	 */
 	  
 	  List<QuestionEntity> findAllByStatus(String status);
+	  
+	  ArrayList<QuestionEntity> findAllQuesIdByQuestionLevalAndStatusAndLanguageEntitiey(String questionLeval,String status,LanguageEntity languageEntity);
 }
