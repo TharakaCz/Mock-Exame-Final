@@ -258,7 +258,8 @@ public class ExameServiceImpl implements ExameService {
 
 		ExameEntity exameEntity = new ExameEntity();
 		LanguageEntity languageEntity = languageDao.findByLangId(languageId);
-
+		
+		
 		  exameEntity.setUserName(userName);
 		  exameEntity.setExameDate(dateDate);
 		  exameEntity.setRegDate(dateDate);
@@ -270,7 +271,6 @@ public class ExameServiceImpl implements ExameService {
 		  ResultEntity resultEntity = new ResultEntity();
 		  resultEntity.setExameDate(new Date());
 		  resultEntity.setUserName(userName);
-		  
 		  submitQuestionDTOs.forEach(subQues -> {
 		  
 		System.out.println("Called submitQuestion . . . . ");
@@ -391,7 +391,7 @@ public class ExameServiceImpl implements ExameService {
 		 */
 		  
 		 Integer resId = resultEntity.getResultId();
-		 
+		 String language = languageEntity.getLangName();
 		 ResultEntity getCurrentResult = resultDao.findById(resId).get();
 		 
 		 ResultDTO resultDTO = new ResultDTO();
@@ -403,7 +403,8 @@ public class ExameServiceImpl implements ExameService {
 		 resultDTO.setTotal(resultEntity.getTotal());
 		 resultDTO.setTotalQuestions(resultEntity.getTotalQuestions());
 		 resultDTO.setUserName(resultEntity.getUserName());
-
+		 resultDTO.setLanguage(language);
+		 
 		return resultDTO;
 	}
 
