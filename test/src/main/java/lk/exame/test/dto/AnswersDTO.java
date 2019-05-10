@@ -13,6 +13,8 @@ public class AnswersDTO {
 	
 	private Integer questionId;
 
+	private boolean checkStatus;
+	
 	public AnswersDTO() {
 		
 	}
@@ -63,6 +65,15 @@ public class AnswersDTO {
 
 	public void setTagName(String tagName) {
 		this.tagName = tagName;
+	}
+
+	
+	public boolean isCheckStatus() {
+		return checkStatus;
+	}
+
+	public void setCheckStatus(boolean checkStatus) {
+		this.checkStatus = checkStatus;
 	}
 
 	@Override
