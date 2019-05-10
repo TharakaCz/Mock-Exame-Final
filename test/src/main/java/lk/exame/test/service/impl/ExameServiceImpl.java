@@ -251,22 +251,31 @@ public class ExameServiceImpl implements ExameService {
 		}
 
 		ArrayList<QuestionEntity>questionEntit = questionDao.findAllQuesIdByQuestionLevalAndStatusAndLanguageEntitiey(questionLeval, status,languageEntity);
+		ArrayList<QuestionEntity>questionEntities = questionDao.findAllQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndQuesIdNotIn(questionLeval, status, languageEntity, questionIds);
 		
-			if(questionIds.size()!=0) {
+			if(questionIds.size()==0) {
 				questionEntit.forEach(q->{
+					
 				QuestionEntity questionEntity=questionEntit.get(random.nextInt(questionEntit.size()));
+				
+				System.out.println(questionEntity.toString());
 				System.out.println(questionIds.contains(questionEntity.getQuesId()));
-					if(questionIds.contains(questionEntity.getQuesId())==false) {
-						questionEnt=questionDao.findById(questionEntity.getQuesId()).get();
-					}
+					
+				if (questionIds.contains(questionEntity.getQuesId())==false) {
+					questionEnt=questionDao.findById(questionEntity.getQuesId()).get();
+				}
+					
 				});
 			
 		}else {
-			System.out.println("kkkk");
-			QuestionEntity questionEntity=questionEntit.get(random.nextInt(questionEntit.size()));
-			questionEnt=questionDao.findById(questionEntity.getQuesId()).get();
-		
-				
+			questionEntities.forEach(each->{
+				System.out.println("kkkk");
+				QuestionEntity questionEntity=questionEntities.get(random.nextInt(questionEntities.size()));
+				if (questionIds.contains(questionEntity.getQuesId())==false) {
+					questionEnt=questionDao.findById(questionEntity.getQuesId()).get();
+				}
+			});
+			
 		}
 		
 		System.out.println(questionEnt.getQuesId());
