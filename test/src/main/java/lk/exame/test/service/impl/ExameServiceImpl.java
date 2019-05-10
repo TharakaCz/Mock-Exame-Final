@@ -213,27 +213,10 @@ public class ExameServiceImpl implements ExameService {
 		String questionLeval = "";
 		String status = AppConstant.ACTIVE;
 
-		String sqlCombinetion = "";
-
 		QuestionsDTO questionsDTO = new QuestionsDTO();
-		List<QuestionEntity> getQuestion = null;
-
-		String ids = "";
-
-		for (Integer val : questionIds) {
-			ids += "'" + val.toString() + "',";
-		}
-		ids = ids.replaceAll(",$", "");
-
-		sqlCombinetion = "and ques_id NOT IN(" + ids + ")";
 		
+	
 		if (questionIds == null || questionIds.size() >= 0 && questionIds.size() <= 20) {
-
-			/*
-			 * if (questionIds == null) {
-			 * 
-			 * }
-			 */
 
 			questionLeval = "Easy";
 
@@ -268,7 +251,7 @@ public class ExameServiceImpl implements ExameService {
 				});
 			
 		}else {
-			questionEntities.forEach(each->{
+			questionIds.forEach(each->{
 				System.out.println("kkkk");
 				QuestionEntity questionEntity=questionEntities.get(random.nextInt(questionEntities.size()));
 				if (questionIds.contains(questionEntity.getQuesId())==false) {
