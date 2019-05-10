@@ -227,11 +227,11 @@ public class ExameServiceImpl implements ExameService {
 		} else if (questionIds.size() >= 41 && questionIds.size() <= 60) {
 
 			questionLeval = "Hard";
-		} else if (questionIds.size() > 60) {
-
 		} else {
-
-		}
+			
+			System.out.println("SuccsessFully Compeated Exame");
+			
+		} 
 
 		ArrayList<QuestionEntity>questionEntit = questionDao.findAllQuesIdByQuestionLevalAndStatusAndLanguageEntitiey(questionLeval, status,languageEntity);
 		ArrayList<QuestionEntity>questionEntities = questionDao.findAllQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndQuesIdNotIn(questionLeval, status, languageEntity, questionIds);
@@ -240,9 +240,6 @@ public class ExameServiceImpl implements ExameService {
 				questionEntit.forEach(q->{
 					
 				QuestionEntity questionEntity=questionEntit.get(random.nextInt(questionEntit.size()));
-				
-				System.out.println(questionEntity.toString());
-				System.out.println(questionIds.contains(questionEntity.getQuesId()));
 					
 				if (questionIds.contains(questionEntity.getQuesId())==false) {
 					questionEnt=questionDao.findById(questionEntity.getQuesId()).get();
@@ -250,14 +247,19 @@ public class ExameServiceImpl implements ExameService {
 					
 				});
 			
-		}else {
-			questionIds.forEach(each->{
-				System.out.println("kkkk");
-				QuestionEntity questionEntity=questionEntities.get(random.nextInt(questionEntities.size()));
-				if (questionIds.contains(questionEntity.getQuesId())==false) {
-					questionEnt=questionDao.findById(questionEntity.getQuesId()).get();
+		}else if(questionIds.size() <= 60){
+			questionEntities.forEach(each->{
+				System.out.println("kkkk ");
+				QuestionEntity questionEntity2=questionEntities.get(random.nextInt(questionEntities.size()));
+				if (questionIds.contains(questionEntity2.getQuesId())==false) {
+					questionEnt=questionDao.findById(questionEntity2.getQuesId()).get();
 				}
 			});
+			
+		
+		}else {
+			System.out.println("Call Length Over");
+			return null;
 			
 		}
 		
