@@ -6,7 +6,6 @@ import lk.exame.test.dto.QuestionsDTO;
 
 public interface QuestionService {
 
-	public boolean save (QuestionsDTO questionsDTO)throws Exception;
 	
 	public boolean update(QuestionsDTO questionsDTO)throws Exception;
 	

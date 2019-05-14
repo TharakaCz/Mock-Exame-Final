@@ -24,10 +24,6 @@ public class QuestionController {
 	@Autowired
 	private QuestionService service;
 	
-	@PostMapping(value="/save")
-	public ResponseEntity<Object> save(@RequestBody QuestionsDTO questionsDTO)throws Exception{
-		return new ResponseEntity<Object>(service.save(questionsDTO),HttpStatus.OK);
-	}
 	
 	@PostMapping(value="/saveQuestionAnswer")
 	public ResponseEntity<Object>saveQuestionAnswer(@RequestBody QuestionsDTO questionsDTO)throws Exception{

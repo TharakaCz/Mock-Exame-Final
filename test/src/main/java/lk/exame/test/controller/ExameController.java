@@ -1,18 +1,13 @@
 package lk.exame.test.controller;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lk.exame.test.dto.ExameDTO;
-import lk.exame.test.dto.QuestionsDTO;
-import lk.exame.test.dto.ResultDTO;
 import lk.exame.test.dto.SubmitQuestionDTO;
 import lk.exame.test.service.ExameService;
 
@@ -37,19 +29,10 @@ public class ExameController {
 	@Autowired
 	private ExameService service;
 	
-	
-	/*
-	 * private static final Logger log =
-	 * LoggerFactory.getLogger(ExameController.class);
-	 * 
-	 * private static final SimpleDateFormat dateFormat = new
-	 * SimpleDateFormat("HH:mm:ss");
-	 */
-	
 	@GetMapping(value = "/currentTime")
 	private ResponseEntity<Object> currentTime()throws Exception{
 		
-		LocalTime timeNow=LocalTime.now();
+		
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
 		
@@ -61,7 +44,7 @@ public class ExameController {
 	@GetMapping(value = "/currantDate")
 	private ResponseEntity<Object>currentDate()throws Exception{
 		
-		LocalTime timeNow=LocalTime.now();
+		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = new Date();
 	
@@ -71,7 +54,6 @@ public class ExameController {
 	@GetMapping(value="/currentDateTime")
 	private ResponseEntity<Object>currentDateTime()throws Exception{
 		
-		LocalTime timeNow=LocalTime.now();
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 		Date date = new Date();
 	
@@ -140,35 +122,7 @@ public class ExameController {
 	  private ResponseEntity<Object>findResultExame(@PathVariable String userName)throws Exception{
 		  return new ResponseEntity<Object>(service.getResultByExameUserName(userName),HttpStatus.OK);
 	  }
-	/*
-	 * @GetMapping(value = "/exameEndTime") public String getExameEndTimer() {
-	 * 
-	 * TimerTask task = new TimerTask() { public void run() {
-	 * System.out.println("Task performed on: " + new Date() + "n" +
-	 * 
-	 * "Thread's name: " + Thread.currentThread().getName());
-	 * 
-	 * } }; Timer timer = new Timer();
-	 * 
-	 * long delay = 10000L; timer.schedule(task, delay);
-	 * 
-	 * return "Trad Timer Start"; }
-	 */
-	  
-	/*
-	 * @GetMapping(value = "/getExameTimmer") private String getTimer()throws
-	 * Exception {
-	 * 
-	 * new Timer().schedule( new TimerTask() {
-	 * 
-	 * @Override public void run() {
-	 * 
-	 * System.out.println("Tread Timer End . . . !"); }
-	 * 
-	 * },
-	 * 
-	 * 2000000 ); return "Timer Start . . . !"; }
-	 */
+	
 	  
 	  
 }

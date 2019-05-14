@@ -18,11 +18,6 @@ public interface ExameService {
 	
 	public ArrayList<ExameDTO>getAllExame()throws Exception;
 	
-	/*public List<QuestionAnswerDTO>getAllQuesAnswer()throws Exception;*/
-	
-	/*
-	 * public QuestionAnswerDTO getQuestionAnsers(String LangName)throws Exception;
-	 */
 	public ResultDTO getExameResult(Integer exameId)throws Exception;
 	
 	public QuestionsDTO getQuestion(List<Integer> questionIds,Integer languageId)throws Exception;
@@ -30,10 +25,6 @@ public interface ExameService {
 	public List<ExameDetailsDTO>updateQuestion()throws Exception;
 	
 	public ResultDTO submitQuestion(List<SubmitQuestionDTO>submitQuestionDTOs,String userName , Integer languageId)throws Exception;
-	
-	/* public QuestionAnswerDTO backStep(Integer quesId)throws Exception; */
-	
-	/* public ArrayList<QuestionAnswerDTO>getAllQuestionAnswer()throws Exception; */
 	
 	public ArrayList<ExameDTO> getExameId(String userName)throws Exception;
 	

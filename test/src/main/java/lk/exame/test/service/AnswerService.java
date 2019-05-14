@@ -6,7 +6,6 @@ import lk.exame.test.dto.AnswersDTO;
 
 public interface AnswerService {
 
-	public boolean save(AnswersDTO answersDTO)throws Exception;
 	
 	public boolean delete(Integer answerId)throws Exception;
 	

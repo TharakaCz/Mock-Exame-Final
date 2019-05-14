@@ -1,11 +1,6 @@
 package lk.exame.test.dto;
 
 
-import lk.exame.test.entity.AnswerEntity;
-import lk.exame.test.entity.ExameEntity;
-import lk.exame.test.entity.QuestionEntity;
-import lk.exame.test.entity.ResultEntity;
-
 public class ExameDetailsDTO {
 
 	private Integer exameDetailId;

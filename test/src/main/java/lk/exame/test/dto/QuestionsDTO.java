@@ -9,7 +9,6 @@ public class QuestionsDTO {
 	private Integer marks;
 	private String questionLeval;
 	private String status;
-	private String correct;
 	
 	private Integer languageId;
 	private Integer subjectId;
@@ -73,16 +72,6 @@ public class QuestionsDTO {
 		this.status = status;
 	}
 
-
-	
-
-	public String getCorrect() {
-		return correct;
-	}
-
-	public void setCorrect(String correct) {
-		this.correct = correct;
-	}
 
 	public Integer getLanguageId() {
 		return languageId;
