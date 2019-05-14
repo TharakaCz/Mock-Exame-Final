@@ -222,7 +222,7 @@ public class ExameServiceImpl implements ExameService {
 
 		} else if (questionIds.size() >= 21 && questionIds.size() <= 40) {
 
-			questionLeval = "Nomal";
+			questionLeval = "Normal";
 
 		} else if (questionIds.size() >= 41 && questionIds.size() <= 60) {
 
