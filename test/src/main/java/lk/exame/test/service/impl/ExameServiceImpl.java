@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import lk.exame.test.AppConstant;
 import lk.exame.test.dao.AnswerDAO;
 import lk.exame.test.dao.ExameDAO;
-import lk.exame.test.dao.ExameDetailDAO;
 import lk.exame.test.dao.LanguageDAO;
 import lk.exame.test.dao.QuestionDAO;
 import lk.exame.test.dao.ResultDAO;
@@ -48,15 +47,11 @@ public class ExameServiceImpl implements ExameService {
 	@Autowired
 	private LanguageDAO languageDao;
 
-	private Integer id;
+
 	private Random random = new Random();
 	
 	private QuestionEntity questionEnt;
-	/*
-	 * private QuestionEntity questionEntity = null;
-	 * 
-	 * private ResultEntity resultEntity;
-	 */
+
 
 	@Override
 	public boolean delete(Integer exameId) throws Exception {
@@ -224,7 +219,7 @@ public class ExameServiceImpl implements ExameService {
 
 			questionLeval = "Normal";
 
-		} else if (questionIds.size() >= 41 && questionIds.size() <= 60) {
+		} else if (questionIds.size() >= 41 && questionIds.size() <= 59) {
 
 			questionLeval = "Hard";
 		} else {
@@ -247,7 +242,7 @@ public class ExameServiceImpl implements ExameService {
 					
 				});
 			
-		}else if(questionIds.size() <= 60){
+		}else if(questionIds.size() <= 59){
 			questionEntities.forEach(each->{
 				System.out.println("kkkk ");
 				QuestionEntity questionEntity2=questionEntities.get(random.nextInt(questionEntities.size()));

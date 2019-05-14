@@ -21,24 +21,7 @@ public class ResultServiceImpl implements ResultService {
 
 	@Autowired
 	private ExameDAO exameDao;
-	/*
-	 * @Override public ResultDTO findResult(String userName) throws Exception {
-	 * 
-	 * ResultEntity resultEntity = resultRepository.getResult(userName); ResultDTO
-	 * resultDTO = new ResultDTO();
-	 * 
-	 * resultDTO.setUserName(resultEntity.getUserName());
-	 * resultDTO.setExameId(resultEntity.getExameId());
-	 * resultDTO.setLanguage(resultEntity.getLanguage());
-	 * resultDTO.setTotal(resultEntity.getTotal());
-	 * resultDTO.setCorrectAnswers(resultEntity.getCorrectAnswers());
-	 * resultDTO.setWrongAnswers(resultEntity.getWrongAnswers());
-	 * 
-	 * return resultDTO;
-	 * 
-	 * }
-	 */
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

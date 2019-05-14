@@ -11,8 +11,6 @@ public interface LanguageService {
 	public boolean delete(Integer langId)throws Exception;
 	
 	public boolean edit(LanguageDTO languageDTO)throws Exception;
-	
-	/* public LanguageDTO getLanguage(Integer langId)throws Exception; */
-	
+
 	public ArrayList<LanguageDTO>getAllLanguage();
 }

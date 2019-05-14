@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lk.exame.test.dao.LanguageDAO;
-import lk.exame.test.dao.QuestionDAO;
 import lk.exame.test.dto.LanguageDTO;
 import lk.exame.test.entity.LanguageEntity;
-import lk.exame.test.entity.QuestionEntity;
 import lk.exame.test.service.LanguageService;
 
 @Service
@@ -19,8 +17,6 @@ public class LanguageServiceImpl implements LanguageService{
 	@Autowired
 	private LanguageDAO languageDao;
 	
-	@Autowired
-	private QuestionDAO questionDao;
 	
 	/*
 	 * @Override public boolean save(LanguageDTO languageDTO) throws Exception {

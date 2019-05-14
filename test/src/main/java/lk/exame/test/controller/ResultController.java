@@ -19,15 +19,6 @@ public class ResultController {
 	@Autowired
 	private ResultService resultService;
 	
-	/*
-	 * @GetMapping(value="/findExameId/{exameId}") public
-	 * ResponseEntity<Object>findResult(@PathVariable String userName)throws
-	 * Exception{
-	 * 
-	 * return new
-	 * ResponseEntity<Object>(resultService.findResult(userName),HttpStatus.OK); }
-	 */
-	
 	@GetMapping(value = "/findResult/{exameId}")
 	private ResponseEntity<Object>findResultExameId(@PathVariable Integer exameId)throws Exception{
 		

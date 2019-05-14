@@ -22,25 +22,7 @@ public class AnswerServiceImpl implements AnswerService{
 	@Autowired
 	private QuestionDAO questionDao;
 	
-	@Override
-	public boolean save(AnswersDTO answersDTO) throws Exception {
-		
-		answerDao.save(getAnswerEntity(answersDTO));
-		return true;
-	}
 	
-	private AnswerEntity getAnswerEntity(AnswersDTO answersDTO)throws Exception{
-		
-		QuestionEntity questionEntity=questionDao.findById(answersDTO.getQuestionId()).get();
-		
-		AnswerEntity answerEntity = new AnswerEntity();
-		answerEntity.setAnsewer(answersDTO.getAnsewer());
-		answerEntity.setCorrect(answerEntity.getCorrect());
-		answerEntity.setQuestionEntity(questionEntity);
-		
-		return answerEntity;
-	}
-
 	@Override
 	public List<AnswersDTO> getAnswers(Integer questionId) throws Exception {
 	

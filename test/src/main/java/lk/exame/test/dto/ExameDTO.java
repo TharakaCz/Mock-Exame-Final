@@ -3,9 +3,6 @@ package lk.exame.test.dto;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-
-import lk.exame.test.entity.ExameDetailsEntity;
 
 public class ExameDTO {
 

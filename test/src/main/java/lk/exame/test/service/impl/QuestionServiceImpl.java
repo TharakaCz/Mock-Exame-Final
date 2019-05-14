@@ -1,7 +1,6 @@
 package lk.exame.test.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import lk.exame.test.AppConstant;
 import lk.exame.test.dao.AnswerDAO;
-import lk.exame.test.dao.ExameDetailDAO;
 import lk.exame.test.dao.LanguageDAO;
 import lk.exame.test.dao.QuestionDAO;
 import lk.exame.test.dao.SubjectDAO;
@@ -38,27 +36,7 @@ public class QuestionServiceImpl implements QuestionService {
 	@Autowired
 	private SubjectDAO subjectDao;
 
-	@Autowired
-	private ExameDetailDAO exameDetailDao;
-
-	private QuestionEntity quesAns = null;
-
-	@Override
-	public boolean save(QuestionsDTO questionsDTO) throws Exception {
-
-		questionDao.save(getQuestionEntity(questionsDTO));
-
-		return true;
-	}
-
-	private QuestionEntity getQuestionEntity(QuestionsDTO questionsDTO) {
-		QuestionEntity questionEntity = new QuestionEntity();
-		questionEntity.setQuestionQ(questionsDTO.getQuestion());
-		
-		questionEntity.setMarks(questionsDTO.getMarks());
-		questionEntity.setQuestionLeval(questionsDTO.getQuestionLeval());
-		return questionEntity;
-	}
+	
 
 	@Override
 	public boolean delete(Integer quesId) throws Exception {
@@ -311,43 +289,7 @@ public class QuestionServiceImpl implements QuestionService {
 		return questionsDTO;
 	}
 
-	private AnswersDTO getAnswerDto(AnswerEntity answerEntity) {
-
-		AnswersDTO answersDTO = new AnswersDTO();
-		answersDTO.setAnswerId(answerEntity.getAnswerId());
-		answersDTO.setAnsewer(answerEntity.getAnsewer());
-		answersDTO.setCorrect(answerEntity.getCorrect());
-		answersDTO.setTagName(answerEntity.getTagName());
-		answersDTO.setQuestionId(answerEntity.getQuestionEntity().getQuesId());
-
-		return answersDTO;
-	}
 	
-	private SubjectDTO getSubject(SubjectEntity subjectEntity) {
-
-		
-		  SubjectDTO subjectDTO = new SubjectDTO();
-		  
-		  subjectDTO.setSubId(subjectEntity.getSubId());
-		  subjectDTO.setSubName(subjectEntity.getSubName());
-		  
-		 
-
-		return subjectDTO;
-	}
-
-	private LanguageDTO getLanguage(LanguageEntity languageEntity) {
-
-		
-		  LanguageDTO languageDTO = new LanguageDTO();
-		  
-		  languageDTO.setLangId(languageEntity.getLangId());
-		  languageDTO.setLangName(languageEntity.getLangName());
-		 
-
-		return languageDTO;
-	}
-
 	/* (non-Javadoc)
 	 * @see lk.exame.test.service.QuestionService#edit(java.lang.Integer)
 	 */
@@ -357,9 +299,7 @@ public class QuestionServiceImpl implements QuestionService {
 		QuestionEntity questionEntity = new QuestionEntity();
 		QuestionsDTO questionsDTO = new QuestionsDTO();
 		
-		AnswerEntity answerEntity = new AnswerEntity();
-		AnswersDTO answersDTO = new AnswersDTO();
-		  
+	
 		  
 		  questionEntity = questionDao.findById(quesId).get();
 		 
@@ -420,4 +360,20 @@ public class QuestionServiceImpl implements QuestionService {
 		
 		return languageDTO;
 	}
+	
+	private AnswersDTO getAnswerDto(AnswerEntity answerEntity) {
+
+		AnswersDTO answersDTO = new AnswersDTO();
+		answersDTO.setAnswerId(answerEntity.getAnswerId());
+		answersDTO.setAnsewer(answerEntity.getAnsewer());
+		answersDTO.setCorrect(answerEntity.getCorrect());
+		answersDTO.setTagName(answerEntity.getTagName());
+		answersDTO.setQuestionId(answerEntity.getQuestionEntity().getQuesId());
+
+		return answersDTO;
+	}
+	
+	
+
+	
 }

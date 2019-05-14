@@ -5,11 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import lk.exame.test.dao.QuestionDAO;
 import lk.exame.test.dao.SubjectDAO;
 import lk.exame.test.dto.SubjectDTO;
-import lk.exame.test.entity.QuestionEntity;
 import lk.exame.test.entity.SubjectEntity;
 import lk.exame.test.service.SubjectService;
 
@@ -19,31 +16,6 @@ public class SubjectServiceImpl implements SubjectService{
 	@Autowired 
 	private SubjectDAO subjectDao;
 	
-	@Autowired
-	private QuestionDAO questionDao;
-	
-	/*
-	 * @Override public boolean save(SubjectDTO subjectDTO) throws Exception {
-	 * 
-	 * subRepository.save(getSubjectEntity(subjectDTO));
-	 * 
-	 * return true; }
-	 */
-	
-	/*
-	 * private SubjectEntity getSubjectEntity(SubjectDTO subjectDTO)throws
-	 * Exception{
-	 * 
-	 * QuestionEntity
-	 * questionEntity=questionRepository.getOne(subjectDTO.getQuestionId());
-	 * 
-	 * 
-	 * System.out.println("call"); SubjectEntity subjectEntity = new
-	 * SubjectEntity(); subjectEntity.setSubName(subjectDTO.getSubName());
-	 * subjectEntity.setQuestionEntity(questionEntity);
-	 * 
-	 * return subjectEntity; }
-	 */
 
 	@Override
 	public boolean delete(Integer subId) throws Exception {

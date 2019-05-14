@@ -6,12 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lk.exame.test.dto.AnswersDTO;
 import lk.exame.test.service.AnswerService;
 
 @RestController
@@ -22,11 +19,6 @@ public class AnswerController {
 	@Autowired
 	private AnswerService service;
 
-	@PostMapping(value = "/save")
-	public ResponseEntity<Object>save(@RequestBody AnswersDTO answersDTO)throws Exception{
-		return new ResponseEntity<Object>(service.save(answersDTO),HttpStatus.OK);
-	}
-	
 	
 	@GetMapping(value = "/getAnswers/{questionId}")
 	public ResponseEntity<Object>getAnswerds(@PathVariable Integer questionId)throws Exception{
