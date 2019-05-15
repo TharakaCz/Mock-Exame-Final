@@ -1,4 +1,4 @@
-package lk.exame.test;
+package lk.exame.test.utill;
 
 public class AppConstant {
 

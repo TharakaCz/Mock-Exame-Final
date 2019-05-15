@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import lk.exame.test.AppConstant;
 import lk.exame.test.dao.AnswerDAO;
 import lk.exame.test.dao.ExameDAO;
 import lk.exame.test.dao.LanguageDAO;
@@ -28,6 +27,7 @@ import lk.exame.test.entity.LanguageEntity;
 import lk.exame.test.entity.QuestionEntity;
 import lk.exame.test.entity.ResultEntity;
 import lk.exame.test.service.ExameService;
+import lk.exame.test.utill.AppConstant;
 
 @Service
 public class ExameServiceImpl implements ExameService {
@@ -293,7 +293,7 @@ public class ExameServiceImpl implements ExameService {
 		answersDTO.setCorrect(answerEntity.getCorrect());
 		answersDTO.setTagName(answerEntity.getTagName());
 		answersDTO.setQuestionId(answerEntity.getQuestionEntity().getQuesId());
-
+ 
 		return answersDTO;
 	}
 

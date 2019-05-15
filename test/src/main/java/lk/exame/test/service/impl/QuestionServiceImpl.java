@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lk.exame.test.AppConstant;
 import lk.exame.test.dao.AnswerDAO;
 import lk.exame.test.dao.LanguageDAO;
 import lk.exame.test.dao.QuestionDAO;
@@ -20,6 +19,7 @@ import lk.exame.test.entity.LanguageEntity;
 import lk.exame.test.entity.QuestionEntity;
 import lk.exame.test.entity.SubjectEntity;
 import lk.exame.test.service.QuestionService;
+import lk.exame.test.utill.AppConstant;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
