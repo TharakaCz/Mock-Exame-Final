@@ -12,7 +12,10 @@ import lk.exame.test.dto.AnswersDTO;
 import lk.exame.test.entity.AnswerEntity;
 import lk.exame.test.entity.QuestionEntity;
 import lk.exame.test.service.AnswerService;
-
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @Service
 public class AnswerServiceImpl implements AnswerService{
 
@@ -22,7 +25,9 @@ public class AnswerServiceImpl implements AnswerService{
 	@Autowired
 	private QuestionDAO questionDao;
 	
-	
+	/**
+	 * Get All Answers From Answer Table From Database
+	 */
 	@Override
 	public List<AnswersDTO> getAnswers(Integer questionId) throws Exception {
 	
@@ -53,6 +58,9 @@ public class AnswerServiceImpl implements AnswerService{
 		return null;
 	}
 
+	/**
+	 * Find Question Using Question Id In AnswerTable
+	 */
 	@Override
 	public List<AnswersDTO> getQuestions(Integer quesId) throws Exception {
 	

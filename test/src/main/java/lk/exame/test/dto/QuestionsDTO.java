@@ -2,6 +2,10 @@ package lk.exame.test.dto;
 
 import java.util.List;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public class QuestionsDTO {
 
 	private Integer quesId;

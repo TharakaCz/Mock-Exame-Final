@@ -29,6 +29,10 @@ import lk.exame.test.entity.ResultEntity;
 import lk.exame.test.service.ExameService;
 import lk.exame.test.utill.AppConstant;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @Service
 public class ExameServiceImpl implements ExameService {
 
@@ -53,6 +57,9 @@ public class ExameServiceImpl implements ExameService {
 	private QuestionEntity questionEnt;
 
 
+	/**
+	 * This Are Using Active Table Row DeActive In Table
+	 */
 	@Override
 	public boolean delete(Integer exameId) throws Exception {
 		ExameEntity exameEntity = exameDao.findById(exameId).get();
@@ -78,6 +85,9 @@ public class ExameServiceImpl implements ExameService {
 		return null;
 	}
 
+	/**
+	 * This Method Using Calculate Exam Result
+	 */
 	@Override
 	public ResultDTO submitQuestion(List<SubmitQuestionDTO> submitQuestionDTOs, String userName, Integer languageId)
 			throws Exception {
@@ -172,6 +182,9 @@ public class ExameServiceImpl implements ExameService {
 		return resultDTO;
 	}
 
+	/**
+	 * This Method Get All Exams In Database Using UserName
+	 */
 	@Override
 	public ArrayList<ExameDTO> getExameId(String userName) throws Exception {
 
@@ -200,6 +213,9 @@ public class ExameServiceImpl implements ExameService {
 		return exameDTO;
 	}
 
+	/**
+	 * This Method Using get Question And Answers in Database Using Language Id
+	 */
 	@Override
 	public QuestionsDTO getQuestion(List<Integer> questionIds, Integer languageId) throws Exception {
 
@@ -300,6 +316,8 @@ public class ExameServiceImpl implements ExameService {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * This Method Using Get Exam Result in Exam Table using Exam Id
+	 * 
 	 * @see lk.exame.test.service.ExameService#getExameResult(java.lang.Integer)
 	 */
 	@Override
@@ -326,6 +344,8 @@ public class ExameServiceImpl implements ExameService {
 
 	/*
 	 * (non-Javadoc)
+	 * 
+	 * This Method using get All Result in Result Table Using UserName
 	 * 
 	 * @see
 	 * lk.exame.test.service.ExameService#getResultByExameUserName(java.lang.String)

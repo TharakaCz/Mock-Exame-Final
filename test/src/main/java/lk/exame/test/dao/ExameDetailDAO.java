@@ -5,6 +5,10 @@ import org.springframework.data.repository.CrudRepository;
 
 import lk.exame.test.entity.ExameDetailsEntity;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public interface ExameDetailDAO extends CrudRepository<ExameDetailsEntity, Integer>{
 
 }

@@ -11,6 +11,10 @@ import lk.exame.test.dto.LanguageDTO;
 import lk.exame.test.entity.LanguageEntity;
 import lk.exame.test.service.LanguageService;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @Service
 public class LanguageServiceImpl implements LanguageService{
 
@@ -31,6 +35,9 @@ public class LanguageServiceImpl implements LanguageService{
 	 * langRepository.save(language); return true; }
 	 */
 
+	/**
+	 * This Method using Active Row Deactivate In Language Table
+	 */
 	@Override
 	public boolean delete(Integer langId) throws Exception {
 		languageDao.deleteById(langId);
@@ -44,6 +51,9 @@ public class LanguageServiceImpl implements LanguageService{
 	}
 
 	/* (non-Javadoc)
+	 * 
+	 * This Method Using Save Language In Language Table
+	 * 
 	 * @see lk.exame.test.service.LanguageService#save(lk.exame.test.dto.LanguageDTO)
 	 */
 	@Override
@@ -59,6 +69,9 @@ public class LanguageServiceImpl implements LanguageService{
 	}
 
 	/* (non-Javadoc)
+	 * 
+	 * This are Using Get All Languages In Language Table
+	 * 
 	 * @see lk.exame.test.service.LanguageService#getAllLanguage()
 	 */
 	@Override

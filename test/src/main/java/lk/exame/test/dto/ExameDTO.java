@@ -3,7 +3,10 @@ package lk.exame.test.dto;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public class ExameDTO {
 
 	private Integer exameId; 

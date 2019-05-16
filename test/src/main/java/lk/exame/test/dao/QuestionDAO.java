@@ -9,6 +9,10 @@ import org.springframework.data.repository.CrudRepository;
 import lk.exame.test.entity.LanguageEntity;
 import lk.exame.test.entity.QuestionEntity;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public interface QuestionDAO extends CrudRepository<QuestionEntity, Integer>{
 
 	  List<QuestionEntity>findAllByQuestionLeval(String questionLeval);

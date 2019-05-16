@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import lk.exame.test.dto.SubjectDTO;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public interface SubjectService {
 
 	public boolean save(SubjectDTO subjectDTO)throws Exception;

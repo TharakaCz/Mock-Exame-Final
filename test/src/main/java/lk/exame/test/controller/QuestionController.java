@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import lk.exame.test.dto.QuestionsDTO;
 import lk.exame.test.service.QuestionService;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/api/v1/ques")

@@ -6,6 +6,10 @@ import org.springframework.data.repository.CrudRepository;
 
 import lk.exame.test.entity.ExameEntity;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public interface ExameDAO extends CrudRepository<ExameEntity, Integer>{
 
 	List<ExameEntity>findByUserNameAndStatus(String userName,String status);

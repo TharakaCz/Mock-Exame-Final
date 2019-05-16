@@ -9,7 +9,10 @@ import lk.exame.test.dto.QuestionsDTO;
 import lk.exame.test.dto.ResultDTO;
 import lk.exame.test.dto.SubmitQuestionDTO;
 
-
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public interface ExameService {
 
 	public boolean delete(Integer exameId)throws Exception;

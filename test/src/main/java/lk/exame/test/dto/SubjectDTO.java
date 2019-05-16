@@ -1,5 +1,9 @@
 package lk.exame.test.dto;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public class SubjectDTO {
 
 	private Integer subId;

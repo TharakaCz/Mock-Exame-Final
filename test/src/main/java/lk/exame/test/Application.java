@@ -3,6 +3,10 @@ package lk.exame.test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @SpringBootApplication
 public class Application {
 

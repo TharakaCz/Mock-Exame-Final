@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import lk.exame.test.dto.LanguageDTO;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public interface LanguageService {
 
 	public boolean save(LanguageDTO languageDTO)throws Exception;

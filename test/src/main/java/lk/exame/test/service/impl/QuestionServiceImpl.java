@@ -21,6 +21,10 @@ import lk.exame.test.entity.SubjectEntity;
 import lk.exame.test.service.QuestionService;
 import lk.exame.test.utill.AppConstant;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
@@ -38,6 +42,10 @@ public class QuestionServiceImpl implements QuestionService {
 
 	
 
+	/**
+	 * This Method Using Active Row Deactivate From Question Table
+	 * 
+	 */
 	@Override
 	public boolean delete(Integer quesId) throws Exception {
 
@@ -65,6 +73,9 @@ public class QuestionServiceImpl implements QuestionService {
 		return null;
 	}
 
+	/**
+	 * This Method Using save Question And Answers In Question And Answer Tables
+	 */
 	@Override
 	public boolean saveQuestionAnswer(QuestionsDTO questionsDTO) throws Exception {
 
@@ -120,6 +131,9 @@ public class QuestionServiceImpl implements QuestionService {
 		return false;
 	}
 
+	/**
+	 * This Method Using Get All Questions From Question Table 
+	 */
 	@Override
 	public ArrayList<QuestionsDTO> getAllQuestions() throws Exception {
 
@@ -138,6 +152,9 @@ public class QuestionServiceImpl implements QuestionService {
 		return getAllQues;
 	}
 
+	/**
+	 * This Method Using Update Question in Question Table
+	 */
 	@Override
 	public boolean update(QuestionsDTO questionsDTO) throws Exception {
 
@@ -275,22 +292,11 @@ public class QuestionServiceImpl implements QuestionService {
 	 * }
 	 */
 
-	private QuestionsDTO getAllQuestion(QuestionEntity questionEntity) {
-
-		QuestionsDTO questionsDTO = new QuestionsDTO();
-
-		questionsDTO.setQuesId(questionEntity.getQuesId());
-		questionsDTO.setQuestion(questionEntity.getQuestion());
-		questionsDTO.setMarks(questionEntity.getMarks());
-		questionsDTO.setStatus(questionEntity.getStatus());
-		
-		questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
-
-		return questionsDTO;
-	}
-
 	
 	/* (non-Javadoc)
+	 * 
+	 * This Method Using Edit  Question in Question Table Using Question Id
+	 * 
 	 * @see lk.exame.test.service.QuestionService#edit(java.lang.Integer)
 	 */
 	@Override
@@ -374,6 +380,18 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 	
 	
+	private QuestionsDTO getAllQuestion(QuestionEntity questionEntity) {
 
+		QuestionsDTO questionsDTO = new QuestionsDTO();
+
+		questionsDTO.setQuesId(questionEntity.getQuesId());
+		questionsDTO.setQuestion(questionEntity.getQuestion());
+		questionsDTO.setMarks(questionEntity.getMarks());
+		questionsDTO.setStatus(questionEntity.getStatus());
+		
+		questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
+
+		return questionsDTO;
+	}
 	
 }

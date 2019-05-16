@@ -13,6 +13,10 @@ import lk.exame.test.entity.ExameEntity;
 import lk.exame.test.entity.ResultEntity;
 import lk.exame.test.service.ResultService;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @Service
 public class ResultServiceImpl implements ResultService {
 
@@ -24,7 +28,7 @@ public class ResultServiceImpl implements ResultService {
 	
 	/*
 	 * (non-Javadoc)
-	 * 
+	 * Find Result In Result Table Using Exam Id
 	 * @see lk.exame.test.service.ResultService#findByExameId(java.lang.Integer)
 	 */
 	@Override
@@ -60,6 +64,8 @@ public class ResultServiceImpl implements ResultService {
 
 	/*
 	 * (non-Javadoc)
+	 * 
+	 * Find Result In Result Table Using UserName
 	 * 
 	 * @see lk.exame.test.service.ResultService#findByUserName(java.lang.String)
 	 */
