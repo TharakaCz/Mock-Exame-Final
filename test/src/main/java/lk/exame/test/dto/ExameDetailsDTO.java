@@ -1,6 +1,9 @@
 package lk.exame.test.dto;
 
-
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public class ExameDetailsDTO {
 
 	private Integer exameDetailId;

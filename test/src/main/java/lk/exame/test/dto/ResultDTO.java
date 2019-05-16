@@ -5,6 +5,10 @@ import java.util.List;
 
 import lk.exame.test.entity.ExameDetailsEntity;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public class ResultDTO {
 
 	private Integer resultId;

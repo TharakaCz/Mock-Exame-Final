@@ -10,18 +10,37 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @Entity
 @Table(name="SUBJECT")
 public class SubjectEntity {
 
+	/**
+	 * Integer subId
+	 * 
+	 * Generate Subject Id In Subject Table From Database , length 10
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "SUBJECT_ID",length = 10)
 	private Integer subId;
 	
+	/**
+	 * String subName
+	 * 
+	 * Set And Get Subject Name Not Null , length 100
+	 */
 	@Column(name = "SUBJECT_NAME", nullable = false,length = 100)
 	private String subName;
 
+	/**
+	 * List<QuestionEntity>questionEntities
+	 * 
+	 * mappedBy Language Table Target by Question Table
+	 */
 	@OneToMany(mappedBy="subjectEntitiy",targetEntity = QuestionEntity.class)
 	private List<QuestionEntity>questionEntities;
 	

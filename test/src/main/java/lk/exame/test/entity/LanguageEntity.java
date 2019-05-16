@@ -11,19 +11,38 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @Entity
 @Table(name="LANGUAGE")
 public class LanguageEntity {
 
+	/**
+	 * Integer langId
+	 * 
+	 * Generate LanguageId In Language Table From Database , length 10
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "LANGUAGE_ID",length = 10)
 	private Integer langId;
 	
+	/**
+	 * String langName
+	 * 
+	 * Set And Get Language Name Not Null , length 50
+	 */
 	@Column(name = "LANGUAGE_NAME",nullable=false,length = 50)
 	private String langName;
 
-	@OneToMany(mappedBy="languageEntity",targetEntity=ExameEntity.class)
+	/**
+	 * List<QuestionEntity>questionEntities
+	 * 
+	 * mappedBy Language Table Target by Question Table 
+	 */
+	@OneToMany(mappedBy="languageEntitiey",targetEntity=QuestionEntity.class)
 	private List<QuestionEntity>questionEntities ;
 
 

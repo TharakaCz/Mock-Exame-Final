@@ -4,6 +4,10 @@ import java.util.List;
 
 import lk.exame.test.dto.AnswersDTO;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 public interface AnswerService {
 
 	

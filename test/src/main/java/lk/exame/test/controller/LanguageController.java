@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import lk.exame.test.dto.LanguageDTO;
 import lk.exame.test.service.LanguageService;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @RequestMapping(value ="/api/v1/lang")
 @RestController
 @CrossOrigin

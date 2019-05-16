@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lk.exame.test.service.AnswerService;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/api/v1/answer")

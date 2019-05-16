@@ -10,6 +10,10 @@ import lk.exame.test.dto.SubjectDTO;
 import lk.exame.test.entity.SubjectEntity;
 import lk.exame.test.service.SubjectService;
 
+/**
+ * 
+ * @author Tharaka Chandralal
+ */
 @Service
 public class SubjectServiceImpl implements SubjectService{
 
@@ -17,6 +21,9 @@ public class SubjectServiceImpl implements SubjectService{
 	private SubjectDAO subjectDao;
 	
 
+	/**
+	 * Deceive Active Row In Subject Table
+	 */
 	@Override
 	public boolean delete(Integer subId) throws Exception {
 		
@@ -24,6 +31,9 @@ public class SubjectServiceImpl implements SubjectService{
 		return true;
 	}
 
+	/**
+	 * Find Subject In Subject Table Using Subject Id
+	 */
 	@Override
 	public SubjectDTO findSubject(Integer subId) throws Exception {
 		
@@ -36,6 +46,9 @@ public class SubjectServiceImpl implements SubjectService{
 		return subjectDTO;
 	}
 
+	/**
+	 * This Method Using getAllSubject in Subject Table 
+	 */
 	@Override
 	public ArrayList<SubjectDTO> getAllSubject() throws Exception {
 
@@ -51,6 +64,9 @@ public class SubjectServiceImpl implements SubjectService{
 	}
 
 	/* (non-Javadoc)
+	 * 
+	 * This Method Using Save Subject In Subject Table 
+	 * 
 	 * @see lk.exame.test.service.SubjectService#save(lk.exame.test.dto.SubjectDTO)
 	 */
 	@Override
