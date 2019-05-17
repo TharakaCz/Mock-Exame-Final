@@ -20,4 +20,5 @@ public interface AnswerDAO extends CrudRepository<AnswerEntity, Integer>{
 	
 	List<AnswerEntity> findByQuestionEntity(Integer quesId);
 	
+	
 }
