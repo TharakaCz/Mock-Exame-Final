@@ -24,4 +24,6 @@ public interface QuestionDAO extends CrudRepository<QuestionEntity, Integer>{
 	  ArrayList<QuestionEntity> findAllQuesIdByQuestionLevalAndStatusAndLanguageEntitiey(String questionLeval,String status,LanguageEntity languageEntity);
 	  
 	  ArrayList<QuestionEntity>findAllQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndQuesIdNotIn(String questionLeval,String status,LanguageEntity languageEntity,List<Integer>questionIds);
+	  
+	 
 }

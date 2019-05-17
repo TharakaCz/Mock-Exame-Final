@@ -114,33 +114,51 @@ public class ExameServiceImpl implements ExameService {
 		ResultEntity resultEntity = new ResultEntity();
 		resultEntity.setExameDate(new Date());
 		resultEntity.setUserName(userName);
+		
+		
+		
 		submitQuestionDTOs.forEach(subQues -> {
 
 			System.out.println("Called submitQuestion . . . . ");
-			resultEntity.setTotalQuestions(resultEntity.getTotalQuestions() + 1);
+			
+			if (resultEntity.getTotalQuestions() == null) {
+				System.out.println("Total Ques Contition Ok . . . . ");
+				resultEntity.setTotalQuestions(1);
+				
+			}else {
+				System.out.println("Total Ques Else Work");
+				Integer totalQues = resultEntity.getTotalQuestions();
+				totalQues++;
+				resultEntity.setTotalQuestions(totalQues);
+			}
+			
+			
 
 			System.out.println("Total question = =/" + resultEntity.toString());
 
 			QuestionEntity questionEntity = questionDao.findById(subQues.getQuestionId()).get();
 
-			boolean isCorrect = false;
-			boolean isWrong = false;
+			AnswerEntity answerEntity = answerDao.findById(subQues.getUserAnswerId()).get();
+			
+			
+			/*
+			 * boolean isCorrect = false; boolean isWrong = false;
+			 */
 
-			for (AnswerEntity answerEntity : questionEntity.getAnswerEntities()) {
+			/*
+			 * for (AnswerEntity answerEntity : questionEntity.getAnswerEntities()) {
+			 * 
+			 * if (answerEntity.getAnswerId() == subQues.getUserAnswerId()) {
+			 * 
+			 * if (answerEntity.getCorrect().equals(1)) { isCorrect = true; } else if
+			 * (answerEntity.getCorrect().equals(0)) {
+			 * 
+			 * isWrong = true; }
+			 * 
+			 * } }
+			 */
 
-				if (answerEntity.getAnswerId() == subQues.getUserAnswerId()) {
-
-					if (answerEntity.getCorrect().equals(1)) {
-						isCorrect = true;
-					} else if (answerEntity.getCorrect().equals(0)) {
-
-						isWrong = true;
-					}
-
-				}
-			}
-
-			if (isCorrect) {
+			if (answerEntity.getCorrect().equals(1)) {
 				System.out.println("Loop isCorrect ok . .");
 				resultEntity.setCorrectAnswers(resultEntity.getCorrectAnswers() + 1);
 
@@ -154,7 +172,7 @@ public class ExameServiceImpl implements ExameService {
 
 				}
 
-			} else if (isWrong) {
+			} else if (answerEntity.getCorrect().equals(0)) {
 				resultEntity.setWrongAnswers(resultEntity.getWrongAnswers() + 1);
 			}
 		});
