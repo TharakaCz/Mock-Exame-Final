@@ -72,12 +72,14 @@ public class ResultServiceImpl implements ResultService {
 	@Override
 	public ArrayList<ResultDTO> findByUserName(String userName) throws Exception {
 
-		List<ResultEntity> resultEntities = resultDao.findByUserName(userName);
+		List<ResultEntity> resultEntities = resultDao.findAllByUserName(userName);
 
 		ArrayList<ResultDTO> resultDTOs = new ArrayList<ResultDTO>();
 
 		resultEntities.forEach(e -> {
+			
 			resultDTOs.add(getResult(e));
+			
 		});
 
 		return resultDTOs;
@@ -93,12 +95,12 @@ public class ResultServiceImpl implements ResultService {
 		  resultDTO.setTotal(resultEntity.getTotal());
 		  resultDTO.setCorrectAnswers(resultEntity.getCorrectAnswers());
 		  resultDTO.setWrongAnswers(resultEntity.getWrongAnswers());
-		  
+		  resultDTO.setUserName(resultEntity.getUserName());
 		  resultDTO.setExameDate(resultEntity.getExameDate());
 		
 		 
 
-		return null;
+		return resultDTO;
 	}
 
 }
