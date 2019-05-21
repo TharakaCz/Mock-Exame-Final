@@ -72,7 +72,7 @@ public class ResultServiceImpl implements ResultService {
 	@Override
 	public ArrayList<ResultDTO> findByUserName(String userName) throws Exception {
 
-		List<ResultEntity> resultEntities = resultDao.findAllByUserName(userName);
+		List<ResultEntity> resultEntities = resultDao.findAllByUserNameOrderByExameDateDesc(userName);
 
 		ArrayList<ResultDTO> resultDTOs = new ArrayList<ResultDTO>();
 

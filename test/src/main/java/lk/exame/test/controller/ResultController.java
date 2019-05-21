@@ -27,7 +27,7 @@ public class ResultController {
 	private ResponseEntity<Object>findResultExameId(@PathVariable Integer exameId)throws Exception{
 		
 		return new ResponseEntity<Object>(resultService.findByExameId(exameId),HttpStatus.OK);
-	}
+	} 
 	
 	@GetMapping(value = "/findResultUserName/{userName}")
 	private ResponseEntity<Object>findResultQuesName(@PathVariable String userName)throws Exception{
