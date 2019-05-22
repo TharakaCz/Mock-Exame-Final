@@ -102,28 +102,6 @@ public class QuestionServiceImpl implements QuestionService {
 				answerEntity.setQuestionEntity(question);
 				answerDao.save(answerEntity);
 			});
-
-			
-			/*
-			 * questionsDTO.getLanguageDto().forEach(language -> { LanguageEntity
-			 * languageEntity = new LanguageEntity();
-			 * languageEntity.setLangName(language.getLangName());
-			 * languageEntity.setQuestionEntity(question);
-			 * languageRepository.save(languageEntity); });
-			 * 
-			 * questionsDTO.getSubjectDto().forEach(subject -> { SubjectEntity subjectEntity
-			 * = new SubjectEntity(); subjectEntity.setSubName(subject.getSubName());
-			 * subjectEntity.setQuestionEntity(question);
-			 * subjectRepository.save(subjectEntity); });
-			 * 
-			 * 
-			 * 
-			 * questionsDTO.getExameDetailsDto().forEach(exameDetail ->{ ExameDetailsEntity
-			 * exameDetailsEntity = new ExameDetailsEntity();
-			 * exameDetailsEntity.setQuestionEntity(question);
-			 * exameDetailsEntity.setLevel(exameDetail.getLevel());
-			 * exameDetailRepository.save(exameDetailsEntity); });
-			 */
 			 
 			return true;
 		}
@@ -160,17 +138,9 @@ public class QuestionServiceImpl implements QuestionService {
 
 		QuestionEntity questionEntity = questionDao.findById(questionsDTO.getQuesId()).get();
 		
-		SubjectEntity subjectEntity = subjectDao.findOneBySubId(questionsDTO.getSubjectId());
+		SubjectEntity subjectEntity = subjectDao.findOneBySubId(questionsDTO.getSubjectDto().getSubId());
 		
-		LanguageEntity languageEntity = languageDao.findByLangId(questionsDTO.getLanguageId());
-		
-		/*
-		 * SubjectEntity subjectEntity =
-		 * subjectRepository.getSubject(questionsDTO.getQuesId());
-		 * 
-		 * LanguageEntity languageEntity =
-		 * languageRepository.getLanguage(questionsDTO.getQuesId());
-		 */
+		LanguageEntity languageEntity = languageDao.findByLangId(questionsDTO.getLanguageDto().getLangId());
 
 		if (questionEntity != null) {
 
@@ -194,25 +164,6 @@ public class QuestionServiceImpl implements QuestionService {
 				}
 			});
 
-			
-			/*
-			 * questionsDTO.getSubjectDto().forEach(subject -> { SubjectEntity subjectEntity
-			 * = subjectRepository.getSubject(questionsDTO.getQuesId()); if (subjectEntity
-			 * != null) { subjectEntity.setSubName(subject.getSubName());
-			 * subjectRepository.save(subjectEntity); } });
-			 * 
-			 * questionsDTO.getLanguageDto().forEach(langage -> { LanguageEntity
-			 * languageEntity = languageRepository.getLanguage(questionsDTO.getQuesId()); if
-			 * (languageEntity != null) { languageEntity.setLangName(langage.getLangName());
-			 * languageRepository.save(languageEntity); } });
-			 */
-			/*
-			 * subjectEntity.setSubName(questionAnswerDTO.getSubjectDTO().getSubName());
-			 * subjectRepository.save(subjectEntity);
-			 * 
-			 * languageEntity.setLangName(questionAnswerDTO.getLanguageDTO().getLangName());
-			 * languageRepository.save(languageEntity);
-			 */
 
 		} else {
 			System.out.println("Problem Found . . . !");
