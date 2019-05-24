@@ -1,5 +1,7 @@
 package lk.exame.test.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,30 +32,71 @@ public class QuestionController {
 	
 	
 	@PostMapping(value="/saveQuestionAnswer")
-	public ResponseEntity<Object>saveQuestionAnswer(@RequestBody QuestionsDTO questionsDTO)throws Exception{
+	public ResponseEntity<Object>saveQuestionAnswer(@RequestBody QuestionsDTO questionsDTO){
 		System.out.println("Question Call =/"+questionsDTO.getSubjectId());
-		return new ResponseEntity<Object>(service.saveQuestionAnswer(questionsDTO),HttpStatus.OK);
+		try {
+			return new ResponseEntity<Object>(service.saveQuestionAnswer(questionsDTO),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping(value ="/getAllQuestions")
-	public ResponseEntity<Object>getAllQuestions()throws Exception{
+	public ResponseEntity<Object>getAllQuestions(){
 		System.out.println("Call");
-		return new ResponseEntity<Object>(service.getAllQuestions(),HttpStatus.OK);
+		try {
+			return new ResponseEntity<Object>(service.getAllQuestions(),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@PostMapping(value = "/updateQuesAnswer")
-	public ResponseEntity<Object>update(@RequestBody QuestionsDTO questionsDTO)throws Exception{
-		return  new ResponseEntity<Object>(service.update(questionsDTO),HttpStatus.OK);
+	public ResponseEntity<Object>update(@RequestBody QuestionsDTO questionsDTO){
+		try {
+			return  new ResponseEntity<Object>(service.update(questionsDTO),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@DeleteMapping(value = "/deleteAnswer/{quesId}")
-	public ResponseEntity<Object>delete(@PathVariable Integer quesId)throws Exception{
+	public ResponseEntity<Object>delete(@PathVariable Integer quesId){
 		
-		return new ResponseEntity<Object>(service.delete(quesId),HttpStatus.OK);
+		try {
+			return new ResponseEntity<Object>(service.delete(quesId),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping(value="/getQuestion/{languageId}")
+	private ResponseEntity<Object>getQuestions(@RequestBody List<Integer>questionIds, @PathVariable Integer languageId){
+		try {
+			return new ResponseEntity<Object>(service.getQuestion(questionIds,languageId),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping(value = "/editQuestions/{quesId}")
-	public ResponseEntity<Object>editQuestions(@PathVariable Integer quesId)throws Exception{
-		return new ResponseEntity<Object>(service.edit(quesId),HttpStatus.OK);
+	public ResponseEntity<Object>editQuestions(@PathVariable Integer quesId){
+		try {
+			return new ResponseEntity<Object>(service.edit(quesId),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

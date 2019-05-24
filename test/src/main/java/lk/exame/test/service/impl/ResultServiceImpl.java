@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lk.exame.test.dao.ExameDAO;
+import lk.exame.test.dao.ExamDAO;
 import lk.exame.test.dao.ResultDAO;
 import lk.exame.test.dto.ResultDTO;
-import lk.exame.test.entity.ExameEntity;
+import lk.exame.test.entity.ExamEntity;
 import lk.exame.test.entity.ResultEntity;
 import lk.exame.test.service.ResultService;
 
@@ -24,29 +24,26 @@ public class ResultServiceImpl implements ResultService {
 	private ResultDAO resultDao;
 
 	@Autowired
-	private ExameDAO exameDao;
+	private ExamDAO examDao;
 	
 	/*
 	 * (non-Javadoc)
 	 * Find Result In Result Table Using Exam Id
-	 * @see lk.exame.test.service.ResultService#findByExameId(java.lang.Integer)
+	 * @see lk.exam.test.service.ResultService#findByExamId(java.lang.Integer)
 	 */
 	@Override
-	public ResultDTO findByExameId(Integer exameId) throws Exception {
-		System.out.println("Exame id . . /"+exameId);
+	public ResultDTO findByExamId(Integer examId) throws Exception {
+		System.out.println("Exam id . . /"+examId);
 		
-		ExameEntity entities =  exameDao.findByExameId(exameId);
+		ExamEntity entities =  examDao.findByExamId(examId);
 		
 		
 		
 		System.out.println(entities == null);
 		
-		ExameEntity exameEntity = exameDao.findByExameId(exameId);
+		ExamEntity examEntity = examDao.findByExamId(examId);
 		
-		System.out.println("Exame Id =/"+exameEntity.getExameId());
-		
-		
-		  Integer resultId = exameEntity.getResultEntity().getResultId(); ResultEntity
+		  Integer resultId = examEntity.getResultEntity().getResultId(); ResultEntity
 		  resultEntity = resultDao.findByResultId(resultId);
 		  
 		  ResultDTO resultDTO = new ResultDTO();
@@ -72,7 +69,7 @@ public class ResultServiceImpl implements ResultService {
 	@Override
 	public ArrayList<ResultDTO> findByUserName(String userName) throws Exception {
 
-		List<ResultEntity> resultEntities = resultDao.findAllByUserNameOrderByExameDateDesc(userName);
+		List<ResultEntity> resultEntities = resultDao.findAllByUserNameOrderByExamDateDesc(userName);
 
 		ArrayList<ResultDTO> resultDTOs = new ArrayList<ResultDTO>();
 
@@ -96,7 +93,7 @@ public class ResultServiceImpl implements ResultService {
 		  resultDTO.setCorrectAnswers(resultEntity.getCorrectAnswers());
 		  resultDTO.setWrongAnswers(resultEntity.getWrongAnswers());
 		  resultDTO.setUserName(resultEntity.getUserName());
-		  resultDTO.setExameDate(resultEntity.getExameDate());
+		  resultDTO.setExamDate(resultEntity.getExamDate());
 		
 		 
 

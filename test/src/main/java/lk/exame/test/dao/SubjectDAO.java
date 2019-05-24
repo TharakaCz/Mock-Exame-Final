@@ -1,6 +1,8 @@
 package lk.exame.test.dao;
 
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 import lk.exame.test.entity.SubjectEntity;
@@ -17,5 +19,6 @@ public interface SubjectDAO extends CrudRepository<SubjectEntity, Integer>{
 	 */
 	SubjectEntity findOneBySubId(Integer subjectId);
 
+	List<SubjectEntity> findAllByStatus(String status);
 	
 }

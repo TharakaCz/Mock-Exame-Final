@@ -23,9 +23,7 @@ public class SubjectEntity {
 	 * 
 	 * Generate Subject Id In Subject Table From Database , length 10
 	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "SUBJECT_ID",length = 10)
+	
 	private Integer subId;
 	
 	/**
@@ -33,7 +31,7 @@ public class SubjectEntity {
 	 * 
 	 * Set And Get Subject Name Not Null , length 100
 	 */
-	@Column(name = "SUBJECT_NAME", nullable = false,length = 100)
+	
 	private String subName;
 
 	/**
@@ -41,9 +39,9 @@ public class SubjectEntity {
 	 * 
 	 * mappedBy Language Table Target by Question Table
 	 */
-	@OneToMany(mappedBy="subjectEntitiy",targetEntity = QuestionEntity.class)
 	private List<QuestionEntity>questionEntities;
 	
+	private String status;
 	
 	public SubjectEntity() {
 		
@@ -55,12 +53,10 @@ public class SubjectEntity {
 	}
 
 
-	public SubjectEntity(Integer subId, String subName) {
-
-		this.subId = subId;
-		this.subName = subName;
-	}
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "SUBJECT_ID",length = 10)
 	public Integer getSubId() {
 		return subId;
 	}
@@ -69,6 +65,8 @@ public class SubjectEntity {
 		this.subId = subId;
 	}
 
+	
+	@Column(name = "SUBJECT_NAME", nullable = false,length = 100)
 	public String getSubName() {
 		return subName;
 	}
@@ -78,9 +76,7 @@ public class SubjectEntity {
 	}
 
 	
-	
-
-
+	@OneToMany(mappedBy="subjectEntitiy",targetEntity = QuestionEntity.class)
 	public List<QuestionEntity> getQuestionEntities() {
 		return questionEntities;
 	}
@@ -88,6 +84,17 @@ public class SubjectEntity {
 
 	public void setQuestionEntities(List<QuestionEntity> questionEntities) {
 		this.questionEntities = questionEntities;
+	}
+
+
+	@Column(name="STATUS",length=10)
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 

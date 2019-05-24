@@ -17,25 +17,21 @@ import javax.persistence.Table;
  * @author Tharaka Chandralal
  */
 @Entity
-@Table(name = "EXAME_DETAIL")
-public class ExameDetailsEntity {
+@Table(name = "EXAM_DETAIL")
+public class ExamDetailsEntity {
 
 	/**
 	 * Integer exameDetailId
 	 * 
-	 * Generate ExameDetailId In ExameDetail Table From Database , length 10
+	 * Generate ExamDetailId In ExamDetail Table From Database , length 10
 	 */
-	@Id
-	@GeneratedValue(strategy =GenerationType.AUTO)
-	@Column(name = "EXAME_DETAIL_ID",length = 10)
-	private Integer exameDetailId;
+	private Integer examDetailId;
 	
 	/**
 	 * String level
 	 * 
 	 * Set And Get Level , length 20
 	 */
-	@Column(name = "LEVEL",length = 20)
 	private String level;
 	
 	/**
@@ -43,49 +39,49 @@ public class ExameDetailsEntity {
 	 * 
 	 * Set And Get Enable
 	 */
-	@Column(name = "ENABLE",length = 20)
 	private String enable;
+
 
 	/**
 	 * QuestionEntity questionEntity
 	 * 
-	 * Join Question Table In ExameDetail Table using Question Id
+	 * Join Question Table In ExamDetail Table using Question Id
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "QUESTION_ID", nullable = false)
 	private QuestionEntity questionEntity;
 	
 	/**
-	 * ExameEntity exameEntity
+	 * ExamEntity examEntity
 	 * 
-	 * Join Exam Table In ExameDetail Table using exam Id
+	 * Join Exam Table In ExamDetail Table using exam Id
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "EXAME_ID",nullable = false)
-	private ExameEntity exameEntity;
+	private ExamEntity examEntity;
 	
 	/**
 	 * AnswerEntity answerEntity
 	 * 
-	 * Join Answer Table In ExameDetail Table using answer Id
+	 * Join Answer Table In ExamDetail Table using answer Id
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "ANSWER_ID",nullable = false)
 	private AnswerEntity answerEntity;
 
 	
-	public ExameDetailsEntity() {
+	public ExamDetailsEntity() {
 	
 	}
 
-	public Integer getExameDetailId() {
-		return exameDetailId;
+	
+	@Id
+	@GeneratedValue(strategy =GenerationType.AUTO)
+	@Column(name = "EXAM_DETAIL_ID",length = 10)
+	public Integer getExamDetailId() {
+		return examDetailId;
 	}
 
-	public void setExameDetailId(Integer exameDetailId) {
-		this.exameDetailId = exameDetailId;
+	public void setExamDetailId(Integer examDetailId) {
+		this.examDetailId = examDetailId;
 	}
 
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "QUESTION_ID", nullable = false)
 	public QuestionEntity getQuestionEntity() {
 		return questionEntity;
 	}
@@ -94,14 +90,20 @@ public class ExameDetailsEntity {
 		this.questionEntity = questionEntity;
 	}
 
-	public ExameEntity getExameEntity() {
-		return exameEntity;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "EXAM_ID",nullable = false)
+	public ExamEntity getExamEntity() {
+		return examEntity;
 	}
 
-	public void setExameEntity(ExameEntity exameEntity) {
-		this.exameEntity = exameEntity;
+	public void setExamEntity(ExamEntity examEntity) {
+		this.examEntity = examEntity;
 	}
 
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ANSWER_ID",nullable = false)
 	public AnswerEntity getAnswerEntity() {
 		return answerEntity;
 	}
@@ -110,6 +112,7 @@ public class ExameDetailsEntity {
 		this.answerEntity = answerEntity;
 	}
 
+	@Column(name = "LEVEL",length = 20)
 	public String getLevel() {
 		return level;
 	}
@@ -118,6 +121,7 @@ public class ExameDetailsEntity {
 		this.level = level;
 	}
 
+	@Column(name = "ENABLE",length = 20)
 	public String getEnable() {
 		return enable;
 	}

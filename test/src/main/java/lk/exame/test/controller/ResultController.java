@@ -23,15 +23,27 @@ public class ResultController {
 	@Autowired
 	private ResultService resultService;
 	
-	@GetMapping(value = "/findResult/{exameId}")
-	private ResponseEntity<Object>findResultExameId(@PathVariable Integer exameId)throws Exception{
+	@GetMapping(value = "/findResult/{examId}")
+	private ResponseEntity<Object>findResultExamId(@PathVariable Integer examId){
 		
-		return new ResponseEntity<Object>(resultService.findByExameId(exameId),HttpStatus.OK);
+		try {
+			return new ResponseEntity<Object>(resultService.findByExamId(examId),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	} 
 	
 	@GetMapping(value = "/findResultUserName/{userName}")
-	private ResponseEntity<Object>findResultQuesName(@PathVariable String userName)throws Exception{
-		return new ResponseEntity<Object>(resultService.findByUserName(userName),HttpStatus.OK);
+	private ResponseEntity<Object>findResultQuesName(@PathVariable String userName){
+		try {
+			return new ResponseEntity<Object>(resultService.findByUserName(userName),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 				
 	}
 }

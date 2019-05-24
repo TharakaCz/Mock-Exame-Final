@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import lk.exame.test.dao.SubjectDAO;
 import lk.exame.test.dto.SubjectDTO;
 import lk.exame.test.entity.SubjectEntity;
 import lk.exame.test.service.SubjectService;
+import lk.exame.test.utill.AppConstant;
 
 /**
  * 
@@ -27,7 +29,17 @@ public class SubjectServiceImpl implements SubjectService{
 	@Override
 	public boolean delete(Integer subId) throws Exception {
 		
-		subjectDao.deleteById(subId);
+		SubjectEntity subjectEntity = subjectDao.findById(subId).get();
+		
+		subjectEntity.setStatus(AppConstant.DEACTIVE);
+		
+		if (subjectEntity != null) {
+			
+			subjectDao.save(subjectEntity);
+			
+		}else {
+			System.out.println("Subject Table Empty");
+		}
 		return true;
 	}
 
@@ -52,7 +64,8 @@ public class SubjectServiceImpl implements SubjectService{
 	@Override
 	public ArrayList<SubjectDTO> getAllSubject() throws Exception {
 
-		List<SubjectEntity>subjects = (List<SubjectEntity>) subjectDao.findAll();
+		String status = AppConstant.ACTIVE;
+		List<SubjectEntity>subjects = subjectDao.findAllByStatus(status);
 		
 		ArrayList<SubjectDTO>subjectDTOs = new ArrayList<>();
 		
@@ -74,7 +87,7 @@ public class SubjectServiceImpl implements SubjectService{
 		 SubjectEntity subjectEntity = new SubjectEntity();
 		 
 		 subjectEntity.setSubName(subjectDTO.getSubName());
-		 
+		 subjectEntity.setStatus(AppConstant.ACTIVE);
 		 subjectDao.save(subjectEntity);
 		 
 		return true;

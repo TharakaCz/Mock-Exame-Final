@@ -18,26 +18,24 @@ import javax.persistence.Table;
  * 
  * @author Tharaka Chandralal
  */
+
 @Entity
 @Table(name = "ANSWER")
 public class AnswerEntity {
-
 	/**
-	 * Integer answerId
-	 * 
-	 * Generate Answer Id In Answer Table From Database , length 10
-	 */
-	  @Id
-	  @GeneratedValue(strategy = GenerationType.AUTO)
-	  @Column(name = "ANSWER_ID",length = 10)
+	  * Integer answerId
+	  * 
+	  * Generate Answer Id In Answer Table From Database , length 10
+ 	*/
 	  private Integer answerId;
+	  
 	  
 	  /**
 	   * String ansewer
 	   * 
 	   * Set And Get Answer In Answer Table not null , length 255
 	   */
-	  @Column(name = "ANSWER",length = 255 , nullable = false)
+	 
 	  private String ansewer;
 	  
 	  /**
@@ -45,7 +43,6 @@ public class AnswerEntity {
 	   * 
 	   * Checking True Answer Result Calculation Time  length 1
 	   */
-	  @Column(name = "CORRECT",length = 1 , nullable = false)
 	  private Integer correct;
 	  
 	  /**
@@ -53,7 +50,7 @@ public class AnswerEntity {
 	   * 
 	   * Set And Get Answer Tag Name length 10
 	   */
-	  @Column(name = "TAG_NAME",length = 10 )
+	  
 	  private String tagName;
 	  
 	  /**
@@ -61,30 +58,44 @@ public class AnswerEntity {
 	   * 
 	   * Join Question Table From Answer Table Using Question Id
 	   */
-	  @ManyToOne(cascade = CascadeType.ALL)
-	  @JoinColumn(name = "QUESTION_ID",nullable = false)
 	  private QuestionEntity questionEntity;
 	  
 	  /**
 	   * List<ExameDetailsEntity>exameDetailsEntities
-	   * 
-	   * mappedBy Answer Table Target By ExameDetail Table
-	   */
-	  @OneToMany(mappedBy = "answerEntity",targetEntity = ExameDetailsEntity.class)
-	  private List<ExameDetailsEntity>exameDetailsEntities;
+		* 
+		* mappedBy Answer Table Target By ExameDetail Table
+	 */
+	  private List<ExamDetailsEntity> examDetailsEntities;
+	  
+	  
+	  private String status;
 	  
 	  public AnswerEntity() {
 	  
 	  }
-	 
-	  public Integer getAnswerId() { return answerId; }
-	  
-	  public void setAnswerId(Integer answerId) { this.answerId = answerId; }
-		  
-	  public String getAnsewer() { return ansewer; }
-		  
-	  public void setAnsewer(String ansewer) { this.ansewer = ansewer; }
-		
+
+	@Id
+	@GeneratedValue(strategy =GenerationType.AUTO)
+	@Column(name = "ANSWER_ID",length = 10,nullable=false)
+	public Integer getAnswerId() {
+		return answerId;
+	}
+
+	
+	public void setAnswerId(Integer answerId) {
+		this.answerId = answerId;
+	}
+
+	@Column(name = "ANSWER",length = 255 , nullable = false)
+	public String getAnsewer() {
+		return ansewer;
+	}
+
+	public void setAnsewer(String ansewer) {
+		this.ansewer = ansewer;
+	}
+
+	@Column(name = "CORRECT",length = 1 , nullable = false)
 	public Integer getCorrect() {
 		return correct;
 	}
@@ -93,14 +104,7 @@ public class AnswerEntity {
 		this.correct = correct;
 	}
 
-	public List<ExameDetailsEntity> getExameDetailsEntities() {
-		return exameDetailsEntities;
-	}
-
-	public void setExameDetailsEntities(List<ExameDetailsEntity> exameDetailsEntities) {
-		this.exameDetailsEntities = exameDetailsEntities;
-	}
-
+	@Column(name = "TAG_NAME",length = 10 )
 	public String getTagName() {
 		return tagName;
 	}
@@ -109,17 +113,35 @@ public class AnswerEntity {
 		this.tagName = tagName;
 	}
 
-	public QuestionEntity getQuestionEntity() { return questionEntity; }
-	  
-	  public void setQuestionEntity(QuestionEntity questionEntity) {
-	  this.questionEntity = questionEntity; }
-	  
-	  @Override public String toString() { return "AnswerEntity [answerId=" +
-	  answerId + ", ansewer=" + ansewer + 
-	  ", questionEntity=" + questionEntity + "]"; }
-	 
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "QUESTION_ID",nullable = false)
+	public QuestionEntity getQuestionEntity() {
+		return questionEntity;
+	}
 
-	
-	
+	public void setQuestionEntity(QuestionEntity questionEntity) {
+		this.questionEntity = questionEntity;
+	}
+
+	@OneToMany(mappedBy = "answerEntity",targetEntity = ExamDetailsEntity.class)
+	public List<ExamDetailsEntity> getExameDetailsEntities() {
+		return examDetailsEntities;
+	}
+
+	public void setExameDetailsEntities(List<ExamDetailsEntity> examDetailsEntities) {
+		this.examDetailsEntities = examDetailsEntities;
+	}
+
+
+	@Column(name="STATUS",length=10)
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	  
+	 
 	
 }

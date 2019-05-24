@@ -7,11 +7,11 @@ import java.util.List;
  * 
  * @author Tharaka Chandralal
  */
-public class ExameDTO {
+public class ExamDTO {
 
-	private Integer exameId; 
+	private Integer examId; 
 	
-	private Date exameDate;  
+	private Date examDate;  
 	
 	private String startTime;
 	
@@ -24,26 +24,26 @@ public class ExameDTO {
 	private String regTime;
 	
 	
-	private List<ExameDetailsDTO>exameDetailsEntities;
+	private List<ExamDetailsDTO>examDetailsEntities;
 	
-	public ExameDTO() {
+	public ExamDTO() {
 		
 	}
 
-	public Integer getExameId() {
-		return exameId;
+	public Integer getExamId() {
+		return examId;
 	}
 
-	public void setExameId(Integer exameId) {
-		this.exameId = exameId;
+	public void setExamId(Integer examId) {
+		this.examId = examId;
 	}
 
 	public Date getExameDate() {
-		return exameDate;
+		return examDate;
 	}
 
-	public void setExameDate(Date exameDate) {
-		this.exameDate = exameDate;
+	public void setExameDate(Date examDate) {
+		this.examDate = examDate;
 	}
 
 	
@@ -72,12 +72,12 @@ public class ExameDTO {
 	}
 
 
-	public List<ExameDetailsDTO> getExameDetailsEntities() {
-		return exameDetailsEntities;
+	public List<ExamDetailsDTO> getExamDetailsEntities() {
+		return examDetailsEntities;
 	}
 
-	public void setExameDetailsEntities(List<ExameDetailsDTO> exameDetailsEntities) {
-		this.exameDetailsEntities = exameDetailsEntities;
+	public void setExamDetailsEntities(List<ExamDetailsDTO> examDetailsEntities) {
+		this.examDetailsEntities = examDetailsEntities;
 	}
 
 	public Date getRegDate() {

@@ -30,22 +30,54 @@ public class SubjectController {
 	private SubjectService subjectService;
 	
 	@PostMapping(value = "/saveSubject")
-	public ResponseEntity<Object>save(@RequestBody SubjectDTO subjectDTO)throws Exception{
-		return new ResponseEntity<Object>(subjectService.save(subjectDTO),HttpStatus.OK);
+	public ResponseEntity<Object>save(@RequestBody SubjectDTO subjectDTO){
+		try {
+			return new ResponseEntity<Object>(subjectService.save(subjectDTO),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@DeleteMapping(value="/deleSub/{subId}")
-	public boolean delete(@PathVariable Integer subId)throws Exception{
-		return subjectService.delete(subId);
+	public ResponseEntity<Object> delete(@PathVariable Integer subId){
+		
+		try {
+			return new ResponseEntity<Object>(subjectService.delete(subId),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping(value="/find/{subId}")
-	public SubjectDTO findSubject(@PathVariable Integer subId)throws Exception{
-		return subjectService.findSubject(subId);
+	public ResponseEntity<Object>findSubject(@PathVariable Integer subId){
+		try {
+			return new ResponseEntity<Object>(subjectService.findSubject(subId),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
+	/*
+	 * public SubjectDTO findSubject(@PathVariable Integer subId)throws Exception{
+	 * return subjectService.findSubject(subId); }
+	 */
 	
 	@GetMapping(value="/getAllSubject")
-	public ArrayList<SubjectDTO>getAllSubject()throws Exception{
-		return subjectService.getAllSubject();
+	public ResponseEntity<Object>getAllSubject(){
+		try {
+			return new ResponseEntity<Object>(subjectService.getAllSubject(),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
+	/*public ArrayList<SubjectDTO>getAllSubject()throws Exception{
+		return subjectService.getAllSubject();
+	}*/
 }
