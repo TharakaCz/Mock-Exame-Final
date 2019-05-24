@@ -12,6 +12,7 @@ import lk.exame.test.dto.AnswersDTO;
 import lk.exame.test.entity.AnswerEntity;
 import lk.exame.test.entity.QuestionEntity;
 import lk.exame.test.service.AnswerService;
+import lk.exame.test.utill.AppConstant;
 /**
  * 
  * @author Tharaka Chandralal
@@ -48,7 +49,15 @@ public class AnswerServiceImpl implements AnswerService{
 
 	@Override
 	public boolean delete(Integer answerId) throws Exception {
-		// TODO Auto-generated method stub
+		
+		AnswerEntity answerEntity = answerDao.findById(answerId).get();
+		
+		answerEntity.setStatus(AppConstant.DEACTIVE);
+		if (answerEntity != null) {
+			answerDao.save(answerEntity);
+		}else {
+			System.out.println("Answer Table Is Empty");
+		}
 		return false;
 	}
 

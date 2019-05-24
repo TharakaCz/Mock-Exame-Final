@@ -16,5 +16,5 @@ public interface LanguageService {
 	
 	public boolean edit(LanguageDTO languageDTO)throws Exception;
 
-	public ArrayList<LanguageDTO>getAllLanguage();
+	public ArrayList<LanguageDTO>getAllLanguage()throws Exception;
 }

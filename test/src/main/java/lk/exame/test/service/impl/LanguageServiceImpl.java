@@ -10,6 +10,7 @@ import lk.exame.test.dao.LanguageDAO;
 import lk.exame.test.dto.LanguageDTO;
 import lk.exame.test.entity.LanguageEntity;
 import lk.exame.test.service.LanguageService;
+import lk.exame.test.utill.AppConstant;
 
 /**
  * 
@@ -40,7 +41,19 @@ public class LanguageServiceImpl implements LanguageService{
 	 */
 	@Override
 	public boolean delete(Integer langId) throws Exception {
-		languageDao.deleteById(langId);
+		
+		LanguageEntity languageEntity = languageDao.findById(langId).get();
+		
+		languageEntity.setStatus(AppConstant.DEACTIVE);
+		
+		if (languageEntity != null) {
+			
+			languageDao.save(languageEntity);
+			
+		}else {
+			System.out.println("Language Table Is Empty");
+		}
+		
 		return true;
 	}
 
@@ -62,7 +75,7 @@ public class LanguageServiceImpl implements LanguageService{
 		LanguageEntity languageEntity = new LanguageEntity();
 		
 		languageEntity.setLangName(languageDTO.getLangName());
-		
+		languageEntity.setStatus(AppConstant.ACTIVE);
 		languageDao.save(languageEntity);
 		
 		return true;
@@ -75,9 +88,11 @@ public class LanguageServiceImpl implements LanguageService{
 	 * @see lk.exame.test.service.LanguageService#getAllLanguage()
 	 */
 	@Override
-	public ArrayList<LanguageDTO> getAllLanguage() {
+	public ArrayList<LanguageDTO> getAllLanguage()throws Exception {
 		
-		List<LanguageEntity>getLanguages = (List<LanguageEntity>) languageDao.findAll();
+		String status = AppConstant.ACTIVE;
+		
+		List<LanguageEntity>getLanguages = languageDao.findAllByStatus(status);
 		
 		ArrayList<LanguageDTO>languageDTOs = new ArrayList<>();
 		

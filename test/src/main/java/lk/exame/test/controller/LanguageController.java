@@ -30,12 +30,24 @@ public class LanguageController {
 	private LanguageService langService;
 	
 	@PostMapping(value="/saveLanguage")
-	private ResponseEntity<Object>saveLanguage(@RequestBody LanguageDTO languageDTO)throws Exception{
-		return new ResponseEntity<Object>(langService.save(languageDTO),HttpStatus.OK);
+	private ResponseEntity<Object>saveLanguage(@RequestBody LanguageDTO languageDTO){
+		try {
+			return new ResponseEntity<Object>(langService.save(languageDTO),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping(value="/getAllLanguages")
-	private ResponseEntity<Object>getAllLanguages()throws Exception{
-		return new ResponseEntity<Object>(langService.getAllLanguage(),HttpStatus.OK);
+	private ResponseEntity<Object>getAllLanguages(){
+		try {
+			return new ResponseEntity<Object>(langService.getAllLanguage(),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

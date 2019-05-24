@@ -3,7 +3,7 @@ package lk.exame.test.dto;
 import java.util.Date;
 import java.util.List;
 
-import lk.exame.test.entity.ExameDetailsEntity;
+import lk.exame.test.entity.ExamDetailsEntity;
 
 /**
  * 
@@ -21,7 +21,7 @@ public class ResultDTO {
 	
 	private Integer wrongAnswers;
 	
-	private Date exameDate;
+	private Date examDate;
 	
 	private String startTime;
 	
@@ -31,7 +31,7 @@ public class ResultDTO {
 	
 	private String userName;
 
-	private List<ExameDetailsEntity>exameDetailsEntities;
+	private List<ExamDetailsEntity>examDetailsEntities;
 
 	public ResultDTO() {
 		
@@ -90,12 +90,12 @@ public class ResultDTO {
 	}
 
 	
-	public Date getExameDate() {
-		return exameDate;
+	public Date getExamDate() {
+		return examDate;
 	}
 
-	public void setExameDate(Date exameDate) {
-		this.exameDate = exameDate;
+	public void setExamDate(Date examDate) {
+		this.examDate = examDate;
 	}
 
 	public String getStartTime() {
@@ -114,12 +114,12 @@ public class ResultDTO {
 		this.endTime = endTime;
 	}
 
-	public List<ExameDetailsEntity> getExameDetailsEntities() {
-		return exameDetailsEntities;
+	public List<ExamDetailsEntity> getExameDetailsEntities() {
+		return examDetailsEntities;
 	}
 
-	public void setExameDetailsEntities(List<ExameDetailsEntity> exameDetailsEntities) {
-		this.exameDetailsEntities = exameDetailsEntities;
+	public void setExameDetailsEntities(List<ExamDetailsEntity> examDetailsEntities) {
+		this.examDetailsEntities = examDetailsEntities;
 	}
 
 

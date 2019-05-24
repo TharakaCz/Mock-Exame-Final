@@ -2,6 +2,7 @@ package lk.exame.test.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,9 @@ public class QuestionServiceImpl implements QuestionService {
 	@Autowired
 	private SubjectDAO subjectDao;
 
+	private Random random = new Random();
 	
+	private QuestionEntity questionEnt;
 
 	/**
 	 * This Method Using Active Row Deactivate From Question Table
@@ -49,22 +52,84 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public boolean delete(Integer quesId) throws Exception {
 
+		
 		QuestionEntity questionEntity = questionDao.findById(quesId).get();
 
+		questionEntity.setStatus(AppConstant.DEACTIVE);
+		
 		if (questionEntity != null) {
 
-			questionEntity.setStatus(AppConstant.DEACTIVE);
-
 			questionDao.save(questionEntity);
+		}else {
+			System.out.println("Question Table Is Empty");
 		}
 
 		return true;
 	}
 
 	@Override
-	public QuestionsDTO getQuestion(Integer quesId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public QuestionsDTO getQuestion(List<Integer> questionIds, Integer languageId) throws Exception {
+		LanguageEntity languageEntity = languageDao.findById(languageId).get();
+		
+		String questionLeval = "";
+		String status = AppConstant.ACTIVE;
+
+		QuestionsDTO questionsDTO = new QuestionsDTO();
+		
+	
+		if (questionIds == null || questionIds.size() >= 0 && questionIds.size() <= 20) {
+			questionLeval = "Easy";
+		} else if (questionIds.size() >= 21 && questionIds.size() <= 40) {
+			questionLeval = "Normal";
+		} else if (questionIds.size() >= 41 && questionIds.size() <= 59) {
+			questionLeval = "Hard";
+		} else {
+			System.out.println("SuccsessFully Compeated Exame");
+			return null;
+			
+		} 
+
+		ArrayList<QuestionEntity>questionEntit;
+		
+		
+		if (questionIds == null | questionIds.size() == 0) {
+			
+			questionEntit = questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitiey(questionLeval, status,languageEntity);
+		}else {
+			
+			questionEntit = questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndQuesIdNotIn(questionLeval, status, languageEntity, questionIds);
+		}
+		
+		  QuestionEntity
+		  questionEntity=questionEntit.get(random.nextInt(questionEntit.size()));
+		  
+		
+		  questionEnt=questionDao.findById(questionEntity.getQuesId()).get(); 
+		  
+		 		
+		System.out.println(questionEnt.getQuesId());
+		System.out.println(questionEnt.getQuestion());
+		
+		System.out.println("Random == = /"+random.toString());
+		
+		List<AnswerEntity> getAnswersEasy = answerDao.findAllByQuestionEntity(questionEnt);
+		List<AnswersDTO> getAllAnsweDto = new ArrayList<AnswersDTO>();
+
+		getAnswersEasy.forEach(answersPrimary -> {
+			System.out.println("Loop - 1");
+			getAllAnsweDto.add(getAnswerDto(answersPrimary));
+		});
+
+		questionsDTO.setQuesId(questionEnt.getQuesId());
+		questionsDTO.setQuestion(questionEnt.getQuestion());
+		questionsDTO.setMarks(questionEnt.getMarks());
+
+		questionsDTO.setQuestionLeval(questionEnt.getQuestionLeval());
+		questionsDTO.setStatus(questionEnt.getStatus());
+
+		questionsDTO.setAnswerDtos(getAllAnsweDto);
+
+		return questionsDTO;
 	}
 
 	@Override
@@ -99,6 +164,7 @@ public class QuestionServiceImpl implements QuestionService {
 				answerEntity.setAnsewer(answers.getAnsewer());
 				answerEntity.setTagName(answers.getTagName());
 				answerEntity.setCorrect(answers.getCorrect());;
+				answerEntity.setStatus(AppConstant.ACTIVE);
 				answerEntity.setQuestionEntity(question);
 				answerDao.save(answerEntity);
 			});
@@ -173,76 +239,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 	}
 
-	/*
-	 * @Override public QuestionAnswerDTO edit(Integer quesId) throws Exception {
-	 * 
-	 * QuestionEntity questionEntity = new QuestionEntity(); QuestionsDTO
-	 * questionsDTO = new QuestionsDTO();
-	 * 
-	 * AnswerEntity answerEntity = new AnswerEntity(); AnswersDTO answersDTO = new
-	 * AnswersDTO();
-	 * 
-	 * LanguageEntity languageEntity = new LanguageEntity(); LanguageDTO languageDTO
-	 * = new LanguageDTO();
-	 * 
-	 * SubjectEntity subjectEntity = new SubjectEntity(); SubjectDTO subjectDTO =
-	 * new SubjectDTO();
-	 * 
-	 * questionEntity = questionRepository.findById(quesId).get(); subjectEntity =
-	 * subjectRepository.getSubject(quesId); languageEntity =
-	 * languageRepository.getLanguage(quesId);
-	 * 
-	 * 
-	 * if (questionEntity != null) {
-	 * 
-	 * System.out.println("Edit Works Id Passing . . . . ! ");
-	 * 
-	 * questionsDTO.setQuesId(questionEntity.getQuesId());
-	 * questionsDTO.setQuestionQ(questionEntity.getQuestionQ());
-	 * questionsDTO.setMarks(questionEntity.getMarks());
-	 * questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
-	 * questionsDTO.setLangName(questionEntity.getLangName());
-	 * 
-	 * List<AnswerEntity> getAnswersEasy =
-	 * answerRepository.findAllByQuestionEntity(questionEntity); List<AnswersDTO>
-	 * getAllAnsweDto = new ArrayList<>();
-	 * 
-	 * 
-	 * List<SubjectEntity>subjectEntities =
-	 * subjectRepository.findAllByQuestionEntity(questionEntity);
-	 * List<SubjectDTO>subjectDTOs = new ArrayList<>();
-	 * 
-	 * List<LanguageEntity>languageEntities =
-	 * languageRepository.findAllByQuestionEntity(questionEntity);
-	 * List<LanguageDTO>languageDTOs = new ArrayList<>();
-	 * 
-	 * 
-	 * getAnswersEasy.forEach(answersPrimary -> {
-	 * getAllAnsweDto.add(getAnswerDto(answersPrimary)); });
-	 * 
-	 * subjectDTO.setSubId(subjectEntity.getSubId());
-	 * subjectDTO.setSubName(subjectEntity.getSubName());
-	 * subjectDTO.setQuestionId(subjectEntity.getQuestionEntity().getQuesId());
-	 * 
-	 * languageDTO.setLangId(languageEntity.getLangId());
-	 * languageDTO.setLangName(languageEntity.getLangName());
-	 * languageDTO.setQuestionId(languageEntity.getQuestionEntity().getQuesId());
-	 * 
-	 * QuestionAnswerDTO questionAnswerDTO = new QuestionAnswerDTO();
-	 * questionAnswerDTO.setQuestionsDTO(questionsDTO);
-	 * questionAnswerDTO.setAnswersDTOs(getAllAnsweDto);
-	 * questionAnswerDTO.setSubjectDTO(subjectDTO);
-	 * questionAnswerDTO.setLanguageDTO(languageDTO);
-	 * 
-	 * return questionAnswerDTO;
-	 * 
-	 * } else {
-	 * 
-	 * System.out.println("Problem Occred . . . !"); } return null;
-	 * 
-	 * }
-	 */
-
+	
 	
 	/* (non-Javadoc)
 	 * 
@@ -256,11 +253,7 @@ public class QuestionServiceImpl implements QuestionService {
 		QuestionEntity questionEntity = new QuestionEntity();
 		QuestionsDTO questionsDTO = new QuestionsDTO();
 		
-	
-		  
 		  questionEntity = questionDao.findById(quesId).get();
-		 
-		 
 		 
 		  if (questionEntity != null) {
 		  
@@ -333,6 +326,7 @@ public class QuestionServiceImpl implements QuestionService {
 	
 	private QuestionsDTO getAllQuestion(QuestionEntity questionEntity) {
 
+	
 		QuestionsDTO questionsDTO = new QuestionsDTO();
 
 		questionsDTO.setQuesId(questionEntity.getQuesId());

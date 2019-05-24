@@ -25,12 +25,26 @@ public class AnswerController {
 
 	
 	@GetMapping(value = "/getAnswers/{questionId}")
-	public ResponseEntity<Object>getAnswerds(@PathVariable Integer questionId)throws Exception{
-		return new ResponseEntity<Object>(service.getAnswers(questionId),HttpStatus.OK);
+	public ResponseEntity<Object> getAnswerds(@PathVariable Integer questionId){
+
+		try {
+			return new ResponseEntity<Object>(service.getAnswers(questionId),HttpStatus.OK);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 	@GetMapping(value = "/getAnswersByQestionId/{quesId}")
-	public ResponseEntity<Object>getAnswersByQuesId(@PathVariable Integer quesId)throws Exception{
-		return new ResponseEntity<Object>(service.getQuestions(quesId),HttpStatus.OK);
+	public ResponseEntity<Object>getAnswersByQuesId(@PathVariable Integer quesId){
+		try {
+			return new ResponseEntity<Object>(service.getQuestions(quesId),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

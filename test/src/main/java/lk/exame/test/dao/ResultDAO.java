@@ -12,7 +12,7 @@ import lk.exame.test.entity.ResultEntity;
  */
 public interface ResultDAO extends CrudRepository<ResultEntity, Integer>{
 
-	List<ResultEntity> findAllByUserNameOrderByExameDateDesc(String userName);
+	List<ResultEntity> findAllByUserNameOrderByExamDateDesc(String userName);
 	
 	ResultEntity findByResultId(Integer resultId);
 	

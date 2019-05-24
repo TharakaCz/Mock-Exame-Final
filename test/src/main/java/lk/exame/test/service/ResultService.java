@@ -10,7 +10,7 @@ import lk.exame.test.dto.ResultDTO;
  */
 public interface ResultService {
 	
-	public ResultDTO findByExameId(Integer exameId)throws Exception;
+	public ResultDTO findByExamId(Integer examId)throws Exception;
 	
 	public ArrayList<ResultDTO> findByUserName(String userName)throws Exception;
 }

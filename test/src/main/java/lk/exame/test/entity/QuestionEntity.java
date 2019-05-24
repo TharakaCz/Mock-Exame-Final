@@ -26,9 +26,6 @@ public class QuestionEntity {
 	 * 
 	 * Generate QuestionId In Question Table From Database , length 10
 	 */
-	@Id  
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name = "QUES_ID",length = 10)
 	private Integer quesId;
 	
 	/**
@@ -36,7 +33,6 @@ public class QuestionEntity {
 	 * 
 	 * Get And Set Question In Question Table From Database not null , length 255
 	 */
-	@Column(name = "QUESTION",length = 255 , nullable = false)
 	private String question;
 	
 	/**
@@ -44,7 +40,6 @@ public class QuestionEntity {
 	 * 
 	 * Get And Set Marks One Question In Question Table From Database not null , length 10
 	 */
-	@Column(name = "MARKS",length=10,nullable = false)
 	private Integer marks;
 	
 	/**
@@ -52,7 +47,6 @@ public class QuestionEntity {
 	 * 
 	 * Get And Set QuestionLeval One Question In Question Table From Database , length 50
 	 */
-	@Column(name = "QUESTION_LEVAL" , length = 50)
 	private String questionLeval;
 	
 	/**
@@ -60,24 +54,22 @@ public class QuestionEntity {
 	 * 
 	 * Set And Get Question Status In Question Table From Database , length 20
 	 */
-	@Column(name = "STATUS",length = 20)
+	
 	private String status;
 	
+
 	/**
 	 * List<AnswerEntity>answerEntities
 	 * 
 	 * One To Many Mapping By Question Table In Answer Table Using Question Id
 	 */
-	@OneToMany(mappedBy = "questionEntity",targetEntity = AnswerEntity.class)
-	private List<AnswerEntity>answerEntities;
+	private List<AnswerEntity> answerEntities;
 	
 	/**
 	 * LanguageEntity languageEntitiey
 	 * 
 	 * Join Language Id Column In Question Table
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="LANGUAGE_ID",nullable= false)
 	private LanguageEntity languageEntitiey;
 	
 	/**
@@ -85,8 +77,6 @@ public class QuestionEntity {
 	 * 
 	 * Join Subject Id Column In Question Table
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "SUBJECT_ID",nullable= false)
 	private SubjectEntity subjectEntitiy;
 	
 	public QuestionEntity() {
@@ -94,6 +84,10 @@ public class QuestionEntity {
 	}
 
 
+	
+	@Id  
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "QUESTION_ID",length = 10)
 	public Integer getQuesId() {
 		return quesId;
 	}
@@ -102,6 +96,7 @@ public class QuestionEntity {
 		this.quesId = quesId;
 	}
 
+	@Column(name = "QUESTION",length = 255 , nullable = false)
 	public String getQuestion() {
 		return question;
 	}
@@ -110,6 +105,7 @@ public class QuestionEntity {
 		this.question = question;
 	}
 
+	@OneToMany(mappedBy = "questionEntity",targetEntity = AnswerEntity.class)
 	public List<AnswerEntity> getAnswerEntities() {
 		return answerEntities;
 	}
@@ -118,7 +114,7 @@ public class QuestionEntity {
 		this.answerEntities = answerEntities;
 	}
 
-	
+	@Column(name = "MARKS",length=10,nullable = false)
 	public Integer getMarks() {
 		return marks;
 	}
@@ -127,6 +123,7 @@ public class QuestionEntity {
 		this.marks = marks;
 	}
 
+	@Column(name = "QUESTION_LEVAL" , length = 50)
 	public String getQuestionLeval() {
 		return questionLeval;
 	}
@@ -135,7 +132,7 @@ public class QuestionEntity {
 		this.questionLeval = questionLeval;
 	}
 
-
+	@Column(name = "STATUS",length = 20)
 	public String getStatus() {
 		return status;
 	}
@@ -145,7 +142,9 @@ public class QuestionEntity {
 		this.status = status;
 	}
 
-
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="LANGUAGE_ID",nullable= false)
 	public LanguageEntity getLanguageEntitiey() {
 		return languageEntitiey;
 	}
@@ -155,7 +154,9 @@ public class QuestionEntity {
 		this.languageEntitiey = languageEntitiey;
 	}
 
-
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "SUBJECT_ID",nullable= false)
 	public SubjectEntity getSubjectEntitiy() {
 		return subjectEntitiy;
 	}
@@ -163,6 +164,12 @@ public class QuestionEntity {
 
 	public void setSubjectEntitiy(SubjectEntity subjectEntitiy) {
 		this.subjectEntitiy = subjectEntitiy;
+	}
+
+
+
+	public void setQuestion(String question) {
+		this.question = question;
 	}
 	
 	

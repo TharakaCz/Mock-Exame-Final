@@ -4,9 +4,9 @@ package lk.exame.test.dto;
  * 
  * @author Tharaka Chandralal
  */
-public class ExameDetailsDTO {
+public class ExamDetailsDTO {
 
-	private Integer exameDetailId;
+	private Integer examDetailId;
 	
 	private String level;
 	
@@ -14,22 +14,22 @@ public class ExameDetailsDTO {
 	
 	private QuestionsDTO questionsDTO;
 	
-	private ExameDTO exameDTO;
+	private ExamDTO examDTO;
 	
 	private AnswersDTO answersDTO;
 	
 	private ResultDTO resultDTO;
 
-	public ExameDetailsDTO() {
+	public ExamDetailsDTO() {
 		
 	}
 
-	public Integer getExameDetailId() {
-		return exameDetailId;
+	public Integer getExamDetailId() {
+		return examDetailId;
 	}
 
-	public void setExameDetailId(Integer exameDetailId) {
-		this.exameDetailId = exameDetailId;
+	public void setExameDetailId(Integer examDetailId) {
+		this.examDetailId = examDetailId;
 	}
 
 	public String getLevel() {
@@ -56,12 +56,12 @@ public class ExameDetailsDTO {
 		this.questionsDTO = questionsDTO;
 	}
 
-	public ExameDTO getExameDTO() {
-		return exameDTO;
+	public ExamDTO getExameDTO() {
+		return examDTO;
 	}
 
-	public void setExameDTO(ExameDTO exameDTO) {
-		this.exameDTO = exameDTO;
+	public void setExameDTO(ExamDTO examDTO) {
+		this.examDTO = examDTO;
 	}
 
 	public AnswersDTO getAnswersDTO() {

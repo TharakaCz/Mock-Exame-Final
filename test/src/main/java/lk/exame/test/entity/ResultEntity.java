@@ -23,9 +23,6 @@ public class ResultEntity {
 	 * 
 	 * Generate Result Id In Result Table From Database , length 10
 	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "RESULT_ID",length = 10)
 	private Integer resultId;
 	
 	/**
@@ -33,7 +30,6 @@ public class ResultEntity {
 	 * 
 	 * Calculate Total Marks In Written Exams , length 100
 	 */
-	@Column(name="TOTAL",length = 100)
 	private Integer total;
 	
 	/**
@@ -41,7 +37,6 @@ public class ResultEntity {
 	 * 
 	 * Calculate User Get Total Questions , length 60
 	 */
-	@Column(name = "TOTAL_QUESTIONS",length = 60)
 	private Integer totalQuestions = 0;
 	
 	/**
@@ -49,7 +44,6 @@ public class ResultEntity {
 	 * 
 	 * 	Calculate Total Correct Answers In Exams ,  length 60
 	 */
-	@Column(name = "CORRECT_ANSWERS",length = 60)
 	private Integer correctAnswers = 0;
 	
 	/**
@@ -57,7 +51,6 @@ public class ResultEntity {
 	 * 
 	 * Calculate Total Wrong Answers In Exams , length 60
 	 */
-	@Column(name = "WRONG_ANSWERS" ,length = 60)
 	private Integer wrongAnswers = 0;
 	
 	/**
@@ -65,7 +58,7 @@ public class ResultEntity {
 	 *  
 	 * Set Exam Written  UserName In Result Table From Database , length 255
 	 */
-	@Column(name = "USER_NAME",length =255)
+	
 	private String userName;
 	
 	/**
@@ -73,8 +66,7 @@ public class ResultEntity {
 	 * 
 	 * Set Exam Written Date In Result Table From  Database , length 50
 	 */
-	@Column(name = "EXAME_DATE",length = 50)
-	private Date exameDate;
+	private Date examDate;
 	
 
 
@@ -82,6 +74,10 @@ public class ResultEntity {
 		
 	}
 
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "RESULT_ID",length = 10)
 	public Integer getResultId() {
 		return resultId;
 	}
@@ -90,6 +86,7 @@ public class ResultEntity {
 		this.resultId = resultId;
 	}
 
+	@Column(name="TOTAL",length = 100)
 	public Integer getTotal() {
 		return total;
 	}
@@ -98,6 +95,7 @@ public class ResultEntity {
 		this.total = total;
 	}
 
+	@Column(name = "TOTAL_QUESTIONS",length = 60)
 	public Integer getTotalQuestions() {
 		return totalQuestions;
 	}
@@ -106,6 +104,8 @@ public class ResultEntity {
 		this.totalQuestions = totalQuestions;
 	}
 
+	
+	@Column(name = "CORRECT_ANSWERS",length = 60)
 	public Integer getCorrectAnswers() {
 		return correctAnswers;
 	}
@@ -114,6 +114,7 @@ public class ResultEntity {
 		this.correctAnswers = correctAnswers;
 	}
 
+	@Column(name = "WRONG_ANSWERS" ,length = 60)
 	public Integer getWrongAnswers() {
 		return wrongAnswers;
 	}
@@ -122,6 +123,7 @@ public class ResultEntity {
 		this.wrongAnswers = wrongAnswers;
 	}
 
+	@Column(name = "USER_NAME",length =255)
 	public String getUserName() {
 		return userName;
 	}
@@ -131,12 +133,13 @@ public class ResultEntity {
 	}
 
 
-	public Date getExameDate() {
-		return exameDate;
+	@Column(name = "EXAM_DATE",length = 50)
+	public Date getExamDate() {
+		return examDate;
 	}
 
-	public void setExameDate(Date exameDate) {
-		this.exameDate = exameDate;
+	public void setExamDate(Date examDate) {
+		this.examDate = examDate;
 	}
 
 	
