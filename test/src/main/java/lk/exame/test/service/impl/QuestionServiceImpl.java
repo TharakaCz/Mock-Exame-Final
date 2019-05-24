@@ -226,6 +226,7 @@ public class QuestionServiceImpl implements QuestionService {
 					answerEntity.setAnsewer(answer.getAnsewer());
 					answerEntity.setTagName(answer.getTagName());
 					answerEntity.setCorrect(answer.getCorrect());
+				
 					answerDao.save(answerEntity);
 				}
 			});
