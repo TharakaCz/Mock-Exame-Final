@@ -5,7 +5,7 @@ import java.util.List;
 
 import lk.exame.test.dto.ExamDTO;
 import lk.exame.test.dto.ExamDetailsDTO;
-import lk.exame.test.dto.QuestionsDTO;
+import lk.exame.test.dto.ExamBasicDetailDTO;
 import lk.exame.test.dto.ResultDTO;
 import lk.exame.test.dto.SubmitQuestionDTO;
 
@@ -14,13 +14,11 @@ import lk.exame.test.dto.SubmitQuestionDTO;
  * @author Tharaka Chandralal
  */
 public interface ExamService {
+	
 
 	public boolean delete(Integer examId)throws Exception;
 	
-	public ExamDTO getExam(Integer examId)throws Exception;
-	
-	public ArrayList<ExamDTO>getAllExam()throws Exception;
-	
+
 	public ResultDTO getExamResult(Integer examId)throws Exception;
 	
 	/*
@@ -28,7 +26,7 @@ public interface ExamService {
 	 * languageId)throws Exception;
 	 */
 	
-	public List<ExamDetailsDTO>updateQuestion()throws Exception;
+	public ExamBasicDetailDTO returnBacicDetails(ExamBasicDetailDTO examBasicDetailDTO)throws Exception;
 	
 	public ResultDTO submitQuestion(List<SubmitQuestionDTO>submitQuestionDTOs,String userName , Integer languageId)throws Exception;
 	

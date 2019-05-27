@@ -17,6 +17,8 @@ public interface QuestionDAO extends CrudRepository<QuestionEntity, Integer>{
 
 	  List<QuestionEntity>findAllByQuestionLeval(String questionLeval);
 	
+	  QuestionEntity findByQuesId(Integer quesId);
+	  
 	  QuestionEntity findOneByQuestion(String question);
 	
 	  List<QuestionEntity> findAllByStatus(String status);

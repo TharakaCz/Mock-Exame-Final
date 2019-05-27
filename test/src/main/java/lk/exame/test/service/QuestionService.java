@@ -3,9 +3,10 @@ package lk.exame.test.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
+
 import lk.exame.test.dto.QuestionsDTO;
-import lk.exame.test.dto.ResultDTO;
-import lk.exame.test.dto.SubmitQuestionDTO;
+
 
 /**
  * 

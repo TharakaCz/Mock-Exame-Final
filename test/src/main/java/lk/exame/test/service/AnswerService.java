@@ -15,7 +15,7 @@ public interface AnswerService {
 	
 	public List<AnswersDTO> getAnswers(Integer questionId)throws Exception;
 	
-	public AnswersDTO getAnswer(Integer answerId)throws Exception;
+
 	
 	public List<AnswersDTO> getQuestions(Integer quesId)throws Exception;
 }

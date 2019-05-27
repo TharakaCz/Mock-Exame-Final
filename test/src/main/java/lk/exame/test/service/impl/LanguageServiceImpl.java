@@ -42,7 +42,7 @@ public class LanguageServiceImpl implements LanguageService{
 	@Override
 	public boolean delete(Integer langId) throws Exception {
 		
-		LanguageEntity languageEntity = languageDao.findById(langId).get();
+		LanguageEntity languageEntity = languageDao.findByLangId(langId);
 		
 		languageEntity.setStatus(AppConstant.DEACTIVE);
 		
@@ -52,6 +52,7 @@ public class LanguageServiceImpl implements LanguageService{
 			
 		}else {
 			System.out.println("Language Table Is Empty");
+			
 		}
 		
 		return true;
@@ -59,8 +60,14 @@ public class LanguageServiceImpl implements LanguageService{
 
 	@Override
 	public boolean edit(LanguageDTO languageDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+
+		LanguageEntity languageEntity = languageDao.findByLangId(languageDTO.getLangId());
+		
+		languageEntity.setLangName(languageDTO.getLangName());
+		
+		languageDao.save(languageEntity);
+		
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -131,6 +138,23 @@ public class LanguageServiceImpl implements LanguageService{
 		
 		languageDTO.setLangId(languageEntity.getLangId());
 		languageDTO.setLangName(languageEntity.getLangName());
+		
+		return languageDTO;
+	}
+
+	/* (non-Javadoc)
+	 * @see lk.exame.test.service.LanguageService#searchLanguage(java.lang.Integer)
+	 */
+	@Override
+	public LanguageDTO searchLanguage(Integer langId) throws Exception {
+		
+		LanguageEntity languageEntity = languageDao.findByLangId(langId);
+		
+		LanguageDTO languageDTO = new LanguageDTO();
+		
+		languageDTO.setLangId(languageEntity.getLangId());
+		languageDTO.setLangName(languageEntity.getLangName());
+		
 		
 		return languageDTO;
 	}

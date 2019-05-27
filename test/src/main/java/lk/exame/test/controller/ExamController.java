@@ -1,7 +1,6 @@
 package lk.exame.test.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lk.exame.test.dto.ExamBasicDetailDTO;
 import lk.exame.test.dto.SubmitQuestionDTO;
 import lk.exame.test.service.ExamService;
 
@@ -96,6 +96,15 @@ public class ExamController {
 		}
 	  }
 	
-	  
+	  @GetMapping(value="/getExameBasicDetail")
+	  private ResponseEntity<Object>getExameBasicDetail(ExamBasicDetailDTO examBasicDetailDTO){
+		  try {
+			return new ResponseEntity<Object>(service.returnBacicDetails(examBasicDetailDTO),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	  }
 	  
 }
