@@ -4,10 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import lk.exame.test.dao.AnswerDAO;
@@ -17,8 +17,9 @@ import lk.exame.test.dao.QuestionDAO;
 import lk.exame.test.dao.ResultDAO;
 import lk.exame.test.dto.AnswersDTO;
 import lk.exame.test.dto.ExamDTO;
-import lk.exame.test.dto.ExamDetailsDTO;
-import lk.exame.test.dto.QuestionsDTO;
+
+import lk.exame.test.dto.ExamBasicDetailDTO;
+
 import lk.exame.test.dto.ResultDTO;
 import lk.exame.test.dto.SubmitQuestionDTO;
 import lk.exame.test.entity.AnswerEntity;
@@ -50,38 +51,31 @@ public class ExamServiceImpl implements ExamService {
 
 	@Autowired
 	private LanguageDAO languageDao;
-
-	private Random random = new Random();
-
-	private QuestionEntity questionEnt;
-
+	
+	@Value("${app.examQuestion}")
+	private String examQuestion;
+	
+	@Value("${app.examTime}")
+	private String examTime;
+	
 	/**
 	 * This Are Using Active Table Row DeActive In Table
 	 */
 	@Override
 	public boolean delete(Integer examId) throws Exception {
-		ExamEntity examEntity = examDao.findById(examId).get();
-		examEntity.setStatus(AppConstant.DEACTIVE);
+		ExamEntity examEntity = examDao.findByExamId(examId);
+		
+		if (examEntity !=null) {
+			examEntity.setStatus(AppConstant.DEACTIVE);
+		}else {
+			System.out.println("Exame Table Is Empty");
+		}
+		
 		return true;
 	}
 
-	@Override
-	public ExamDTO getExam(Integer examId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public ArrayList<ExamDTO> getAllExam() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ExamDetailsDTO> updateQuestion() throws Exception {
-
-		return null;
-	}
+	
 
 	/**
 	 * This Method Using Calculate Exam Result
@@ -130,9 +124,9 @@ public class ExamServiceImpl implements ExamService {
 
 			System.out.println("Total question = =/" + resultEntity.toString());
 
-			QuestionEntity questionEntity = questionDao.findById(subQues.getQuestionId()).get();
+			QuestionEntity questionEntity = questionDao.findByQuesId(subQues.getQuestionId());
 
-			AnswerEntity answerEntity = answerDao.findById(subQues.getUserAnswerId()).get();
+			AnswerEntity answerEntity = answerDao.findByAnswerId(subQues.getUserAnswerId());
 
 			if (answerEntity.getCorrect().equals(1)) {
 				System.out.println("Loop isCorrect ok . .");
@@ -315,7 +309,7 @@ public class ExamServiceImpl implements ExamService {
 
 		Integer resultId = examEntity.getResultEntity().getResultId();
 
-		ResultEntity resultEntity = resultDao.findById(resultId).get();
+		ResultEntity resultEntity = resultDao.findByResultId(resultId);
 		ResultDTO resultDTO = new ResultDTO();
 
 		resultDTO.setCorrectAnswers(resultEntity.getCorrectAnswers());
@@ -372,6 +366,24 @@ public class ExamServiceImpl implements ExamService {
 		resultDTO.setWrongAnswers(resultEntity.getWrongAnswers());
 
 		return resultDTO;
+	}
+
+
+
+
+	/* (non-Javadoc)
+	 * @see lk.exame.test.service.ExamService#returnBacicDetails(lk.exame.test.dto.ExameBasicDetailDTO)
+	 */
+	@Override
+	public ExamBasicDetailDTO returnBacicDetails(ExamBasicDetailDTO examBasicDetailDTO) throws Exception {
+		
+		Integer examQuestionLimit = Integer.parseInt(examQuestion);
+		Integer examTimeCount = Integer.parseInt(examTime);
+		
+		examBasicDetailDTO.setExameQuestionLimit(examQuestionLimit);
+		examBasicDetailDTO.setExameTimeCout(examTimeCount);
+		
+		return examBasicDetailDTO;
 	}
 
 }

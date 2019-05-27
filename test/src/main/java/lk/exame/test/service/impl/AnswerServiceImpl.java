@@ -32,7 +32,7 @@ public class AnswerServiceImpl implements AnswerService{
 	@Override
 	public List<AnswersDTO> getAnswers(Integer questionId) throws Exception {
 	
-		QuestionEntity questionEntity=questionDao.findById(questionId).get();
+		QuestionEntity questionEntity=questionDao.findByQuesId(questionId);
 		
 		List<AnswerEntity>getAll=answerDao.findAllByQuestionEntity(questionEntity);
 		List<AnswersDTO> getAlldto=new ArrayList<AnswersDTO>();
@@ -50,7 +50,7 @@ public class AnswerServiceImpl implements AnswerService{
 	@Override
 	public boolean delete(Integer answerId) throws Exception {
 		
-		AnswerEntity answerEntity = answerDao.findById(answerId).get();
+		AnswerEntity answerEntity = answerDao.findByAnswerId(answerId);
 		
 		answerEntity.setStatus(AppConstant.DEACTIVE);
 		if (answerEntity != null) {
@@ -61,11 +61,6 @@ public class AnswerServiceImpl implements AnswerService{
 		return false;
 	}
 
-	@Override
-	public AnswersDTO getAnswer(Integer answerId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/**
 	 * Find Question Using Question Id In AnswerTable

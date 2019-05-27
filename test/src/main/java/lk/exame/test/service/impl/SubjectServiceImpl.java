@@ -29,7 +29,7 @@ public class SubjectServiceImpl implements SubjectService{
 	@Override
 	public boolean delete(Integer subId) throws Exception {
 		
-		SubjectEntity subjectEntity = subjectDao.findById(subId).get();
+		SubjectEntity subjectEntity = subjectDao.findBySubId(subId);
 		
 		subjectEntity.setStatus(AppConstant.DEACTIVE);
 		
@@ -49,7 +49,7 @@ public class SubjectServiceImpl implements SubjectService{
 	@Override
 	public SubjectDTO findSubject(Integer subId) throws Exception {
 		
-		SubjectEntity subject = subjectDao.findById(subId).get();
+		SubjectEntity subject = subjectDao.findBySubId(subId);
 		
 		SubjectDTO subjectDTO = new SubjectDTO(
 				subject.getSubId(),
@@ -66,14 +66,15 @@ public class SubjectServiceImpl implements SubjectService{
 
 		String status = AppConstant.ACTIVE;
 		List<SubjectEntity>subjects = subjectDao.findAllByStatus(status);
-		
+	
 		ArrayList<SubjectDTO>subjectDTOs = new ArrayList<>();
 		
 		subjects.forEach(e->{
 			subjectDTOs.add(getAllSubject(e));
 		});
 		
-		return subjectDTOs;
+			return subjectDTOs;
+	
 	}
 
 	/* (non-Javadoc)
@@ -101,5 +102,20 @@ public class SubjectServiceImpl implements SubjectService{
 		subjectDTO.setSubName(subjectEntity.getSubName());
 		
 		return subjectDTO;
+	}
+
+	/* (non-Javadoc)
+	 * @see lk.exame.test.service.SubjectService#edit(lk.exame.test.dto.SubjectDTO)
+	 */
+	@Override
+	public boolean edit(SubjectDTO subjectDTO) throws Exception {
+		
+		SubjectEntity subjectEntity = subjectDao.findBySubId(subjectDTO.getSubId());
+		
+		subjectEntity.setSubName(subjectDTO.getSubName());
+		
+		subjectDao.save(subjectEntity);
+		
+		return false;
 	}
 }

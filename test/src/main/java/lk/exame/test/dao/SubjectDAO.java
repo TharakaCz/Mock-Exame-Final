@@ -21,4 +21,5 @@ public interface SubjectDAO extends CrudRepository<SubjectEntity, Integer>{
 
 	List<SubjectEntity> findAllByStatus(String status);
 	
+	SubjectEntity findBySubId(Integer subId);
 }

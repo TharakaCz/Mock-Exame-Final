@@ -16,5 +16,7 @@ public interface SubjectService {
 	
 	public SubjectDTO findSubject(Integer subId)throws Exception;
 	
+	public boolean edit(SubjectDTO subjectDTO)throws Exception;
+	
 	public ArrayList<SubjectDTO>getAllSubject()throws Exception;
 }

@@ -1,6 +1,6 @@
 package lk.exame.test.controller;
 
-import java.util.ArrayList;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,7 +77,15 @@ public class SubjectController {
 			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	/*public ArrayList<SubjectDTO>getAllSubject()throws Exception{
-		return subjectService.getAllSubject();
-	}*/
+
+	@PostMapping(value="/editSubject")
+	public ResponseEntity<Object>editSubject(@RequestBody SubjectDTO subjectDTO){
+		try {
+			return new ResponseEntity<Object>(subjectService.edit(subjectDTO),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import lk.exame.test.dao.AnswerDAO;
@@ -41,6 +44,24 @@ public class QuestionServiceImpl implements QuestionService {
 	@Autowired
 	private SubjectDAO subjectDao;
 
+	@Value("${app.easyStageStart}")
+	private String easyStageStart;
+	
+	@Value("${app.easyStageEnd}")
+	private String easyStageEnd;
+	
+	@Value("${app.normalStageStart}")
+	private String normalStageStart;
+	
+	@Value("${app.normalStageEnd}")
+	private String normalStageEnd;
+	
+	@Value("${app.hardStageStart}")
+	private String hardStageStart;
+	
+	@Value("${app.hardStageEnd}")
+	private String hardStageEnd;
+	
 	private Random random = new Random();
 	
 	private QuestionEntity questionEnt;
@@ -53,7 +74,7 @@ public class QuestionServiceImpl implements QuestionService {
 	public boolean delete(Integer quesId) throws Exception {
 
 		
-		QuestionEntity questionEntity = questionDao.findById(quesId).get();
+		QuestionEntity questionEntity = questionDao.findByQuesId(quesId);
 
 		questionEntity.setStatus(AppConstant.DEACTIVE);
 		
@@ -69,20 +90,28 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public QuestionsDTO getQuestion(List<Integer> questionIds, Integer languageId) throws Exception {
-		LanguageEntity languageEntity = languageDao.findById(languageId).get();
+		LanguageEntity languageEntity = languageDao.findByLangId(languageId);
 		
 		String questionLeval = "";
 		String status = AppConstant.ACTIVE;
 
 		QuestionsDTO questionsDTO = new QuestionsDTO();
 		
-	
-		if (questionIds == null || questionIds.size() >= 0 && questionIds.size() <= 20) {
-			questionLeval = "Easy";
-		} else if (questionIds.size() >= 21 && questionIds.size() <= 40) {
-			questionLeval = "Normal";
-		} else if (questionIds.size() >= 41 && questionIds.size() <= 59) {
-			questionLeval = "Hard";
+		
+		 Integer stageOneEnd = Integer.parseInt(easyStageEnd);
+		 Integer stageTwoStart = Integer.parseInt(normalStageStart);
+		 Integer stageTwoEnd = Integer.parseInt(normalStageEnd);
+		 Integer stageThreeStart = Integer.parseInt(hardStageStart);
+		 Integer stageThreeEnd = Integer.parseInt(hardStageEnd);
+		 
+		
+		if (questionIds == null || questionIds.size() >=0  && questionIds.size() <= stageOneEnd ) {
+			
+			questionLeval =  AppConstant.EASY;
+		} else if (questionIds.size() >= stageTwoStart && questionIds.size() <= stageTwoEnd) {
+			questionLeval = AppConstant.NORMAL;
+		} else if (questionIds.size() >= stageThreeStart && questionIds.size() <= stageThreeEnd) {
+			questionLeval = AppConstant.HARD;
 		} else {
 			System.out.println("SuccsessFully Compeated Exame");
 			return null;
@@ -92,19 +121,43 @@ public class QuestionServiceImpl implements QuestionService {
 		ArrayList<QuestionEntity>questionEntit;
 		
 		
-		if (questionIds == null | questionIds.size() == 0) {
+		if (questionIds == null || questionIds.size() == 0 ) {
 			
 			questionEntit = questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitiey(questionLeval, status,languageEntity);
+			
 		}else {
 			
 			questionEntit = questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndQuesIdNotIn(questionLeval, status, languageEntity, questionIds);
 		}
 		
+		
+		  if (questionEntit == null || questionEntit.size() == 0) {
+		  
+		  String newStatus = getStatus(questionLeval);
+		  
+		  
+		  if (newStatus == null || newStatus.isEmpty()) {
+			  
+		  System.out.println("Status Can't be Null");
+		  
+		  }else {
+		  
+		  if (questionIds == null || questionIds.size() == 0) {
+		  
+		  questionEntit =  questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitiey(newStatus, status,languageEntity);
+		  }else { 
+			  questionEntit = questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndQuesIdNotIn(newStatus, status, languageEntity, questionIds); 
+			  }
+		  } 
+		  }
+		 
+		
+		
 		  QuestionEntity
 		  questionEntity=questionEntit.get(random.nextInt(questionEntit.size()));
 		  
 		
-		  questionEnt=questionDao.findById(questionEntity.getQuesId()).get(); 
+		  questionEnt=questionDao.findByQuesId(questionEntity.getQuesId());
 		  
 		 		
 		System.out.println(questionEnt.getQuesId());
@@ -130,6 +183,23 @@ public class QuestionServiceImpl implements QuestionService {
 		questionsDTO.setAnswerDtos(getAllAnsweDto);
 
 		return questionsDTO;
+	}
+
+	/**
+	 * @param status
+	 * @return
+	 */
+	private String getStatus(String questionLeval) {
+		switch (questionLeval) {
+		case AppConstant.HARD:
+			return AppConstant.NORMAL;
+		case AppConstant.NORMAL:
+			return AppConstant.EASY;
+		case AppConstant.EASY:
+			return AppConstant.NORMAL;
+		default:
+			return AppConstant.EASY;
+		}
 	}
 
 	@Override
@@ -202,7 +272,7 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public boolean update(QuestionsDTO questionsDTO) throws Exception {
 
-		QuestionEntity questionEntity = questionDao.findById(questionsDTO.getQuesId()).get();
+		QuestionEntity questionEntity = questionDao.findByQuesId(questionsDTO.getQuesId());
 		
 		SubjectEntity subjectEntity = subjectDao.findOneBySubId(questionsDTO.getSubjectDto().getSubId());
 		
@@ -254,7 +324,7 @@ public class QuestionServiceImpl implements QuestionService {
 		QuestionEntity questionEntity = new QuestionEntity();
 		QuestionsDTO questionsDTO = new QuestionsDTO();
 		
-		  questionEntity = questionDao.findById(quesId).get();
+		  questionEntity = questionDao.findByQuesId(quesId);
 		 
 		  if (questionEntity != null) {
 		  
@@ -339,5 +409,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 		return questionsDTO;
 	}
+
+	
 	
 }

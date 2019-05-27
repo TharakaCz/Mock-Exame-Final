@@ -20,4 +20,5 @@ public interface LanguageDAO extends CrudRepository<LanguageEntity, Integer>{
 	
 	List<LanguageEntity>findAllByStatus(String status);
 	
+
 }

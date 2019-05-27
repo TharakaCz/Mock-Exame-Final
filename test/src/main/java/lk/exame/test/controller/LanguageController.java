@@ -61,4 +61,27 @@ public class LanguageController {
 			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping(value="/searchLanguage/{langId}")
+	private ResponseEntity<Object>searchLanguage(@PathVariable Integer langId){
+		
+		try {
+			return new ResponseEntity<Object>(langService.searchLanguage(langId),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping(value="/editLanguage")
+	private ResponseEntity<Object>editLanguage(@RequestBody LanguageDTO languageDTO){
+		try {
+			return new ResponseEntity<Object>(langService.edit(languageDTO),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
