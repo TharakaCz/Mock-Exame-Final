@@ -1,5 +1,6 @@
 package lk.exame.test.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 
 /**
  * 
@@ -68,8 +70,14 @@ public class ResultEntity {
 	 */
 	private Date examDate;
 	
-
-
+	private String passFail;
+	
+	private String examePassGrade;
+	
+	private BigDecimal exameTotalPresent;
+	
+	private String status;
+	
 	public ResultEntity() {
 		
 	}
@@ -142,6 +150,53 @@ public class ResultEntity {
 		this.examDate = examDate;
 	}
 
+
+	@Column(name="PASS_FAIL")
+	public String getPassFail() {
+		return passFail;
+	}
+
+
+	public void setPassFail(String passFail) {
+		this.passFail = passFail;
+	}
+
+
+	@Column(name="EXAME_GRADE")
+	public String getExamePassGrade() {
+		return examePassGrade;
+	}
+
+
+	public void setExamePassGrade(String examePassGrade) {
+		this.examePassGrade = examePassGrade;
+	}
+
+	@Column(name="EXAME_PRESENT")
+	public BigDecimal getExameTotalPresent() {
+		return exameTotalPresent;
+	}
+
+
+	public void setExameTotalPresent(BigDecimal exameTotalPresent) {
+		this.exameTotalPresent = exameTotalPresent;
+	}
+
+
+	@Column(name="STATUS",length=15)
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
+	
+
+	
 	
 	
 	

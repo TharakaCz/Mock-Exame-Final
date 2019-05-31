@@ -1,5 +1,7 @@
 package lk.exame.test.service.impl;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +17,6 @@ import lk.exame.test.dao.ExamDAO;
 import lk.exame.test.dao.LanguageDAO;
 import lk.exame.test.dao.QuestionDAO;
 import lk.exame.test.dao.ResultDAO;
-import lk.exame.test.dto.AnswersDTO;
 import lk.exame.test.dto.ExamDTO;
 
 import lk.exame.test.dto.ExamBasicDetailDTO;
@@ -58,6 +59,24 @@ public class ExamServiceImpl implements ExamService {
 	@Value("${app.examTime}")
 	private String examTime;
 	
+	@Value("${app.examOneQuestionMark}")
+	private String examOneQuestionMark;
+	
+	@Value("${app.examDpass}")
+	private String examDpass;
+	
+	@Value("${app.examBpass}")
+	private String examBpass;
+	
+	@Value("${app.examCpass}")
+	private String examCpass;
+	
+	@Value("${app.examSpass}")
+	private String examSpass;
+	
+	@Value("${app.examTotalQuestionMarks}")
+	private String totalQuestionMarks;
+	
 	/**
 	 * This Are Using Active Table Row DeActive In Table
 	 */
@@ -84,6 +103,15 @@ public class ExamServiceImpl implements ExamService {
 	public ResultDTO submitQuestion(List<SubmitQuestionDTO> submitQuestionDTOs, String userName, Integer languageId)
 			throws Exception {
 
+		Integer exameQuestionCount = Integer.parseInt(examQuestion);
+		Integer dPass = Integer.parseInt(examDpass);
+		Integer bPass = Integer.parseInt(examBpass);
+		Integer cPass = Integer.parseInt(examCpass);
+		Integer sPass = Integer.parseInt(examSpass);
+		Integer exameTotalMarks = Integer.parseInt(totalQuestionMarks);
+		
+		BigDecimal exameTotal = new BigDecimal(exameTotalMarks);
+		
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		Date date = new Date();
 		String time = formatter.format(date);
@@ -139,6 +167,8 @@ public class ExamServiceImpl implements ExamService {
 				} else {
 
 					resultEntity.setTotal(resultEntity.getTotal() + questionEntity.getMarks());
+					
+					
 
 				}
 
@@ -147,6 +177,35 @@ public class ExamServiceImpl implements ExamService {
 			}
 		});
 
+		System.out.println("Result Total =/"+resultEntity.getTotal());
+		
+		if (resultEntity.getTotal() == dPass || resultEntity.getTotal() > dPass) {
+			resultEntity.setExamePassGrade(AppConstant.DPASS);
+			resultEntity.setPassFail(AppConstant.PASS);
+			
+		}else if (resultEntity.getTotal() == bPass || resultEntity.getTotal() < dPass && resultEntity.getTotal() > bPass) {
+			resultEntity.setExamePassGrade(AppConstant.BPASS);
+			resultEntity.setPassFail(AppConstant.PASS);
+			
+		}else if (resultEntity.getTotal() == cPass || resultEntity.getTotal() < bPass && resultEntity.getTotal() > cPass) {
+			resultEntity.setExamePassGrade(AppConstant.CPASS);
+			resultEntity.setPassFail(AppConstant.PASS);
+			
+		}else if (resultEntity.getTotal() == sPass || resultEntity.getTotal() < cPass && resultEntity.getTotal() > sPass) {
+			resultEntity.setExamePassGrade(AppConstant.SPASS);
+			resultEntity.setPassFail(AppConstant.FAIL);
+			
+		}else {
+			resultEntity.setExamePassGrade(AppConstant.FPASS);
+			resultEntity.setPassFail(AppConstant.FAIL);
+		}
+		
+		BigDecimal prcentage = new BigDecimal(0);
+		
+		prcentage = (new BigDecimal(resultEntity.getTotal()).multiply(exameTotal)).divide(exameTotal,2,RoundingMode.HALF_UP);
+		
+		resultEntity.setExameTotalPresent(prcentage);
+		
 		examEntity.setResultEntity(resultDao.save(resultEntity));
 
 		examDao.save(examEntity);
@@ -163,7 +222,10 @@ public class ExamServiceImpl implements ExamService {
 		resultDTO.setTotalQuestions(resultEntity.getTotalQuestions());
 		resultDTO.setUserName(resultEntity.getUserName());
 		resultDTO.setLanguage(language);
-
+		resultDTO.setExamePassGrade(resultEntity.getExamePassGrade());
+		resultDTO.setExameTotalPresent(resultEntity.getExameTotalPresent());
+		resultDTO.setTotalExameQuestions(exameQuestionCount);
+		resultDTO.setPassFail(resultEntity.getPassFail());
 		return resultDTO;
 	}
 
@@ -198,102 +260,7 @@ public class ExamServiceImpl implements ExamService {
 		return examDTO;
 	}
 
-	/**
-	 * This Method Using get Question And Answers in Database Using Language Id
-	 *//*
-		 * @Override public QuestionsDTO getQuestion(List<Integer> questionIds, Integer
-		 * languageId) throws Exception {
-		 * 
-		 * LanguageEntity languageEntity = languageDao.findById(languageId).get();
-		 * 
-		 * String questionLeval = ""; String status = AppConstant.ACTIVE;
-		 * 
-		 * QuestionsDTO questionsDTO = new QuestionsDTO();
-		 * 
-		 * 
-		 * if (questionIds == null || questionIds.size() >= 0 && questionIds.size() <=
-		 * 20) { questionLeval = "Easy"; } else if (questionIds.size() >= 21 &&
-		 * questionIds.size() <= 40) { questionLeval = "Normal"; } else if
-		 * (questionIds.size() >= 41 && questionIds.size() <= 59) { questionLeval =
-		 * "Hard"; } else { System.out.println("SuccsessFully Compeated Exame");
-		 * 
-		 * }
-		 * 
-		 * ArrayList<QuestionEntity>questionEntit ;
-		 * ArrayList<QuestionEntity>questionEntities ;
-		 * 
-		 * if (questionIds == null | questionIds.size() == 0) {
-		 * 
-		 * questionEntit =
-		 * questionDao.findAllQuesIdByQuestionLevalAndStatusAndLanguageEntitiey(
-		 * questionLeval, status,languageEntity); }else {
-		 * 
-		 * questionEntities = questionDao.
-		 * findAllQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndQuesIdNotIn(
-		 * questionLeval, status, languageEntity, questionIds); }
-		 * 
-		 * 
-		 * 
-		 * 
-		 * if(questionIds.size()==0) { questionEntit.forEach(q->{
-		 * 
-		 * QuestionEntity
-		 * questionEntity=questionEntit.get(random.nextInt(questionEntit.size()));
-		 * 
-		 * if (questionIds.contains(questionEntity.getQuesId())==false) {
-		 * questionEnt=questionDao.findById(questionEntity.getQuesId()).get(); }
-		 * 
-		 * });
-		 * 
-		 * }else if(questionIds.size() <= 59){ questionEntities.forEach(each->{
-		 * System.out.println("kkkk "); QuestionEntity
-		 * questionEntity2=questionEntities.get(random.nextInt(questionEntities.size()))
-		 * ; if (questionIds.contains(questionEntity2.getQuesId())==false) {
-		 * questionEnt=questionDao.findById(questionEntity2.getQuesId()).get(); } });
-		 * 
-		 * 
-		 * }else { System.out.println("Call Length Over"); return null;
-		 * 
-		 * }
-		 * 
-		 * System.out.println(questionEnt.getQuesId());
-		 * System.out.println(questionEnt.getQuestion());
-		 * 
-		 * System.out.println("Random == = /"+random.toString());
-		 * 
-		 * List<AnswerEntity> getAnswersEasy =
-		 * answerDao.findAllByQuestionEntity(questionEnt); List<AnswersDTO>
-		 * getAllAnsweDto = new ArrayList<AnswersDTO>();
-		 * 
-		 * getAnswersEasy.forEach(answersPrimary -> { System.out.println("Loop - 1");
-		 * getAllAnsweDto.add(getAnswerDto(answersPrimary)); });
-		 * 
-		 * questionsDTO.setQuesId(questionEnt.getQuesId());
-		 * questionsDTO.setQuestion(questionEnt.getQuestion());
-		 * questionsDTO.setMarks(questionEnt.getMarks());
-		 * 
-		 * questionsDTO.setQuestionLeval(questionEnt.getQuestionLeval());
-		 * questionsDTO.setStatus(questionEnt.getStatus());
-		 * 
-		 * questionsDTO.setAnswerDtos(getAllAnsweDto);
-		 * 
-		 * return questionsDTO;
-		 * 
-		 * 
-		 * }
-		 */
-
-	private AnswersDTO getAnswerDto(AnswerEntity answerEntity) {
-
-		AnswersDTO answersDTO = new AnswersDTO();
-		answersDTO.setAnswerId(answerEntity.getAnswerId());
-		answersDTO.setAnsewer(answerEntity.getAnsewer());
-		answersDTO.setCorrect(answerEntity.getCorrect());
-		answersDTO.setTagName(answerEntity.getTagName());
-		answersDTO.setQuestionId(answerEntity.getQuestionEntity().getQuesId());
-
-		return answersDTO;
-	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -379,9 +346,14 @@ public class ExamServiceImpl implements ExamService {
 		
 		Integer examQuestionLimit = Integer.parseInt(examQuestion);
 		Integer examTimeCount = Integer.parseInt(examTime);
+		Integer examQuestionMarks = Integer.parseInt(examOneQuestionMark);
+		
+		List<Integer>questionMarksList = new ArrayList<Integer>();
+		questionMarksList.add(examQuestionMarks);
 		
 		examBasicDetailDTO.setExameQuestionLimit(examQuestionLimit);
 		examBasicDetailDTO.setExameTimeCout(examTimeCount);
+		examBasicDetailDTO.setExamQuestionMarks(questionMarksList);
 		
 		return examBasicDetailDTO;
 	}

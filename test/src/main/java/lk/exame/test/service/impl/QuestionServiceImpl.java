@@ -1,5 +1,8 @@
 package lk.exame.test.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -62,6 +65,8 @@ public class QuestionServiceImpl implements QuestionService {
 	@Value("${app.hardStageEnd}")
 	private String hardStageEnd;
 	
+	
+	
 	private Random random = new Random();
 	
 	private QuestionEntity questionEnt;
@@ -89,12 +94,17 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public QuestionsDTO getQuestion(List<Integer> questionIds, Integer languageId) throws Exception {
-		LanguageEntity languageEntity = languageDao.findByLangId(languageId);
+	public QuestionsDTO getQuestion(List<Integer> questionIds ,Integer languageId,Integer subjectId) throws Exception {
+
+		LanguageEntity languageEntity = languageDao.findOneByLangId(languageId);
+		SubjectEntity subjectEntity = subjectDao.findOneBySubId(subjectId);
+		
 		
 		String questionLeval = "";
 		String status = AppConstant.ACTIVE;
 
+		System.out.println("SubjectEntity Exame Impl =/"+subjectEntity.getSubName());
+		System.out.println("LanguageEntuty Exame Impl =/"+languageEntity.getLangName());
 		QuestionsDTO questionsDTO = new QuestionsDTO();
 		
 		
@@ -103,7 +113,7 @@ public class QuestionServiceImpl implements QuestionService {
 		 Integer stageTwoEnd = Integer.parseInt(normalStageEnd);
 		 Integer stageThreeStart = Integer.parseInt(hardStageStart);
 		 Integer stageThreeEnd = Integer.parseInt(hardStageEnd);
-		 
+		
 		
 		if (questionIds == null || questionIds.size() >=0  && questionIds.size() <= stageOneEnd ) {
 			
@@ -122,19 +132,14 @@ public class QuestionServiceImpl implements QuestionService {
 		
 		
 		if (questionIds == null || questionIds.size() == 0 ) {
-			
-			questionEntit = questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitiey(questionLeval, status,languageEntity);
-			
+			questionEntit = questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndSubjectEntitiy(questionLeval, status, languageEntity,subjectEntity);
 		}else {
-			
-			questionEntit = questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndQuesIdNotIn(questionLeval, status, languageEntity, questionIds);
+			questionEntit = questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndSubjectEntitiyAndQuesIdNotIn(questionLeval, status, languageEntity,subjectEntity, questionIds);
 		}
-		
 		
 		  if (questionEntit == null || questionEntit.size() == 0) {
 		  
 		  String newStatus = getStatus(questionLeval);
-		  
 		  
 		  if (newStatus == null || newStatus.isEmpty()) {
 			  
@@ -144,37 +149,32 @@ public class QuestionServiceImpl implements QuestionService {
 		  
 		  if (questionIds == null || questionIds.size() == 0) {
 		  
-		  questionEntit =  questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitiey(newStatus, status,languageEntity);
+		  questionEntit =  questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndSubjectEntitiy(newStatus, status,languageEntity,subjectEntity);
 		  }else { 
-			  questionEntit = questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndQuesIdNotIn(newStatus, status, languageEntity, questionIds); 
+			  questionEntit = questionDao.findOneQuesIdByQuestionLevalAndStatusAndLanguageEntitieyAndSubjectEntitiyAndQuesIdNotIn(newStatus, status, languageEntity,subjectEntity, questionIds); 
 			  }
 		  } 
 		  }
-		 
-		
-		
 		  QuestionEntity
 		  questionEntity=questionEntit.get(random.nextInt(questionEntit.size()));
-		  
-		
 		  questionEnt=questionDao.findByQuesId(questionEntity.getQuesId());
-		  
-		 		
-		System.out.println(questionEnt.getQuesId());
-		System.out.println(questionEnt.getQuestion());
-		
-		System.out.println("Random == = /"+random.toString());
 		
 		List<AnswerEntity> getAnswersEasy = answerDao.findAllByQuestionEntity(questionEnt);
 		List<AnswersDTO> getAllAnsweDto = new ArrayList<AnswersDTO>();
 
 		getAnswersEasy.forEach(answersPrimary -> {
 			System.out.println("Loop - 1");
-			getAllAnsweDto.add(getAnswerDto(answersPrimary));
+			try {
+				getAllAnsweDto.add(getAnswerDto(answersPrimary));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		});
 
 		questionsDTO.setQuesId(questionEnt.getQuesId());
-		questionsDTO.setQuestion(questionEnt.getQuestion());
+		String decodeQuestion = URLDecoder.decode(questionEnt.getQuestion(),"UTF-8");
+		questionsDTO.setQuestion(decodeQuestion);
 		questionsDTO.setMarks(questionEnt.getMarks());
 
 		questionsDTO.setQuestionLeval(questionEnt.getQuestionLeval());
@@ -191,22 +191,23 @@ public class QuestionServiceImpl implements QuestionService {
 	 */
 	private String getStatus(String questionLeval) {
 		switch (questionLeval) {
-		case AppConstant.HARD:
-			return AppConstant.NORMAL;
-		case AppConstant.NORMAL:
-			return AppConstant.EASY;
 		case AppConstant.EASY:
 			return AppConstant.NORMAL;
+			case AppConstant.NORMAL:
+				return AppConstant.HARD;
+				case AppConstant.HARD:
+					return AppConstant.NORMAL;
+					
+		/*
+		 * case AppConstant.HARD: return AppConstant.NORMAL; case AppConstant.NORMAL:
+		 * return AppConstant.EASY;
+		 */
+		
 		default:
 			return AppConstant.EASY;
 		}
 	}
-
-	@Override
-	public ArrayList<QuestionsDTO> getAllQuestion() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	/**
 	 * This Method Using save Question And Answers In Question And Answer Tables
@@ -219,7 +220,8 @@ public class QuestionServiceImpl implements QuestionService {
 		LanguageEntity languageEntity = languageDao.findByLangId(questionsDTO.getLanguageId());
 				
 		QuestionEntity questionEntity = new QuestionEntity();
-		questionEntity.setQuestionQ(questionsDTO.getQuestion());
+		String encodeQuestion = URLEncoder.encode(questionsDTO.getQuestion(),"UTF-8");
+		questionEntity.setQuestionQ(encodeQuestion);
 		questionEntity.setQuestionLeval(questionsDTO.getQuestionLeval());
 		questionEntity.setMarks(questionsDTO.getMarks());
 		questionEntity.setSubjectEntitiy(subjectEntity);
@@ -229,20 +231,28 @@ public class QuestionServiceImpl implements QuestionService {
 
 		if (question != null) {
 			questionsDTO.getAnswerDtos().forEach(answers -> {
-				AnswerEntity answerEntity = new AnswerEntity();
-				/* quesAns = questionRepository.getOne(questionsDTO.getQuesId()); */
-				answerEntity.setAnsewer(answers.getAnsewer());
-				answerEntity.setTagName(answers.getTagName());
-				answerEntity.setCorrect(answers.getCorrect());;
-				answerEntity.setStatus(AppConstant.ACTIVE);
-				answerEntity.setQuestionEntity(question);
-				answerDao.save(answerEntity);
+				
+				try {
+					String encodeAnswer = URLEncoder.encode(answers.getAnsewer(),"UTF-8");
+					AnswerEntity answerEntity = new AnswerEntity();
+	
+					answerEntity.setAnsewer(encodeAnswer);
+					answerEntity.setTagName(answers.getTagName());
+					answerEntity.setCorrect(answers.getCorrect());;
+					answerEntity.setStatus(AppConstant.ACTIVE);
+					answerEntity.setQuestionEntity(question);
+					answerDao.save(answerEntity);
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			});
 			 
 			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	/**
@@ -257,7 +267,12 @@ public class QuestionServiceImpl implements QuestionService {
 
 		questionEntities.forEach(e -> {
 
-			getAllQues.add(getAllQuestion(e));
+			try {
+				getAllQues.add(getAllQuestion(e));
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
 		});
 
@@ -329,9 +344,9 @@ public class QuestionServiceImpl implements QuestionService {
 		  if (questionEntity != null) {
 		  
 		  System.out.println("Edit Works Id Passing . . . . ! ");
-		  
+		  String decodeQuestion = URLDecoder.decode(questionEntity.getQuestion(),"UTF-8");
 		  questionsDTO.setQuesId(questionEntity.getQuesId());
-		  questionsDTO.setQuestion(questionEntity.getQuestion());
+		  questionsDTO.setQuestion(decodeQuestion);
 		  questionsDTO.setMarks(questionEntity.getMarks());
 		  questionsDTO.setQuestionLeval(questionEntity.getQuestionLeval());
 		  questionsDTO.setSubjectDto(getSubjectDto(questionEntity.getSubjectEntitiy()));
@@ -345,7 +360,12 @@ public class QuestionServiceImpl implements QuestionService {
 		  List<AnswersDTO>  getAllAnsweDto = new ArrayList<>();
 		
 		  getAnswersEasy.forEach(answersPrimary -> {
-		  getAllAnsweDto.add(getAnswerDto(answersPrimary));
+		  try {
+			getAllAnsweDto.add(getAnswerDto(answersPrimary));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		  });
 		  
 		  questionsDTO.setAnswerDtos(getAllAnsweDto);
@@ -362,31 +382,34 @@ public class QuestionServiceImpl implements QuestionService {
 		
 	}
 	
-	private SubjectDTO getSubjectDto(SubjectEntity subjectEntity) {
+	private SubjectDTO getSubjectDto(SubjectEntity subjectEntity) throws Exception{
 		
 		SubjectDTO subjectDTO = new SubjectDTO();
+		String decodeSubject = URLDecoder.decode(subjectEntity.getSubName(),"UTF-8");
 		
 		subjectDTO.setSubId(subjectEntity.getSubId());
-		subjectDTO.setSubName(subjectEntity.getSubName());
+		subjectDTO.setSubName(decodeSubject);
 		
 		return subjectDTO;
 	}
 	
-	private LanguageDTO getLanguageDto(LanguageEntity languageEntity) {
+	private LanguageDTO getLanguageDto(LanguageEntity languageEntity) throws Exception{
 		
 		LanguageDTO  languageDTO = new LanguageDTO();
-		
+		String decodeLanguage = URLDecoder.decode(languageEntity.getLangName(),"UTF-8");
 		languageDTO.setLangId(languageEntity.getLangId());
-		languageDTO.setLangName(languageEntity.getLangName());
+		languageDTO.setLangName(decodeLanguage);
 		
 		return languageDTO;
 	}
 	
-	private AnswersDTO getAnswerDto(AnswerEntity answerEntity) {
+	private AnswersDTO getAnswerDto(AnswerEntity answerEntity) throws Exception{
 
 		AnswersDTO answersDTO = new AnswersDTO();
+		String answerDecoder = URLDecoder.decode(answerEntity.getAnsewer(),"UTF-8");
+		
 		answersDTO.setAnswerId(answerEntity.getAnswerId());
-		answersDTO.setAnsewer(answerEntity.getAnsewer());
+		answersDTO.setAnsewer(answerDecoder);
 		answersDTO.setCorrect(answerEntity.getCorrect());
 		answersDTO.setTagName(answerEntity.getTagName());
 		answersDTO.setQuestionId(answerEntity.getQuestionEntity().getQuesId());
@@ -395,13 +418,96 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 	
 	
-	private QuestionsDTO getAllQuestion(QuestionEntity questionEntity) {
 
+	/* (non-Javadoc)
+	 * @see lk.exame.test.service.QuestionService#getAllQuestionInLanguage(java.lang.Integer)
+	 */
+	@Override
+	public ArrayList<QuestionsDTO> getAllQuestionInLanguage(Integer languageId) throws Exception {
+		
+		String status = AppConstant.ACTIVE;
+		
+		LanguageEntity languageEntity = languageDao.findByLangId(languageId); 
+		
+		List<QuestionEntity>questionList = questionDao.findAllByStatusAndLanguageEntitiey(status, languageEntity);
+		
+		ArrayList<QuestionsDTO>questionDtoList = new ArrayList<QuestionsDTO>();
+		
+		questionList.forEach(each->{
+			try {
+				questionDtoList.add(getAllQuestion(each));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		return questionDtoList;
+	}
+
+	/* (non-Javadoc)
+	 * @see lk.exame.test.service.QuestionService#getAllQuestionInSubject(java.lang.Integer)
+	 */
+	@Override
+	public ArrayList<QuestionsDTO> getAllQuestionInSubject(Integer subjectId) throws Exception {
+		
+		String status = AppConstant.ACTIVE;
+		
+		SubjectEntity subjectEntity = subjectDao.findBySubId(subjectId);
+		
+		List<QuestionEntity>questionList = questionDao.findAllByStatusAndSubjectEntitiy(status, subjectEntity);
+		
+		ArrayList<QuestionsDTO>quetionDtoList = new  ArrayList<QuestionsDTO>();
+		
+		questionList.forEach(each->{
+			try {
+				quetionDtoList.add(getAllQuestion(each));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		
+		return quetionDtoList;
+	}
+
+	/* (non-Javadoc)
+	 * @see lk.exame.test.service.QuestionService#getAllQuestionInLanguageAndSubject(java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public ArrayList<QuestionsDTO> getAllQuestionInLanguageAndSubject(Integer languageId, Integer subjectId)
+			throws Exception {
+		
+		String status = AppConstant.ACTIVE;
+		
+		SubjectEntity subjectEntity = subjectDao.findBySubId(subjectId);
+		LanguageEntity languageEntity = languageDao.findByLangId(languageId);
+		
+		List<QuestionEntity>questionList = questionDao.findAllByStatusAndSubjectEntitiyAndLanguageEntitiey(status, subjectEntity, languageEntity);
+		
+		ArrayList<QuestionsDTO>questionDtoList = new ArrayList<QuestionsDTO>();
+		
+		questionList.forEach(each->{
+			try {
+				questionDtoList.add(getAllQuestion(each));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		return questionDtoList;
+	}
 	
+
+
+	private QuestionsDTO getAllQuestion(QuestionEntity questionEntity)throws Exception {
+
+		
 		QuestionsDTO questionsDTO = new QuestionsDTO();
 
+		String decodeQuestion = URLDecoder.decode(questionEntity.getQuestion(),"UTF-8");
 		questionsDTO.setQuesId(questionEntity.getQuesId());
-		questionsDTO.setQuestion(questionEntity.getQuestion());
+		
+		questionsDTO.setQuestion(decodeQuestion);
 		questionsDTO.setMarks(questionEntity.getMarks());
 		questionsDTO.setStatus(questionEntity.getStatus());
 		
@@ -410,6 +516,13 @@ public class QuestionServiceImpl implements QuestionService {
 		return questionsDTO;
 	}
 
-	
-	
+	/* (non-Javadoc)
+	 * @see lk.exame.test.service.QuestionService#getAllQuestionInLanguageOrSubject(java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public ArrayList<QuestionsDTO> getAllQuestionInLanguageOrSubject(Integer languageId, Integer subjectId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

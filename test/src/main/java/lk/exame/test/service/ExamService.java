@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lk.exame.test.dto.ExamDTO;
-import lk.exame.test.dto.ExamDetailsDTO;
 import lk.exame.test.dto.ExamBasicDetailDTO;
 import lk.exame.test.dto.ResultDTO;
 import lk.exame.test.dto.SubmitQuestionDTO;

@@ -86,7 +86,7 @@ public class AnswerEntity {
 		this.answerId = answerId;
 	}
 
-	@Column(name = "ANSWER",length = 255 , nullable = false)
+	@Column(name = "ANSWER",length = 2000 , nullable = false)
 	public String getAnsewer() {
 		return ansewer;
 	}

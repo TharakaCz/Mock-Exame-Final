@@ -96,7 +96,7 @@ public class QuestionEntity {
 		this.quesId = quesId;
 	}
 
-	@Column(name = "QUESTION",length = 255 , nullable = false)
+	@Column(name = "QUESTION",length = 5000 , nullable = false)
 	public String getQuestion() {
 		return question;
 	}

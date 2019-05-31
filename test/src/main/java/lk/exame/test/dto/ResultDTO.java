@@ -1,5 +1,6 @@
 package lk.exame.test.dto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,14 @@ public class ResultDTO {
 
 	private List<ExamDetailsEntity>examDetailsEntities;
 
+	private String passFail;
+	
+	private String examePassGrade;
+	
+	private BigDecimal exameTotalPresent;
+	
+	private Integer totalExameQuestions;
+	
 	public ResultDTO() {
 		
 	}
@@ -130,6 +139,46 @@ public class ResultDTO {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+
+	public String getPassFail() {
+		return passFail;
+	}
+
+
+	public void setPassFail(String passFail) {
+		this.passFail = passFail;
+	}
+
+
+	public String getExamePassGrade() {
+		return examePassGrade;
+	}
+
+
+	public void setExamePassGrade(String examePassGrade) {
+		this.examePassGrade = examePassGrade;
+	}
+
+
+	public BigDecimal getExameTotalPresent() {
+		return exameTotalPresent;
+	}
+
+
+	public void setExameTotalPresent(BigDecimal exameTotalPresent) {
+		this.exameTotalPresent = exameTotalPresent;
+	}
+
+
+	public Integer getTotalExameQuestions() {
+		return totalExameQuestions;
+	}
+
+
+	public void setTotalExameQuestions(Integer totalExameQuestions) {
+		this.totalExameQuestions = totalExameQuestions;
 	}
 	
 	

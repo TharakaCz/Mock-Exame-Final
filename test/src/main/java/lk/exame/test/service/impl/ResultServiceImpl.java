@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import lk.exame.test.dao.ExamDAO;
@@ -26,6 +27,8 @@ public class ResultServiceImpl implements ResultService {
 	@Autowired
 	private ExamDAO examDao;
 	
+	@Value("${app.examQuestion}")
+	private String examQuestion;
 	/*
 	 * (non-Javadoc)
 	 * Find Result In Result Table Using Exam Id
@@ -84,6 +87,7 @@ public class ResultServiceImpl implements ResultService {
 
 	private ResultDTO getResult(ResultEntity resultEntity) {
 
+		Integer exameQuestionCount = Integer.parseInt(examQuestion);
 		
 		  ResultDTO resultDTO = new ResultDTO();
 		  
@@ -94,9 +98,11 @@ public class ResultServiceImpl implements ResultService {
 		  resultDTO.setWrongAnswers(resultEntity.getWrongAnswers());
 		  resultDTO.setUserName(resultEntity.getUserName());
 		  resultDTO.setExamDate(resultEntity.getExamDate());
-		
+		  resultDTO.setExamePassGrade(resultEntity.getExamePassGrade());
+		  resultDTO.setExameTotalPresent(resultEntity.getExameTotalPresent());
+		  resultDTO.setTotalExameQuestions(exameQuestionCount);
+		 resultDTO.setPassFail(resultEntity.getPassFail());
 		 
-
 		return resultDTO;
 	}
 
