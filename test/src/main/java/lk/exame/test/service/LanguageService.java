@@ -19,4 +19,8 @@ public interface LanguageService {
 	public LanguageDTO searchLanguage(Integer langId)throws Exception;
 
 	public ArrayList<LanguageDTO>getAllLanguage()throws Exception;
+	
+	public ArrayList<LanguageDTO>getAllDeactiveQuestions()throws Exception;
+	
+	public String activeDeactiveLanguage(Integer languageId)throws Exception;
 }

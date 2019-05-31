@@ -10,6 +10,7 @@ public class LanguageDTO {
 	private String langName;
 	
 	
+	
 	public LanguageDTO() {
 		
 	}

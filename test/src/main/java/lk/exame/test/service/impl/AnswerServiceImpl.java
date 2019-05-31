@@ -53,12 +53,8 @@ public class AnswerServiceImpl implements AnswerService{
 		AnswerEntity answerEntity = answerDao.findByAnswerId(answerId);
 		
 		answerEntity.setStatus(AppConstant.DEACTIVE);
-		if (answerEntity != null) {
-			answerDao.save(answerEntity);
-		}else {
-			System.out.println("Answer Table Is Empty");
-		}
-		return false;
+		answerDao.save(answerEntity);
+		return true;
 	}
 
 

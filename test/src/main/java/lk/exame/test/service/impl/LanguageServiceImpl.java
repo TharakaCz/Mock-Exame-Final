@@ -1,14 +1,17 @@
 package lk.exame.test.service.impl;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lk.exame.test.dao.LanguageDAO;
+import lk.exame.test.dao.QuestionDAO;
 import lk.exame.test.dto.LanguageDTO;
 import lk.exame.test.entity.LanguageEntity;
+import lk.exame.test.entity.QuestionEntity;
 import lk.exame.test.service.LanguageService;
 import lk.exame.test.utill.AppConstant;
 
@@ -22,6 +25,8 @@ public class LanguageServiceImpl implements LanguageService{
 	@Autowired
 	private LanguageDAO languageDao;
 	
+	@Autowired
+	private QuestionDAO questionDao;
 	
 	/*
 	 * @Override public boolean save(LanguageDTO languageDTO) throws Exception {
@@ -43,15 +48,15 @@ public class LanguageServiceImpl implements LanguageService{
 	public boolean delete(Integer langId) throws Exception {
 		
 		LanguageEntity languageEntity = languageDao.findByLangId(langId);
+		QuestionEntity questionEntity = questionDao.findOneByLanguageEntitiey(languageEntity);
 		
 		languageEntity.setStatus(AppConstant.DEACTIVE);
+		questionEntity.setStatus(AppConstant.DEACTIVE);
 		
 		if (languageEntity != null) {
 			
 			languageDao.save(languageEntity);
-			
-		}else {
-			System.out.println("Language Table Is Empty");
+			questionDao.save(questionEntity);
 			
 		}
 		
@@ -63,7 +68,8 @@ public class LanguageServiceImpl implements LanguageService{
 
 		LanguageEntity languageEntity = languageDao.findByLangId(languageDTO.getLangId());
 		
-		languageEntity.setLangName(languageDTO.getLangName());
+		String encodeLanguage = URLEncoder.encode(languageEntity.getLangName(),"UTF-8");
+		languageEntity.setLangName(encodeLanguage);
 		
 		languageDao.save(languageEntity);
 		
@@ -81,8 +87,11 @@ public class LanguageServiceImpl implements LanguageService{
 		
 		LanguageEntity languageEntity = new LanguageEntity();
 		
-		languageEntity.setLangName(languageDTO.getLangName());
+		String encodeLanguage = URLEncoder.encode(languageDTO.getLangName(),"UTF-8");
+		
+		languageEntity.setLangName(encodeLanguage);
 		languageEntity.setStatus(AppConstant.ACTIVE);
+		
 		languageDao.save(languageEntity);
 		
 		return true;
@@ -104,7 +113,12 @@ public class LanguageServiceImpl implements LanguageService{
 		ArrayList<LanguageDTO>languageDTOs = new ArrayList<>();
 		
 		getLanguages.forEach(e->{
-			languageDTOs.add(getLanguages(e));
+			try {
+				languageDTOs.add(getLanguages(e));
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		});
 		
 		return languageDTOs;
@@ -132,12 +146,14 @@ public class LanguageServiceImpl implements LanguageService{
 	 * languageDTOs.add(languageDTO); } return languageDTOs; }
 	 */
 
-	private LanguageDTO getLanguages(LanguageEntity languageEntity){
+	private LanguageDTO getLanguages(LanguageEntity languageEntity)throws Exception{
 		
 		LanguageDTO  languageDTO = new LanguageDTO();
 		
+		String decodeLanguage = URLDecoder.decode(languageEntity.getLangName(),"UTF-8");
+		
 		languageDTO.setLangId(languageEntity.getLangId());
-		languageDTO.setLangName(languageEntity.getLangName());
+		languageDTO.setLangName(decodeLanguage);
 		
 		return languageDTO;
 	}
@@ -152,10 +168,56 @@ public class LanguageServiceImpl implements LanguageService{
 		
 		LanguageDTO languageDTO = new LanguageDTO();
 		
+		String languageDecoder = URLDecoder.decode(languageEntity.getLangName(),"UTF-8");
+		
 		languageDTO.setLangId(languageEntity.getLangId());
-		languageDTO.setLangName(languageEntity.getLangName());
+		languageDTO.setLangName(languageDecoder);
 		
 		
 		return languageDTO;
+	}
+
+	/* (non-Javadoc)
+	 * @see lk.exame.test.service.LanguageService#getAllDeactiveQuestions()
+	 */
+	@Override
+	public ArrayList<LanguageDTO> getAllDeactiveQuestions() throws Exception {
+		
+		List<LanguageEntity>languageList = languageDao.findAllByStatus(AppConstant.DEACTIVE);
+		
+		ArrayList<LanguageDTO>languageDTOs = new ArrayList<LanguageDTO>();
+		
+		languageList.forEach(each->{
+			try {
+				languageDTOs.add(getLanguages(each));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		return languageDTOs;
+	}
+
+	/* (non-Javadoc)
+	 * @see lk.exame.test.service.LanguageService#activeDeactiveLanguage(java.lang.Integer)
+	 */
+	@Override
+	public String activeDeactiveLanguage(Integer languageId) throws Exception {
+		
+		LanguageEntity languageEntity = languageDao.findByLangId(languageId);
+		QuestionEntity questionEntity = questionDao.findOneByLanguageEntitiey(languageEntity);
+		String status = AppConstant.ACTIVE;
+		
+		if (languageEntity != null) {
+			languageEntity.setStatus(status);
+			questionEntity.setStatus(status);
+			
+			languageDao.save(languageEntity);
+			questionDao.save(questionEntity);
+			
+			return "Language Succsessfully Activated . . !";
+		}else {
+			return "Activetion Error Please Try Again . . !";
+		}
 	}
 }

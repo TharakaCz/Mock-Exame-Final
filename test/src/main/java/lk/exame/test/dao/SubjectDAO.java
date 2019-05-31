@@ -3,7 +3,8 @@ package lk.exame.test.dao;
 
 import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 
 import lk.exame.test.entity.SubjectEntity;
 
@@ -11,7 +12,7 @@ import lk.exame.test.entity.SubjectEntity;
  * 
  * @author Tharaka Chandralal
  */
-public interface SubjectDAO extends CrudRepository<SubjectEntity, Integer>{
+public interface SubjectDAO extends JpaRepository<SubjectEntity, Integer>{
 
 	/**
 	 * @param subjectId
@@ -21,5 +22,5 @@ public interface SubjectDAO extends CrudRepository<SubjectEntity, Integer>{
 
 	List<SubjectEntity> findAllByStatus(String status);
 	
-	SubjectEntity findBySubId(Integer subId);
+	SubjectEntity findBySubId(Integer subjectId);
 }

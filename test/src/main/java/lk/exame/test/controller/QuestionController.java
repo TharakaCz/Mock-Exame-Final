@@ -78,10 +78,12 @@ public class QuestionController {
 		}
 	}
 	
-	@PostMapping(value="/getQuestion/{languageId}")
-	private ResponseEntity<Object>getQuestions(@RequestBody List<Integer>questionIds, @PathVariable Integer languageId){
+	@PostMapping(value="/getQuestion/{languageId}/{subjectId}")
+	private ResponseEntity<Object>getQuestions(@RequestBody List<Integer>questionIds, @PathVariable("languageId") Integer languageId,@PathVariable("subjectId")Integer subjectId){
 		try {
-			return new ResponseEntity<Object>(service.getQuestion(questionIds,languageId),HttpStatus.OK);
+			System.out.println("get_question_controller_language =/"+languageId);
+			System.out.println("get_question_controller_subject =/"+subjectId);
+			return new ResponseEntity<Object>(service.getQuestion(questionIds,languageId,subjectId),HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -93,6 +95,40 @@ public class QuestionController {
 	public ResponseEntity<Object>editQuestions(@PathVariable Integer quesId){
 		try {
 			return new ResponseEntity<Object>(service.edit(quesId),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping(value="/getAllQuestionInLanguage/{languageId}")
+	public ResponseEntity<Object>getAllQuestionInLanguage(@PathVariable("languageId") Integer languageId){
+		
+		try {
+			return new ResponseEntity<Object>(service.getAllQuestionInLanguage(languageId),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping(value="/getAllQuestionInSubject/{subjectId}")
+	public ResponseEntity<Object>getAllQuestionInSubject(@PathVariable("subjectId")Integer subjectId){
+		try {
+			return new ResponseEntity<Object>(service.getAllQuestionInSubject(subjectId),HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping(value="/getAllQuestionInLanguageAndSubject/{subjectId}/{languageId}")
+	public ResponseEntity<Object>getAllQuestionInSubjectAndLanguage(@PathVariable("subjectId")Integer subjectId,@PathVariable("languageId")Integer languageId){
+		try {
+			return new ResponseEntity<Object>(service.getAllQuestionInLanguageAndSubject(languageId, subjectId),HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

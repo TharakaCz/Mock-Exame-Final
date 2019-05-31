@@ -5,6 +5,8 @@
  */
 package lk.exame.test.dto;
 
+import java.util.List;
+
 /**
  * @author Tharaka Chandralal
  */
@@ -14,6 +16,8 @@ public class ExamBasicDetailDTO {
 	
 	private Integer exameTimeCout;
 
+	private List<Integer>examQuestionMarks;
+	
 	public ExamBasicDetailDTO() {
 		
 	}
@@ -32,6 +36,14 @@ public class ExamBasicDetailDTO {
 
 	public void setExameTimeCout(Integer exameTimeCout) {
 		this.exameTimeCout = exameTimeCout;
+	}
+
+	public List<Integer> getExamQuestionMarks() {
+		return examQuestionMarks;
+	}
+
+	public void setExamQuestionMarks(List<Integer> examQuestionMarks) {
+		this.examQuestionMarks = examQuestionMarks;
 	}
 
 	

@@ -1,7 +1,7 @@
 package lk.exame.test.dao;
 
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import lk.exame.test.entity.ExamDetailsEntity;
 
@@ -9,6 +9,6 @@ import lk.exame.test.entity.ExamDetailsEntity;
  * 
  * @author Tharaka Chandralal
  */
-public interface ExamDetailDAO extends CrudRepository<ExamDetailsEntity, Integer>{
+public interface ExamDetailDAO extends JpaRepository<ExamDetailsEntity, Integer>{
 
 }

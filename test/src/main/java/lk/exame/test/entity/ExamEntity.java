@@ -102,6 +102,7 @@ public class ExamEntity {
 	 */
 	private ResultEntity resultEntity;
 	
+	
 	public ExamEntity() {
 		
 	}
@@ -214,5 +215,5 @@ public class ExamEntity {
 	public void setResultEntity(ResultEntity resultEntity) {
 		this.resultEntity = resultEntity;
 	}
-	
+
 }

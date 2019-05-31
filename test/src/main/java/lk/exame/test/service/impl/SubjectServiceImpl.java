@@ -1,13 +1,17 @@
 package lk.exame.test.service.impl;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lk.exame.test.dao.QuestionDAO;
 import lk.exame.test.dao.SubjectDAO;
 import lk.exame.test.dto.SubjectDTO;
+import lk.exame.test.entity.QuestionEntity;
 import lk.exame.test.entity.SubjectEntity;
 import lk.exame.test.service.SubjectService;
 import lk.exame.test.utill.AppConstant;
@@ -22,6 +26,8 @@ public class SubjectServiceImpl implements SubjectService{
 	@Autowired 
 	private SubjectDAO subjectDao;
 	
+	@Autowired
+	private QuestionDAO questionDao;
 
 	/**
 	 * Deceive Active Row In Subject Table
@@ -31,12 +37,14 @@ public class SubjectServiceImpl implements SubjectService{
 		
 		SubjectEntity subjectEntity = subjectDao.findBySubId(subId);
 		
-		subjectEntity.setStatus(AppConstant.DEACTIVE);
+		QuestionEntity questionEntity = questionDao.findOneBySubjectEntitiy(subjectEntity);
 		
+		subjectEntity.setStatus(AppConstant.DEACTIVE);
+		questionEntity.setStatus(AppConstant.DEACTIVE);
 		if (subjectEntity != null) {
 			
 			subjectDao.save(subjectEntity);
-			
+			questionDao.save(questionEntity);
 		}else {
 			System.out.println("Subject Table Empty");
 		}
@@ -51,10 +59,11 @@ public class SubjectServiceImpl implements SubjectService{
 		
 		SubjectEntity subject = subjectDao.findBySubId(subId);
 		
-		SubjectDTO subjectDTO = new SubjectDTO(
-				subject.getSubId(),
-				subject.getSubName()
-				);
+		SubjectDTO subjectDTO = new SubjectDTO();
+		String decodeSubject = URLDecoder.decode(subject.getSubName(),"UTF-8");
+		
+		subjectDTO.setSubId(subject.getSubId());
+		subjectDTO.setSubName(decodeSubject);
 		return subjectDTO;
 	}
 
@@ -70,7 +79,12 @@ public class SubjectServiceImpl implements SubjectService{
 		ArrayList<SubjectDTO>subjectDTOs = new ArrayList<>();
 		
 		subjects.forEach(e->{
-			subjectDTOs.add(getAllSubject(e));
+			try {
+				subjectDTOs.add(getAllSubject(e));
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		});
 		
 			return subjectDTOs;
@@ -94,12 +108,14 @@ public class SubjectServiceImpl implements SubjectService{
 		return true;
 	}
 
-	private SubjectDTO getAllSubject(SubjectEntity subjectEntity) {
+	private SubjectDTO getAllSubject(SubjectEntity subjectEntity) throws Exception{
 		
 		SubjectDTO subjectDTO = new SubjectDTO();
 		
+		String decodeSubject = URLDecoder.decode(subjectEntity.getSubName(),"UTF-8");
+		
 		subjectDTO.setSubId(subjectEntity.getSubId());
-		subjectDTO.setSubName(subjectEntity.getSubName());
+		subjectDTO.setSubName(decodeSubject);
 		
 		return subjectDTO;
 	}
@@ -112,10 +128,54 @@ public class SubjectServiceImpl implements SubjectService{
 		
 		SubjectEntity subjectEntity = subjectDao.findBySubId(subjectDTO.getSubId());
 		
-		subjectEntity.setSubName(subjectDTO.getSubName());
+		String subjectEncode = URLEncoder.encode(subjectEntity.getSubName(),"UTF-8");
+		subjectEntity.setSubName(subjectEncode);
 		
 		subjectDao.save(subjectEntity);
 		
 		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see lk.exame.test.service.SubjectService#getAllDeactiveSubjects()
+	 */
+	@Override
+	public ArrayList<SubjectDTO> getAllDeactiveSubjects() throws Exception {
+		
+		List<SubjectEntity>subjectEntities = subjectDao.findAllByStatus(AppConstant.DEACTIVE);
+		ArrayList<SubjectDTO>subjectDTOs = new ArrayList<SubjectDTO>();
+		
+		subjectEntities.forEach(each->{
+			try {
+				subjectDTOs.add(getAllSubject(each));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		return subjectDTOs;
+	}
+
+	/* (non-Javadoc)
+	 * @see lk.exame.test.service.SubjectService#activeDeactiveSubject(java.lang.Integer)
+	 */
+	@Override
+	public String activeDeactiveSubject(Integer subjectId) throws Exception {
+		
+		SubjectEntity subjectEntity = subjectDao.findBySubId(subjectId);
+		QuestionEntity questionEntity = questionDao.findOneBySubjectEntitiy(subjectEntity);
+		
+		String status = AppConstant.ACTIVE;
+		subjectEntity.setStatus(status);
+		questionEntity.setStatus(status);
+		if (subjectEntity != null) {
+			subjectDao.save(subjectEntity);
+			questionDao.save(questionEntity);
+			
+			return "Subject Activation Succsessfull . . !";
+		}else {
+			return "Subject Activetion Faild Please Try Again . .!";
+		}
+		
 	}
 }

@@ -31,7 +31,6 @@ public class SubjectEntity {
 	 * 
 	 * Set And Get Subject Name Not Null , length 100
 	 */
-	
 	private String subName;
 
 	/**

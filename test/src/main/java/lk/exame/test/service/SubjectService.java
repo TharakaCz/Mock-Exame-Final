@@ -19,4 +19,8 @@ public interface SubjectService {
 	public boolean edit(SubjectDTO subjectDTO)throws Exception;
 	
 	public ArrayList<SubjectDTO>getAllSubject()throws Exception;
+	
+	public ArrayList<SubjectDTO>getAllDeactiveSubjects()throws Exception;
+	
+	public String activeDeactiveSubject(Integer subjectId)throws Exception;
 }

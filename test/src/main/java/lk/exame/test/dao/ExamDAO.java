@@ -2,7 +2,7 @@ package lk.exame.test.dao;
 
 import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import lk.exame.test.entity.ExamEntity;
 
@@ -10,7 +10,7 @@ import lk.exame.test.entity.ExamEntity;
  * 
  * @author Tharaka Chandralal
  */
-public interface ExamDAO extends CrudRepository<ExamEntity, Integer>{
+public interface ExamDAO extends JpaRepository<ExamEntity, Integer>{
 
 	List<ExamEntity>findByUserNameAndStatus(String userName,String status);
 	
